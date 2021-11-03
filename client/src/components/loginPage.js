@@ -1,6 +1,6 @@
 import $ from "jquery"
 import React from "react";
-import {Box, Button, Container, Modal, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Container, Modal, Snackbar, TextField, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
@@ -13,10 +13,13 @@ class LoginForm extends React.Component {
             email: "",
             password: "",
             loading: false,
+            showAlert: false,
+            alertMessage: "",
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCloseAlert = this.handleCloseAlert.bind(this);
     }
 
     handleChange(event) {
@@ -37,20 +40,38 @@ class LoginForm extends React.Component {
         let url = config.baseUrl + config.api.account.login;
         let data = {email: this.state.email, password: this.state.password}
 
-        // TODO: add .then() to catch errors
-        $.post(url, data, function (res) {
-            console.log(res);
-        }, "json")
-            .then(() => {
-                this.setState({loading: false})
-            })
-            .catch((e) => {
-                console.log(e);
-                this.setState({loading: false});
-            });
+        // Check password length
+        if (data.password.length < 8) {
+            this.triggerAlert("Password should be at least 8 characters long.");
+            this.setState({loading: false});
+            return;
+        }
 
-        console.log("Login requested with data: ")
-        console.log(data);
+        // TODO: wait for backend api
+        $.post(url, data, function (data, status, jqXHR) {
+            console.log(data);
+            console.log(status);
+            console.log(jqXHR)
+        }, "json")
+            .always(() => {
+                this.setState({loading: false});
+            })
+            .fail(() => {
+                this.triggerAlert("Failed to connect to the server.");
+            });
+    }
+
+    triggerAlert(msg) {
+        // Display an alert
+        this.setState({
+            showAlert: true,
+            alertMessage: msg.toString(),
+        });
+    }
+
+    handleCloseAlert(event, reason) {
+        if (reason === "clickaway") return;
+        this.setState({showAlert: false, alertMessage: ""});
     }
 
     render() {
@@ -64,29 +85,30 @@ class LoginForm extends React.Component {
                     alignItems: "center",
                 }}
             >
-                <Typography variant="h2" sx={{mt: 10}}>
+                <Typography variant="h3" sx={{mt: 10, mb: 2}}>
                     Login
                 </Typography>
+
                 <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="email"
                     name="email"
                     label="Email"
                     type="email"
                     onChange={this.handleChange}
                 />
+
                 <TextField
                     margin="normal"
                     required
                     fullWidth
-                    id="password"
                     name="password"
                     label="Password"
                     type="password"
                     onChange={this.handleChange}
                 />
+
                 <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                     <LoadingButton
                         margin="normal"
@@ -97,6 +119,18 @@ class LoginForm extends React.Component {
                     >
                         <Typography variant="h6">Login</Typography>
                     </LoadingButton>
+
+                    <Snackbar
+                        open={this.state.showAlert}
+                        autoHideDuration={3000}
+                        onClose={this.handleCloseAlert}
+                        anchorOrigin={{vertical: "top", horizontal: "center"}}
+                    >
+                        <Alert severity="error">
+                            {this.state.alertMessage}
+                        </Alert>
+                    </Snackbar>
+
                     <Typography variant="h6">
                         or&nbsp;
                         <Link to="./register">
@@ -105,6 +139,7 @@ class LoginForm extends React.Component {
                         &nbsp;now
                     </Typography>
                 </Box>
+
                 <ResetPassword/>
             </Box>
         );
