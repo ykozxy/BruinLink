@@ -1,6 +1,7 @@
 import $ from "jquery"
 import React from "react";
 import {Box, Button, Container, Modal, TextField, Typography} from "@mui/material";
+import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
 
@@ -11,6 +12,7 @@ class LoginForm extends React.Component {
         this.state = {
             email: "",
             password: "",
+            loading: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -29,13 +31,23 @@ class LoginForm extends React.Component {
         // Submit the email & password to the server to login
         event.preventDefault();
 
+        // Let the login button loading
+        this.setState({loading: true});
+
         let url = config.baseUrl + config.api.account.login;
         let data = {email: this.state.email, password: this.state.password}
 
         // TODO: add .then() to catch errors
         $.post(url, data, function (res) {
             console.log(res);
-        }, "json");
+        }, "json")
+            .then(() => {
+                this.setState({loading: false})
+            })
+            .catch((e) => {
+                console.log(e);
+                this.setState({loading: false});
+            });
 
         console.log("Login requested with data: ")
         console.log(data);
@@ -76,14 +88,15 @@ class LoginForm extends React.Component {
                     onChange={this.handleChange}
                 />
                 <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <Button
+                    <LoadingButton
                         margin="normal"
                         type="submit"
                         variant="contained"
                         sx={{mt: 2, mb: 2, mr: 2}}
+                        loading={this.state.loading}
                     >
                         <Typography variant="h6">Login</Typography>
-                    </Button>
+                    </LoadingButton>
                     <Typography variant="h6">
                         or&nbsp;
                         <Link to="./register">

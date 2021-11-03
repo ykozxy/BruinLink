@@ -13,6 +13,7 @@
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@mui/material": "^5.0.6",
+    "@mui/lab": "^5.0.0-alpha.53",
     "express": "^4.17.1",
     "jquery": "^3.6.0",
     "react": "^17.0.2",
