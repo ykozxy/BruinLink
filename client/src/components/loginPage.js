@@ -1,6 +1,6 @@
 import $ from "jquery"
 import React from "react";
-import {Alert, Box, Button, Container, Modal, Snackbar, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Container, Divider, Modal, Snackbar, TextField, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
@@ -109,36 +109,54 @@ class LoginForm extends React.Component {
                     onChange={this.handleChange}
                 />
 
-                <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                    <LoadingButton
-                        margin="normal"
-                        type="submit"
-                        variant="contained"
-                        sx={{mt: 2, mb: 2, mr: 2}}
-                        loading={this.state.loading}
-                    >
-                        <Typography variant="h6">Login</Typography>
-                    </LoadingButton>
+                <Box
+                    width={1}
+                    sx={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-evenly"}}>
 
-                    <Snackbar
-                        open={this.state.showAlert}
-                        autoHideDuration={3000}
-                        onClose={this.handleCloseAlert}
-                        anchorOrigin={{vertical: "top", horizontal: "center"}}
-                    >
-                        <Alert severity="error">
-                            {this.state.alertMessage}
-                        </Alert>
-                    </Snackbar>
+                    <Box width={0.4} sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-end"
+                    }}>
+                        <LoadingButton
+                            // margin="normal"
+                            type="submit"
+                            variant="contained"
+                            sx={{mt: 2, mb: 2}}
+                            loading={this.state.loading}
+                        >
+                            <Typography variant="h6">Login</Typography>
+                        </LoadingButton>
+                    </Box>
 
-                    <Typography variant="h6">
-                        or&nbsp;
-                        <Link to="./register">
-                            register
-                        </Link>
-                        &nbsp;now
-                    </Typography>
+                    <Divider orientation="vertical" flexItem
+                             sx={{borderRightWidth: 3, ml: 1, mr: 1, mt: 1, mb: 1, justifySelf: "center"}}/>
+
+                    <Box width={0.4} sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "flex-start"
+                    }}>
+                        <Typography variant="h6">
+                            or&nbsp;
+                            <Link to="./register">
+                                register
+                            </Link>
+                            &nbsp;now
+                        </Typography>
+                    </Box>
                 </Box>
+
+                <Snackbar
+                    open={this.state.showAlert}
+                    autoHideDuration={3000}
+                    onClose={this.handleCloseAlert}
+                    anchorOrigin={{vertical: "top", horizontal: "center"}}
+                >
+                    <Alert severity="error">
+                        {this.state.alertMessage}
+                    </Alert>
+                </Snackbar>
 
                 <ResetPassword/>
             </Box>
