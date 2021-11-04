@@ -1,9 +1,10 @@
 import $ from "jquery"
 import React from "react";
-import {Alert, Box, Button, Container, Divider, Modal, Snackbar, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Divider, Modal, TextField, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
+import AlertToast from "./alertToast"
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -19,7 +20,6 @@ class LoginForm extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCloseAlert = this.handleCloseAlert.bind(this);
     }
 
     handleChange(event) {
@@ -42,7 +42,7 @@ class LoginForm extends React.Component {
 
         // Check password length
         if (data.password.length < 8) {
-            this.triggerAlert("Password should be at least 8 characters long.");
+            this.showAlert("Password should be at least 8 characters long.");
             this.setState({loading: false});
             return;
         }
@@ -57,21 +57,15 @@ class LoginForm extends React.Component {
                 this.setState({loading: false});
             })
             .fail(() => {
-                this.triggerAlert("Failed to connect to the server.");
+                this.showAlert("Failed to connect to the server.");
             });
     }
 
-    triggerAlert(msg) {
-        // Display an alert
+    showAlert(msg) {
         this.setState({
             showAlert: true,
-            alertMessage: msg.toString(),
+            alertMessage: msg,
         });
-    }
-
-    handleCloseAlert(event, reason) {
-        if (reason === "clickaway") return;
-        this.setState({showAlert: false, alertMessage: ""});
     }
 
     render() {
@@ -147,16 +141,11 @@ class LoginForm extends React.Component {
                     </Box>
                 </Box>
 
-                <Snackbar
-                    open={this.state.showAlert}
-                    autoHideDuration={3000}
-                    onClose={this.handleCloseAlert}
-                    anchorOrigin={{vertical: "top", horizontal: "center"}}
-                >
-                    <Alert severity="error">
-                        {this.state.alertMessage}
-                    </Alert>
-                </Snackbar>
+                <AlertToast
+                    showAlert={this.state.showAlert}
+                    alertMessage={this.state.alertMessage}
+                    onClose={() => this.setState({showAlert: false})}
+                />
 
                 <ResetPassword/>
             </Box>
