@@ -47,6 +47,15 @@ class LoginForm extends React.Component {
             return;
         }
 
+        // Regex for checking email address.
+        // Cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
+        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test(data.email)) {
+            this.showAlert("Invalid Email format");
+            this.setState({loading: false});
+            return;
+        }
+
         // TODO: wait for backend api
         $.post(url, data, function (data, status, jqXHR) {
             console.log(data);
@@ -89,7 +98,7 @@ class LoginForm extends React.Component {
                     fullWidth
                     name="email"
                     label="Email"
-                    type="email"
+                    // type="email"
                     onChange={this.handleChange}
                 />
 
