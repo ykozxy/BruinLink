@@ -34,4 +34,7 @@ module.exports = {
             reportLink: "/report/link"
         }
     },
+
+    // The cool down time (seconds) between sending verification codes
+    resendCodeCoolDown: 30,
 };
