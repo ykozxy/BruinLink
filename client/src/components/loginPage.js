@@ -16,6 +16,8 @@ class LoginForm extends React.Component {
             loading: false,
             showAlert: false,
             alertMessage: "",
+            emailError: false,
+            passwordError: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -30,33 +32,45 @@ class LoginForm extends React.Component {
         this.setState({[name]: val});
     }
 
+    /*
+    * Submit the email & password to the server
+    * */
     handleSubmit(event) {
-        // Submit the email & password to the server to login
         event.preventDefault();
 
-        // Let the login button loading
-        this.setState({loading: true});
+        // Let the login button buttonLoading
+        this.setState({
+            emailError: false,
+            passwordError: false,
+        });
 
         let url = config.baseUrl + config.api.account.login;
         let data = {email: this.state.email, password: this.state.password}
 
-        // Check password length
-        if (data.password.length < 8) {
-            this.showAlert("Password should be at least 8 characters long.");
-            this.setState({loading: false});
-            return;
-        }
-
-        // Regex for checking email address.
-        // Cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
+        // Check email
+        // Regex cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
         let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!re.test(data.email)) {
+
+        let testFail = !re.test(data.email);
+        this.setState({emailError: testFail});
+        if (testFail) {
             this.showAlert("Invalid Email format");
-            this.setState({loading: false});
             return;
         }
 
-        // TODO: wait for backend api
+        // Check password length
+        testFail = data.password.length < 8;
+        this.setState({passwordError: testFail})
+        if (testFail) {
+            this.showAlert("Password should be at least 8 characters long.");
+            return;
+        }
+
+        // If all fields are OK, trigger loading animation of register button.
+        this.setState({loading: true});
+
+
+        // TODO: wait for backend API implementation
         $.post(url, data, function (data, status, jqXHR) {
             console.log(data);
             console.log(status);
@@ -94,6 +108,7 @@ class LoginForm extends React.Component {
 
                 <TextField
                     margin="normal"
+                    error={this.state.emailError}
                     required
                     fullWidth
                     name="email"
@@ -104,6 +119,7 @@ class LoginForm extends React.Component {
 
                 <TextField
                     margin="normal"
+                    error={this.state.passwordError}
                     required
                     fullWidth
                     name="password"
