@@ -6,6 +6,7 @@ import * as config from "../config"
 import {Link} from "react-router-dom";
 import AlertToast from "./alertToast"
 import ResetPasswordOverlay from "./resetPasswordOverlay";
+import {checkEmailFormat} from "../utils";
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -49,11 +50,7 @@ class LoginForm extends React.Component {
         let url = config.baseUrl + config.api.account.login;
         let data = {email: this.state.email, password: this.state.password}
 
-        // Check email
-        // Regex cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-        let testFail = !re.test(data.email);
+        let testFail = !checkEmailFormat(data.email);
         this.setState({emailError: testFail});
         if (testFail) {
             this.showAlert("Invalid Email format");

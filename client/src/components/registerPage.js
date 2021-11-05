@@ -1,11 +1,12 @@
 import $ from "jquery";
 import React from "react";
-import {Box, Button, Container, Divider, TextField, Typography} from "@mui/material";
+import {Box, Container, Divider, TextField, Typography} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {Link} from "react-router-dom";
 import * as config from "../config"
+import {checkEmailFormat} from "../utils";
 import AlertToast from "./alertToast";
-import PropTypes from "prop-types";
+import VerificationCodeInput from "./verificationCodeInput";
 
 
 class RegisterForm extends React.Component {
@@ -102,11 +103,7 @@ class RegisterForm extends React.Component {
     * Check if the input email is valid, and update this.state.emailError.
     * */
     checkEmail(email) {
-        // Regex for checking email address.
-        // Cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let res = re.test(email);
-
+        let res = checkEmailFormat(email);
         this.setState({emailError: !res});
         return res;
     }
