@@ -163,7 +163,8 @@ class RegisterForm extends React.Component {
                     onChange={this.handleChange}
                 />
 
-                <VerificationCodeInput handleChange={this.handleChange} email={this.state.email}
+                <VerificationCodeInput onChange={this.handleChange}
+                                       email={this.state.email}
                                        checkEmailCallback={this.checkEmail}/>
 
                 <Box width={1}

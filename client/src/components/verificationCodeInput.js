@@ -7,7 +7,7 @@ import AlertToast from "./alertToast";
 
 export default class VerificationCodeInput extends React.Component {
     static propTypes = {
-        handleChange: PropTypes.func.isRequired,
+        onChange: PropTypes.func.isRequired,
         email: PropTypes.string.isRequired,
         checkEmailCallback: PropTypes.func.isRequired,
     }
@@ -22,7 +22,6 @@ export default class VerificationCodeInput extends React.Component {
             alertMessage: "",
         };
 
-        this.handleChange = props.handleChange;
         this.handleSendCode = this.handleSendCode.bind(this);
         this.countDown = this.countDown.bind(this);
         this.timer = null;
@@ -54,6 +53,8 @@ export default class VerificationCodeInput extends React.Component {
 
                 // Repetitively call countDown every second
                 this.timer = setInterval(this.countDown, 1000);
+
+                // TODO: return sessionID to parent
             })
             .fail(() => {
                     // If request failed, show an error toast.
@@ -96,7 +97,7 @@ export default class VerificationCodeInput extends React.Component {
                     required
                     name="verCode"
                     label="Verification Code"
-                    onChange={this.handleChange}
+                    onChange={this.props.onChange}
                     sx={{width: "50%"}}
                 />
 
