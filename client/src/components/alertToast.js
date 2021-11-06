@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import {Alert, Snackbar} from "@mui/material";
+import Portal from '@mui/core/Portal';
 
 /*
 * Display an alert toast at the top of the screen.
@@ -37,16 +38,18 @@ export default class AlertToast extends React.Component {
 
     render() {
         return (
-            <Snackbar
-                open={this.props.showAlert}
-                autoHideDuration={3000}
-                onClose={this.handleCloseAlert}
-                anchorOrigin={{vertical: "top", horizontal: "center"}}
-            >
-                <Alert severity={this.props.severity}>
-                    {this.props.alertMessage}
-                </Alert>
-            </Snackbar>
+            <Portal>
+                <Snackbar
+                    open={this.props.showAlert}
+                    autoHideDuration={3000}
+                    onClose={this.handleCloseAlert}
+                    anchorOrigin={{vertical: "top", horizontal: "center"}}
+                >
+                    <Alert severity={this.props.severity}>
+                        {this.props.alertMessage}
+                    </Alert>
+                </Snackbar>
+            </Portal>
         );
     }
 }

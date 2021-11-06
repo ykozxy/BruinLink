@@ -1,10 +1,12 @@
 import $ from "jquery"
 import React from "react";
-import {Box, Button, Container, Divider, Modal, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Divider, TextField, Typography} from "@mui/material";
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
 import AlertToast from "./alertToast"
+import ResetPasswordOverlay from "./resetPasswordOverlay";
+import {checkEmailFormat} from "../utils";
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -18,6 +20,7 @@ class LoginForm extends React.Component {
             alertMessage: "",
             emailError: false,
             passwordError: false,
+            openPopup: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -47,11 +50,7 @@ class LoginForm extends React.Component {
         let url = config.baseUrl + config.api.account.login;
         let data = {email: this.state.email, password: this.state.password}
 
-        // Check email
-        // Regex cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-        let testFail = !re.test(data.email);
+        let testFail = !checkEmailFormat(data.email);
         this.setState({emailError: testFail});
         if (testFail) {
             this.showAlert("Invalid Email format");
@@ -68,7 +67,6 @@ class LoginForm extends React.Component {
 
         // If all fields are OK, trigger loading animation of register button.
         this.setState({loading: true});
-
 
         // TODO: wait for backend API implementation
         $.post(url, data, function (data, status, jqXHR) {
@@ -172,60 +170,17 @@ class LoginForm extends React.Component {
                     onClose={() => this.setState({showAlert: false})}
                 />
 
-                <ResetPassword/>
-            </Box>
-        );
-    }
-}
-
-
-class ResetPassword extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            open: false
-        };
-        this.toggleOpen = this.toggleOpen.bind(this);
-    }
-
-    toggleOpen() {
-        this.setState((prev) => {
-            return {open: !prev.open};
-        })
-    }
-
-    render() {
-        const style = {
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
-        };
-
-        return (
-            <div>
                 <Typography variant="h6">
-                    <Button variant="text" onClick={this.toggleOpen}>
+                    <Button variant="text" onClick={() => this.setState({openPopup: true})}>
                         Forget password?
                     </Button>
                 </Typography>
-                <Modal
-                    open={this.state.open}
-                    onClose={this.toggleOpen}
-                >
-                    <Box sx={style}>
-                        <Typography>
-                            TODO: Reset Password Overlay
-                        </Typography>
-                    </Box>
-                </Modal>
-            </div>
+
+                <ResetPasswordOverlay
+                    open={this.state.openPopup}
+                    onClose={() => this.setState({openPopup: false})}
+                />
+            </Box>
         );
     }
 }

@@ -1,11 +1,12 @@
 import $ from "jquery";
 import React from "react";
-import {Box, Button, Container, Divider, TextField, Typography} from "@mui/material";
+import {Box, Container, Divider, TextField, Typography} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {Link} from "react-router-dom";
 import * as config from "../config"
+import {checkEmailFormat} from "../utils";
 import AlertToast from "./alertToast";
-import PropTypes from "prop-types";
+import VerificationCodeInput from "./verificationCodeInput";
 
 
 class RegisterForm extends React.Component {
@@ -102,11 +103,7 @@ class RegisterForm extends React.Component {
     * Check if the input email is valid, and update this.state.emailError.
     * */
     checkEmail(email) {
-        // Regex for checking email address.
-        // Cited from: https://stackoverflow.com/questions/39356826/how-to-check-if-it-a-text-input-has-a-valid-email-format-in-reactjs/39425165
-        let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        let res = re.test(email);
-
+        let res = checkEmailFormat(email);
         this.setState({emailError: !res});
         return res;
     }
@@ -166,8 +163,9 @@ class RegisterForm extends React.Component {
                     onChange={this.handleChange}
                 />
 
-                <VerificationCode handleChange={this.handleChange} email={this.state.email}
-                                  checkEmailCallback={this.checkEmail}/>
+                <VerificationCodeInput onChange={this.handleChange}
+                                       email={this.state.email}
+                                       checkEmailCallback={this.checkEmail}/>
 
                 <Box width={1}
                      sx={{
@@ -212,127 +210,6 @@ class RegisterForm extends React.Component {
                 </Box>
 
                 <AlertToast alertMessage={this.state.alertMessage} showAlert={this.state.showAlert}
-                            onClose={() => this.setState({showAlert: false})}/>
-            </Box>
-        );
-    }
-}
-
-
-class VerificationCode extends React.Component {
-    static propTypes = {
-        handleChange: PropTypes.func.isRequired,
-        email: PropTypes.string.isRequired,
-        checkEmailCallback: PropTypes.func.isRequired,
-    }
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            coolDown: -1,
-            disableButton: false,
-            showAlert: false,
-            alertMessage: "",
-        };
-
-        this.handleChange = props.handleChange;
-        this.handleSendCode = this.handleSendCode.bind(this);
-        this.countDown = this.countDown.bind(this);
-        this.timer = null;
-    }
-
-    handleSendCode() {
-        if (!this.props.checkEmailCallback(this.props.email.toString())) {
-            this.setState({
-                showAlert: true,
-                alertMessage: "Invalid email format.",
-            });
-            return;
-        }
-
-        let url = config.baseUrl + config.api.account.emailVerify;
-
-        // TODO: wait for backend API implementation
-        $.post(url, {email: this.props.email}, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR)
-        }, "json")
-            .done(() => {
-                // If request succeed, start the cool down timer.
-                this.setState({
-                    coolDown: config.resendCodeCoolDown,
-                    disableButton: true,
-                });
-
-                // Repetitively call countDown every second
-                this.timer = setInterval(this.countDown, 1000);
-            })
-            .fail(() => {
-                    // If request failed, show an error toast.
-                    this.setState({
-                        showAlert: true,
-                        alertMessage: "Failed to connect to the server.",
-                    });
-                }
-            );
-    }
-
-    countDown() {
-        // Reduce coolDown by 1 second
-        let remainTime = this.state.coolDown - 1;
-        this.setState({coolDown: remainTime});
-
-        if (remainTime <= 0) {
-            // Cool down finished!
-            clearInterval(this.timer);
-            this.setState({
-                disableButton: false,
-            });
-        }
-    }
-
-    render() {
-        return (
-            <Box
-                width={1}
-                sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                }}
-            >
-
-                <TextField
-                    margin="normal"
-                    required
-                    name="verCode"
-                    label="Verification Code"
-                    onChange={this.handleChange}
-                    sx={{width: "50%"}}
-                />
-
-                <Box width="50%" height={1} sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "center",
-                }}>
-                    <Button
-                        margin="normal"
-                        variant="outlined"
-                        size="large"
-                        disabled={this.state.disableButton}
-                        sx={{mt: 1}}
-                        onClick={this.handleSendCode}
-                    >
-                        {this.state.coolDown <= 0 ? "Send code" : this.state.coolDown}
-                    </Button>
-                </Box>
-
-                <AlertToast alertMessage={this.state.alertMessage}
-                            showAlert={this.state.showAlert}
                             onClose={() => this.setState({showAlert: false})}/>
             </Box>
         );
