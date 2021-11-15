@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({
     extended: true,
 }));
 
-const userRouter = require("./routers/user.js");
-app.use("/user", userRouter);
+const accountRouter = require("./routers/accountRouter");
+app.use("/account", accountRouter);
 
 app.listen(3031)
