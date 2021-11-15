@@ -1,5 +1,6 @@
-const router = require('express-promise-router')();
-const accountBasics = require('accountBasics');
+const express = require("express");
+const router = express.Router();
+const accountBasics = require('./accountBasics');
 
 router.post('/account/login', accountLogin);
 router.post('/account/register', accountRegister);
