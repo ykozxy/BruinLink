@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const accountBasics = require('./accountBasics');
 
-router.post('/account/login', accountLogin);
-router.post('/account/register', accountRegister);
-router.put('/account/changeEmail', accountChangeEmail);
-router.put('/account/changePassword', accountChangePassword);
+router.post('/login', accountLogin);
+router.post('/register', accountRegister);
+router.put('/changeEmail', accountChangeEmail);
+router.put('/changePassword', accountChangePassword);
 module.exports = router;
 
 async function accountLogin(req, res) {
