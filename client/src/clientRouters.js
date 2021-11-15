@@ -2,8 +2,8 @@ import React from "react";
 import {BrowserRouter, Route} from "react-router-dom";
 import RegisterPage from "./components/registerPage";
 import LoginPage from "./components/loginPage";
-import Test from "./components/testPage";
 import {Redirect} from "react-router";
+import Test from "./testing/testPage";
 
 
 export default class ClientRouters extends React.Component {
