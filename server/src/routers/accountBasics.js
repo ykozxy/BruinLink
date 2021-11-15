@@ -15,12 +15,12 @@ accountBasics.changeEmailResponse = changeEmailResponse;
 accountBasics.changePasswordResponse = changePasswordResponse;
 module.exports = accountBasics;
 
-const accountSchema = new Schema({
+const accountSchema = new schema({
     uid: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    courseList: [courseSchema],
-    clubList: [clubSchema]
+    //courseList: [courseSchema],
+    //clubList: [clubSchema]
 });
 
 const accountModel = mongoose.model('Account', accountSchema);
