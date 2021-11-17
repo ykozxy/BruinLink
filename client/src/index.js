@@ -7,6 +7,7 @@ import theme from './theme';
 import LoginPage from "./components/loginPage"
 import RegisterPage from "./components/registerPage";
 import Navbar from "./components/navbar";
+import ClientRouters from "./clientRouters";
 
 
 ReactDOM.render(
@@ -25,6 +26,7 @@ ReactDOM.render(
             <Route path="/register" component={RegisterPage}/>
             <Route path="/login" component={LoginPage}/>
         </BrowserRouter>
+        <ClientRouters/>
     </ThemeProvider>,
     document.querySelector('#root'),
 );

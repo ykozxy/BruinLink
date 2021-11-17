@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
 
-const db = mongoose.connect("mongodb + srv://samxu:<xcjsam789789>@bruinlink.b9irv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
 
 var accountBasics = {};
 accountBasics.setEmail = setEmail;
