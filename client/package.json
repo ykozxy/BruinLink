@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.0.5",
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.6",
+    "@mdi/js": "^6.5.95",
     "express": "^4.17.1",
     "jquery": "^3.6.0",
     "prop-types": "^15.7.2",

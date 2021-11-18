@@ -17,9 +17,9 @@ ReactDOM.render(
         <BrowserRouter>
             <Navbar/>
             <Switch>
-                <Route path="/">
+                <Route path="/" exact>
                     {/* TODO: put main page here and replace the Redirect element */}
-                    <Redirect to="/login"/>
+                    <Redirect to="/test"/>
                 </Route>
                 <Route path="/register" component={RegisterPage}/>
                 <Route path="/login" component={LoginPage}/>
