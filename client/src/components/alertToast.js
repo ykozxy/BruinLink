@@ -15,9 +15,8 @@ export default class AlertToast extends React.Component {
         alertMessage: PropTypes.string.isRequired,
         // Callback function, should change showAlert to false
         onClose: PropTypes.func.isRequired,
-        // One of 'error', 'info', 'success', or 'warning'.
         // Default: 'error'.
-        severity: PropTypes.string,
+        severity: PropTypes.oneOf(['error', 'info', 'success', 'warning']),
     }
 
     // Defines prop default values
