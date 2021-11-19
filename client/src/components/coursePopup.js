@@ -13,6 +13,7 @@ export default class CoursePopup extends React.Component {
         onClose: PropTypes.func.isRequired,
         courseName: PropTypes.string.isRequired,
         courseSection: PropTypes.string.isRequired,
+        courseID: PropTypes.string.isRequired,
         wechatCode: PropTypes.string,
         discordLink: PropTypes.string,
         groupmeLink: PropTypes.string,
@@ -69,13 +70,16 @@ export default class CoursePopup extends React.Component {
 
                         {/* Links & Codes */}
                         <GroupChatBar name="Discord"
+                                      id={this.props.courseID}
                                       link={this.props.discordLink}
                                       iconSvgPath={mdiDiscord}
                                       iconColor="#5969ea"/>
                         <GroupChatBar name="Groupme"
+                                      id={this.props.courseID}
                                       link={this.props.groupmeLink}
                                       iconImg={Groupme}/>
                         <GroupChatBar name="WeChat"
+                                      id={this.props.courseID}
                                       link={this.props.wechatCode} isQrCode
                                       iconSvgPath={mdiWechat}
                                       iconColor="#5ecc72"/>

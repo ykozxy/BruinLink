@@ -28,6 +28,9 @@ export default class AlertToast extends React.Component {
         super(props);
 
         this.handleCloseAlert = this.handleCloseAlert.bind(this);
+
+        this.timer = null;
+        this.cooldown = 0;
     }
 
     handleCloseAlert(event, reason) {
@@ -35,12 +38,28 @@ export default class AlertToast extends React.Component {
         this.props.onClose();
     }
 
+    countDown() {
+        // Reduce coolDown by 0.1 second
+        this.cooldown = this.coolDown - 100;
+
+        if (this.cooldown <= 0) {
+            // Cool down finished!
+            clearInterval(this.timer);
+            this.props.onClose();
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.cooldown = 1500;
+        this.timer = setInterval(this.countDown, 100);
+    }
+
     render() {
         return (
             <Portal>
                 <Snackbar
                     open={this.props.showAlert}
-                    autoHideDuration={3000}
+                    // autoHideDuration={1500}
                     onClose={this.handleCloseAlert}
                     anchorOrigin={{vertical: "top", horizontal: "center"}}
                 >
