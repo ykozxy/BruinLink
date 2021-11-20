@@ -8,7 +8,7 @@ import LoginPage from "./components/loginPage"
 import RegisterPage from "./components/registerPage";
 import Navbar from "./components/navbar";
 import Test from "./testing/testPage";
-
+import homePage from './components/homePage';
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>
@@ -17,10 +17,10 @@ ReactDOM.render(
         <BrowserRouter>
             <Navbar/>
             <Switch>
-                <Route path="/" exact>
-                    {/* TODO: put main page here and replace the Redirect element */}
+                <Route path="/" exact component={homePage}/>
+                    {/* TODO: put main page here and replace the Redirect element
                     <Redirect to="/test"/>
-                </Route>
+                </Route> */}
                 <Route path="/register" component={RegisterPage}/>
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/test" component={Test}/>
