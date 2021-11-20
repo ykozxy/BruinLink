@@ -10,9 +10,13 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import QrCodeIcon from '@mui/icons-material/QrCode';
 import EmailIcon from '@mui/icons-material/Email';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
+import DoneIcon from '@mui/icons-material/Done';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 import {LoadingButton} from "@mui/lab";
 import AlertToast from "./alertToast";
 import * as config from "../config"
+import {checkUrlFormat} from "../utils";
+import Cookies from 'js-cookie'
 
 class IconTooltip extends React.Component {
     static propTypes = {
@@ -36,22 +40,31 @@ class IconTooltip extends React.Component {
     render() {
         return (
             <Box sx={{display: "flex", alignItems: "center"}}>
-                {this.props.success ?
-                    <CheckCircleIcon color="success"
-                                     onMouseEnter={(e) => this.handleShowTooltip(e)}
-                                     onMouseLeave={() => this.handleHideTooltip()}/>
-                    :
-                    <CancelIcon color="error"
-                                onMouseEnter={(e) => this.handleShowTooltip(e)}
-                                onMouseLeave={() => this.handleHideTooltip()}/>
-                }
-                {/* TODO: fix popover */}
+                <Box sx={{display: "flex", alignItems: "center"}}
+                     onMouseEnter={(e) => this.handleShowTooltip(e)}
+                     onMouseLeave={() => this.handleHideTooltip()}>
+                    {this.props.success ? <CheckCircleIcon color="success"/>
+                        : <CancelIcon color="error"/>
+                    }
+                </Box>
                 <Popover open={this.state.open}
                          anchorEl={this.state.anchorEL}
-                         onClose={() => this.handleHideTooltip()}>
-                    <Alert severity={this.props.success ? "success" : "error"}>
-                        {this.props.msg}
-                    </Alert>
+                         onClose={() => this.handleHideTooltip()}
+                         style={{pointerEvents: 'none'}}
+                         anchorOrigin={{
+                             vertical: 'top',
+                             horizontal: 'center',
+                         }}
+                         transformOrigin={{
+                             vertical: 'bottom',
+                             horizontal: 'center',
+                         }}>
+                    <Box borderRadius={1}>
+                        <Alert severity={this.props.success ? "success" : "error"}
+                               sx={{pl: 1.5, pr: 1.5, pu: 0.5, pb: 0.5}}>
+                            {this.props.msg}
+                        </Alert>
+                    </Box>
                 </Popover>
             </Box>
         )
@@ -84,7 +97,7 @@ class LinkDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip success msg={"Link available!"}/>
+                        <IconTooltip success msg={"Group chat link available!"}/>
                     </Stack>
                 </Grid>
 
@@ -140,7 +153,7 @@ class CodeDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip success msg={"QR code available!"}/>
+                        <IconTooltip success msg={"Group chat QR code available!"}/>
                     </Stack>
                 </Grid>
 
@@ -179,6 +192,8 @@ class NoLinkDisplay extends React.Component {
         id: PropTypes.string.isRequired,
         /* Course/club name */
         name: PropTypes.string.isRequired,
+        /* Name of the groupchat */
+        platform: PropTypes.oneOf(["discord", "wechat", "groupme"]).isRequired,
     }
 
     constructor(props) {
@@ -196,8 +211,13 @@ class NoLinkDisplay extends React.Component {
         }
     }
 
-
     handleContribute(e) {
+        let c = Cookies.get("accountID");
+        if (!c) {
+            this.showAlert("Please login before contribute!", false);
+            return;
+        }
+
         this.setState({showPopover: true, popoverAnchor: e.currentTarget});
     }
 
@@ -248,7 +268,8 @@ class NoLinkDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip msg={"No " + (this.props.type === "img" ? "QR code" : "link") + "yet!"}/>
+                        <IconTooltip
+                            msg={"No group chat " + (this.props.type === "img" ? "QR code" : "link") + " yet!"}/>
                     </Stack>
                 </Grid>
 
@@ -261,20 +282,27 @@ class NoLinkDisplay extends React.Component {
                             sx={{textTransform: "none"}}>
                         Contribute
                     </Button>
-                    {/* TODO: implement popover or redirect */}
                     <Popover open={this.state.showPopover}
                              anchorEl={this.state.popoverAnchor}
-                             onClose={() => this.handlePopupClose()}>
-                        <Box sx={{width: 120}}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="link"
-                                label="Link"
-                                // onChange={this.handleChange}
-                            />
-                        </Box>
+                             onClose={() => this.handlePopupClose()}
+                             anchorOrigin={{
+                                 vertical: 'bottom',
+                                 horizontal: 'center',
+                             }}
+                             transformOrigin={{
+                                 vertical: 'top',
+                                 horizontal: 'center',
+                             }}>
+                        {this.props.type === "img" ?
+                            <ImageContributeForm id={this.props.id}
+                                                 onClose={() => this.handlePopupClose()}
+                                                 platform={this.props.platform}
+                                                 showAlert={(m, s) => this.showAlert(m, s)}/> :
+                            <LinkContributeForm id={this.props.id}
+                                                onClose={() => this.handlePopupClose()}
+                                                platform={this.props.platform}
+                                                showAlert={(m, s) => this.showAlert(m, s)}/>
+                        }
                     </Popover>
                 </Grid>
 
@@ -299,6 +327,232 @@ class NoLinkDisplay extends React.Component {
     }
 }
 
+class LinkContributeForm extends React.Component {
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        platform: PropTypes.oneOf(["groupme", "discord"]).isRequired,
+        showAlert: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: false,
+            success: false,
+            link: "",
+            linkError: false,
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+
+        let accountID = Cookies.get("accountID");
+        if (!accountID) {
+            // User not login
+            this.props.showAlert("Please login before contribute!", false);
+            this.props.onClose();
+            return;
+        }
+
+        let url = config.baseUrl + config.api.upload.uploadLink;
+        let data = {
+            id: this.props.id,
+            platform: this.props.platform,
+            accountID: accountID,
+            link: this.state.link
+        };
+
+        // Check for url format
+        let testFail = !checkUrlFormat(data.link);
+        this.setState({linkError: testFail});
+        if (testFail) {
+            this.props.showAlert("Invalid link format.", false);
+            return;
+        }
+
+        this.setState({loading: true});
+        $.post(url, data, function (data, status, jqXHR) {
+            console.log(data);
+            console.log(status);
+            console.log(jqXHR)
+        }, "json")
+            .always(() => {
+                this.setState({loading: false});
+            })
+            .fail(() => {
+                this.props.showAlert("Failed to connect to the server.", false);
+            })
+            .done(() => {
+                this.setState({success: true});
+                setTimeout(() => this.props.onClose(), 1500);
+            });
+    }
+
+    handleChange(event) {
+        let val = event.target.value;
+        let name = event.target.name;
+
+        this.setState({[name]: val});
+    }
+
+    render() {
+        return (
+            <Box component="form"
+                 onSubmit={this.handleSubmit}
+                 sx={{
+                     width: '350px',
+                     display: "flex",
+                     flexDirection: "column",
+                     alignItems: "center",
+                     justifyContent: "center",
+                 }}>
+                <Box width="85%" sx={{mt: 1}}>
+                    <TextField
+                        margin="normal"
+                        size="small"
+                        fullWidth
+                        required
+                        error={this.state.linkError}
+                        name="link"
+                        label="Group chat link"
+                        onChange={this.handleChange}
+                    />
+                </Box>
+                <LoadingButton type="submit"
+                               variant="contained"
+                               sx={{mb: 2}}
+                               loading={this.state.loading}
+                               loadingPosition="end"
+                               disabled={this.state.success}
+                               endIcon={this.state.success ? <DoneIcon/> : <div/>}>
+                    Submit{this.state.success ? "ted" : ""}
+                </LoadingButton>
+            </Box>
+        );
+    }
+}
+
+class ImageContributeForm extends React.Component {
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        platform: PropTypes.oneOf(["wechat"]).isRequired,
+        showAlert: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            file: null,
+            loading: false,
+            success: false,
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        let val = event.target.files[0];
+        this.setState({file: val});
+    }
+
+    handleUpload() {
+        let accountID = Cookies.get("accountID");
+        if (!accountID) {
+            // User not login
+            this.props.showAlert("Please login before contribute!", false);
+            this.props.onClose();
+            return;
+        }
+
+        let url = config.baseUrl + config.api.upload.uploadQrCode;
+        let data = new FormData();
+        data.append("id", this.props.id);
+        data.append("platform", this.props.platform);
+        data.append("accountID", accountID);
+        data.append("image", this.state.file);
+
+        this.setState({loading: true});
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (data, status, jqXHR) {
+                console.log(data);
+                console.log(status);
+                console.log(jqXHR)
+            }
+        })
+            .always(() => {
+                this.setState({loading: false});
+            })
+            .fail(() => {
+                this.props.showAlert("Failed to connect to the server.", false);
+            })
+            .done(() => {
+                this.setState({success: true});
+                setTimeout(() => this.props.onClose(), 1500);
+            });
+    }
+
+    processFileName(name) {
+        if (name.length > 15) {
+            return name.substring(0, 6) + "..." + name.substring(name.length - 6, name.length);
+        } else {
+            return name;
+        }
+    }
+
+    render() {
+        return (
+            <Box component="form"
+                 onSubmit={this.handleSubmit}
+                 sx={{
+                     width: '350px',
+                     display: "flex",
+                     flexDirection: "column",
+                     alignItems: "center",
+                     justifyContent: "center",
+                 }}>
+                <Box width={1}
+                     sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    <Button variant="contained"
+                            component="label"
+                            endIcon={<AttachFileIcon/>}
+                            sx={{my: 2, mx: 2, textTransform: "none"}}
+                    >
+                        Choose File
+                        <input accept="image/*" id="upload-button" name="file" type="file" hidden
+                               onChange={this.handleChange}/>
+                    </Button>
+                    <Typography variant="body2"
+                                sx={{mx: 1}}>
+                        {this.state.file ? this.processFileName(this.state.file.name) : ""}
+                    </Typography>
+                </Box>
+                {this.state.file ?
+                    <LoadingButton variant="contained"
+                                   onClick={() => this.handleUpload()}
+                                   loading={this.state.loading}
+                                   loadingPosition="end"
+                                   disabled={this.state.success}
+                                   endIcon={this.state.success ? <DoneIcon/> : <CloudUploadIcon/>}
+                                   sx={{mb: 2, mx: 2, textTransform: "none"}}>
+                        Upload{this.state.success ? "ed" : ""}
+                    </LoadingButton> : <div/>}
+            </Box>
+        );
+    }
+}
+
 export default class GroupChatBar extends React.Component {
     static propTypes = {
         /* Name of the group chat */
@@ -307,8 +561,8 @@ export default class GroupChatBar extends React.Component {
         /* Unique ID of the course/club */
         id: PropTypes.string.isRequired,
 
-        /* The link of groupchat, null for no-link */
-        link: PropTypes.string.isRequired,
+        /* The link of group chat, null for no-link */
+        link: PropTypes.string,
 
         /* When set to true, will treat props.link as a link to an the QR code image  */
         isQrCode: PropTypes.bool,
@@ -362,8 +616,9 @@ export default class GroupChatBar extends React.Component {
                                     <CodeDisplay link={this.props.link}/> :
                                     <LinkDisplay link={this.props.link}/>
                             ) :
-                            <NoLinkDisplay type={this.props.isQrCode ? "code" : "link"} id={this.props.id}
-                                           name={this.props.name}/>
+                            <NoLinkDisplay type={this.props.isQrCode ? "img" : "link"} id={this.props.id}
+                                           name={this.props.name}
+                                           platform={this.props.name.toLowerCase()}/>
                     }
                 </Grid>
             </Grid>

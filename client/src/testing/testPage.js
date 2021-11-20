@@ -24,8 +24,9 @@ export default class Test extends React.Component {
                              courseSection="Lec 1"
                              courseID="10000000"
                              discordLink="https://discord.com/"
-                             groupmeLink={null}
-                             wechatCode="https://pbs.twimg.com/profile_images/1087188469397344257/HXxlDWIf_400x400.jpg"/>
+                             groupmeLink={"https://groupme.com/"}
+                    // wechatCode="https://pbs.twimg.com/profile_images/1087188469397344257/HXxlDWIf_400x400.jpg"
+                />
             </div>
         )
     }
