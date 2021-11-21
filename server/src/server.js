@@ -14,7 +14,9 @@ app.use(function (req, res, next) {
 });
 
 const accountRouter = require("./routers/accountRouter");
+const courseRouter = require("./routers/courseRouter");
 app.use("/account", accountRouter);
+app.use("/course", courseRouter);
 
 console.log("Listening at port 3031...")
 app.listen(3031)
