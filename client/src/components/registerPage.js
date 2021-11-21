@@ -121,9 +121,11 @@ class RegisterForm extends React.Component {
                 component="form"
                 onSubmit={this.handleSubmit}
                 sx={{
+                    height: "90vh",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    justifyContent: "center",
                 }}
             >
                 <Typography variant="h3" sx={{mt: 10, mb: 2}}>

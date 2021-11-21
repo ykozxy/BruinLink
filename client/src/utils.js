@@ -8,6 +8,13 @@ function checkEmailFormat(email) {
     return re.test(email);
 }
 
+function checkUrlFormat(url) {
+    // Cited from: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+    let re = /[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/
+    return re.test(url);
+}
+
 module.exports = {
     checkEmailFormat: checkEmailFormat,
+    checkUrlFormat: checkUrlFormat,
 };

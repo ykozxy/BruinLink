@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+<<<<<<< HEAD
+=======
+const db = mongoose.connect("mongodb + srv://samxu:<xcjsam789789>@bruinlink.b9irv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+
+>>>>>>> master
 var courseControll = {}
 courseControll.findbyname = findbyname;
 courseControll.register = register;

@@ -15,9 +15,8 @@ export default class AlertToast extends React.Component {
         alertMessage: PropTypes.string.isRequired,
         // Callback function, should change showAlert to false
         onClose: PropTypes.func.isRequired,
-        // One of 'error', 'info', 'success', or 'warning'.
         // Default: 'error'.
-        severity: PropTypes.string,
+        severity: PropTypes.oneOf(['error', 'info', 'success', 'warning']),
     }
 
     // Defines prop default values
@@ -29,11 +28,32 @@ export default class AlertToast extends React.Component {
         super(props);
 
         this.handleCloseAlert = this.handleCloseAlert.bind(this);
+
+        this.timer = null;
+        this.cooldown = 0;
     }
 
     handleCloseAlert(event, reason) {
         if (reason === "clickaway") return;
+        clearInterval(this.timer);
         this.props.onClose();
+    }
+
+    countDown() {
+        // Reduce coolDown by 0.1 second
+        this.cooldown = this.coolDown - 100;
+
+        if (this.cooldown <= 0) {
+            // Cool down finished!
+            clearInterval(this.timer);
+            this.props.onClose();
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.cooldown = 1500;
+        clearInterval(this.timer);
+        this.timer = setInterval(() => this.countDown(), 100);
     }
 
     render() {
@@ -41,7 +61,7 @@ export default class AlertToast extends React.Component {
             <Portal>
                 <Snackbar
                     open={this.props.showAlert}
-                    autoHideDuration={3000}
+                    autoHideDuration={1500}
                     onClose={this.handleCloseAlert}
                     anchorOrigin={{vertical: "top", horizontal: "center"}}
                 >

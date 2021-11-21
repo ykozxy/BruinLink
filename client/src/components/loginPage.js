@@ -95,9 +95,11 @@ class LoginForm extends React.Component {
                 component="form"
                 onSubmit={this.handleSubmit}
                 sx={{
+                    height: "90vh",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    justifyContent: "center",
                 }}
             >
                 <Typography variant="h3" sx={{mt: 10, mb: 2}}>
@@ -186,10 +188,12 @@ class LoginForm extends React.Component {
 }
 
 
-export default function LoginPage() {
-    return (
-        <Container maxWidth="sm">
-            <LoginForm/>
-        </Container>
-    );
+export default class LoginPage extends React.Component {
+    render() {
+        return (
+            <Container maxWidth="sm">
+                <LoginForm/>
+            </Container>
+        );
+    }
 }
