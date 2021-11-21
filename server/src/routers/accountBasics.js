@@ -4,15 +4,11 @@ const schema = mongoose.Schema;
 const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
 
 var accountBasics = {};
-accountBasics.setEmail = setEmail;
-accountBasics.getEmail = getEmail;
-accountBasics.setPassword = setPassword;
-accountBasics.login = login;
-accountBasics.register = register;
 accountBasics.loginResponse = loginResponse;
 accountBasics.registerResponse = registerResponse;
 accountBasics.changeEmailResponse = changeEmailResponse;
 accountBasics.changePasswordResponse = changePasswordResponse;
+accountBasics.verificationCodeResponse = verificationCodeResponse;
 module.exports = accountBasics;
 
 const accountSchema = new schema({
@@ -107,13 +103,22 @@ async function login(email, password) {
         let account = await accountModel.findOne({ email: email, password: password });
         if (account == null) {
             console.log("incorrect email or password");
-            return false;
+            return {
+                uid: "",
+                succeed: false
+            };
         }
         console.log("successfully logged in");
-        return true;
+        return {
+            uid: account.uid,
+            succeed: true
+        };
     } catch (err) {
         console.log(err);
-        return false;
+        return {
+            uid: "",
+            succeed: false
+        };
     }
 }
 
@@ -142,18 +147,24 @@ async function register(uid, password, email) {
     }
 }
 
-async function loginResponse(account_arg) {
+/** @param {String} email
+ */
+
+async function verificationCode(email) {
     try {
-        let email = account_arg.email;
-        let password = account_arg.password;
-        let logged = await login(email, password);
-        if (logged) {
-            return "successfully logged in";
-        }
-        return "login failed"
+        let format = /.*@(g.ucla.edu)|(ucla.edu)$/;
+        return format.test(email);
     } catch (err) {
-        return err;
+        console(err);
+        return false;
     }
+}
+
+async function loginResponse(account_arg) {
+    let email = account_arg.email;
+    let password = account_arg.password;
+    logged = await login(email, password);
+    return logged;
 }
 
 async function registerResponse(account_arg) {
@@ -204,3 +215,15 @@ async function changeEmailResponse(account_arg) {
     }
 }
 
+async function verificationCodeResponse(account_arg) {
+    try {
+        let email = account_arg.email;
+        let verification = verificationCode(email);
+        if (verification) {
+            return "successfully sent verification code";
+        }
+        return "failed to send verification code";
+    } catch (err) {
+        return err;
+    }
+}
