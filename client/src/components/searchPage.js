@@ -1,12 +1,12 @@
 import React from 'react'
-import './cards.css';
+import ClassList from "./classList";
 
-function searchPage() {
+function SearchPage() {
     return (
         <div>
-            
+           <ClassList /> 
         </div>
     )
 }
 
-export default searchPage
+export default SearchPage
