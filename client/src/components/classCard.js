@@ -5,10 +5,12 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PropTypes from "prop-types";
-import {mdiDiscord, mdiWechat} from "@mdi/js"
+import {mdiDiscord, mdiWechat} from "@mdi/js";
 import ClassCardGroupChatBar from "./classCardGroupChatBar";
 import {default as Groupme} from "../icons/groupme.svg";
 import CoursePopup from "../components/coursePopup";
+import Cookies from 'js-cookie';
+import AlertToast from "./alertToast";
 
 export default class classCard extends React.Component{
 
@@ -16,7 +18,23 @@ constructor(props) {
     super(props);
     this.state = {
       open: false,
+      showAlert:false
   };
+    this.handleClick = this.handleClick.bind(this);
+}
+
+handleClick(){
+  let c = Cookies.get("accountID");
+  //let c = "123";
+        if (!c) {
+          <AlertToast alertMessage="Please login before viewing details!"
+          showAlert={this.state.showAlert}
+          onClose={() => this.setState({showAlert: false})}
+          severity="warning"/>
+            return;
+        }
+  this.setState({open: true})
+
 }
 
 static propTypes = {
@@ -61,7 +79,7 @@ return (
 
       <CardActions>
         <Button size="small"
-          onClick={() => this.setState({open: true})}>
+          onClick={this.handleClick}>
           Learn More
         </Button>
         <CoursePopup 
