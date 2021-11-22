@@ -27,11 +27,8 @@ handleClick(){
   let c = Cookies.get("accountID");
   //let c = "123";
         if (!c) {
-          <AlertToast alertMessage="Please login before viewing details!"
-          showAlert={this.state.showAlert}
-          onClose={() => this.setState({showAlert: false})}
-          severity="warning"/>
-            return;
+          this.setState({showAlert:true});
+          return;
         }
   this.setState({open: true})
 
@@ -82,6 +79,11 @@ return (
           onClick={this.handleClick}>
           Learn More
         </Button>
+        
+        <AlertToast alertMessage="Please login before viewing details!"
+          showAlert={this.state.showAlert}
+          onClose={() => this.setState({showAlert: false})}
+          severity="warning"/>
         <CoursePopup 
           open={this.state.open}
           onClose={() => this.setState({open: false})}
