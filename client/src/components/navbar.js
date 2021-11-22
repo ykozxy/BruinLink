@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import "./navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
+import SearchBar from "./searchBar"
 
 
 class Navbar extends React.Component {
@@ -15,6 +16,8 @@ class Navbar extends React.Component {
                         <Typography variant="h3"  className='BL-logo'>
                          BruinLink</Typography>
                     </Link>
+
+                    <SearchBar/>
 
                     <ul className="navbar-menu">
                         <li className="navbar-item">

@@ -1,10 +1,37 @@
+import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import "./navbar.css";
 import React, { Component } from 'react'
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.95),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.5),
+  },
+  marginRight: theme.spacing(20),
+  marginLeft: 0,
+  width: '80%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+    width: 'auto',
+  },
+}));
 
-export default class searchBar extends Component {
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+
+export default class SearchBar extends Component {
+
     render() {
         return(
             <Search>
