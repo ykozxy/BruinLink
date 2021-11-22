@@ -4,7 +4,6 @@ import "./navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 
-
 function Navbar() {
     return (
         <>
