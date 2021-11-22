@@ -69,16 +69,18 @@ class LoginForm extends React.Component {
         this.setState({loading: true});
 
         // TODO: wait for backend API implementation
-        $.post(url, data, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR)
-        }, "json")
+        $.post(url, data, "json")
             .always(() => {
                 this.setState({loading: false});
             })
             .fail(() => {
                 this.showAlert("Failed to connect to the server.");
+            })
+            .done((data) => {
+                console.log(data);
+                if (data.status === "failed") {
+                    this.showAlert("Incorrect email or password.")
+                }
             });
     }
 

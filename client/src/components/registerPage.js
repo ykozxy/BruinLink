@@ -22,6 +22,7 @@ class RegisterForm extends React.Component {
 
             alertMessage: "",
             showAlert: false,
+            alertSuccess: false,
 
             buttonLoading: false,
             emailError: false,
@@ -80,14 +81,13 @@ class RegisterForm extends React.Component {
         });
 
         // TODO: wait for backend API implementation
-        $.post(url, data, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR);
-        }, "json")
+        $.post(url, data, "json")
             .always(() => this.setState({buttonLoading: false}))
             .fail(() => {
                 this.showAlert("Failed to connect to the server.");
+            })
+            .done((data) => {
+                console.log("data")
             });
     }
 
@@ -108,10 +108,11 @@ class RegisterForm extends React.Component {
         return res;
     }
 
-    showAlert(msg) {
+    showAlert(msg, success = false) {
         this.setState({
             showAlert: true,
             alertMessage: msg,
+            alertSuccess: success,
         });
     }
 
@@ -167,7 +168,8 @@ class RegisterForm extends React.Component {
 
                 <VerificationCodeInput onChange={this.handleChange}
                                        email={this.state.email}
-                                       checkEmailCallback={this.checkEmail}/>
+                                       checkEmailCallback={this.checkEmail}
+                                       showAlert={this.showAlert}/>
 
                 <Box width={1}
                      sx={{
@@ -211,7 +213,9 @@ class RegisterForm extends React.Component {
                     </Box>
                 </Box>
 
-                <AlertToast alertMessage={this.state.alertMessage} showAlert={this.state.showAlert}
+                <AlertToast alertMessage={this.state.alertMessage}
+                            showAlert={this.state.showAlert}
+                            severity={this.state.alertSuccess ? "success" : "error"}
                             onClose={() => this.setState({showAlert: false})}/>
             </Box>
         );

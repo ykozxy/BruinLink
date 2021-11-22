@@ -430,7 +430,7 @@ class LinkContributeForm extends React.Component {
                                loading={this.state.loading}
                                loadingPosition="end"
                                disabled={this.state.success}
-                               endIcon={this.state.success ? <DoneIcon/> : <div/>}>
+                               endIcon={this.state.success ? <DoneIcon/> : <></>}>
                     Submit{this.state.success ? "ted" : ""}
                 </LoadingButton>
             </Box>
@@ -547,7 +547,7 @@ class ImageContributeForm extends React.Component {
                                    endIcon={this.state.success ? <DoneIcon/> : <CloudUploadIcon/>}
                                    sx={{mb: 2, mx: 2, textTransform: "none"}}>
                         Upload{this.state.success ? "ed" : ""}
-                    </LoadingButton> : <div/>}
+                    </LoadingButton> : <></>}
             </Box>
         );
     }

@@ -10,6 +10,7 @@ export default class VerificationCodeInput extends React.Component {
         onChange: PropTypes.func.isRequired,
         email: PropTypes.string.isRequired,
         checkEmailCallback: PropTypes.func.isRequired,
+        showAlert: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -39,13 +40,16 @@ export default class VerificationCodeInput extends React.Component {
         let url = config.baseUrl + config.api.account.emailVerify;
 
         // TODO: wait for backend API implementation
-        $.post(url, {email: this.props.email}, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR)
-        }, "json")
-            .done(() => {
+        $.post(url, {email: this.props.email}, "json")
+            .done((data) => {
+                console.log(data);
+                if (data.status === "failed") {
+                    this.props.showAlert("Server error! Cannot send code.");
+                    return;
+                }
+
                 // If request succeed, start the cool down timer.
+                this.props.showAlert("Verification code sent.", true);
                 this.setState({
                     coolDown: config.resendCodeCoolDown,
                     disableButton: true,
@@ -63,7 +67,8 @@ export default class VerificationCodeInput extends React.Component {
                         alertMessage: "Failed to connect to the server.",
                     });
                 }
-            );
+            )
+        ;
     }
 
     countDown() {
