@@ -17,7 +17,6 @@ accountBasics.verificationCodeResponse = verificationCodeResponse;
 module.exports = accountBasics;
 
 const accountSchema = new Schema({
-    uid: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true }
     //courseList: [courseSchema],
@@ -93,10 +92,10 @@ async function setEmail(uid, password, newemail) {
 
 async function getEmail(email) {
     try {
-        let email = await accountModel.findOne({ email: email }, 'email');
-        if (email == null) {
+        let email_get = await accountModel.findOne({ email: email }, 'email');
+        if (email_get == null) {
             console.log("email: " + email + " not found");
-            return email;
+            return null;
         }
         console.log("email successfully found: " + email);
         return email;
@@ -141,10 +140,9 @@ async function login(email, password) {
     @param {String} code
  */
 
-async function register(uid, password, email, unique, code) {
+async function register(password, email, unique, code) {
     try {
         const newAccount = new accountModel({
-            uid: uid,
             password: password,
             email: email
         });
@@ -190,12 +188,11 @@ async function registerResponse(account_arg) {
     try {
         let email_get = await getEmail(account_arg.email);
         if (email_get == null) {
-            let uid = account_arg.uid;
             let email = account_arg.email;
             let password = account_arg.password;
             let unique = account_arg.unique;
             let code = account_arg.code;
-            let registered = await register(uid, password, email, unique, code);
+            let registered = await register(password, email, unique, code);
             if (registered) {
                 return "successfully registered";
             }
