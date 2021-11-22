@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const sgMail = require('@sendgrid/mail');
 
 const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
-sgMail.setApiKey("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");
+//sgMail.setApiKey(API_KEY);
 
 var accountBasics = {};
 accountBasics.loginResponse = loginResponse;
@@ -247,14 +247,13 @@ async function verificationCodeResponse(account_arg) {
             });
             newVerification.save();
             const msg = {
-                to: email, // Change to your recipient
+                to: 'xcjsam@gmail.com', // Change to your recipient
                 from: 'xcjsam@outlook.com', // Change to your verified sender
                 subject: 'BruinLink Registration Verification Code',
                 text: 'Your verification code is: ' + code,
-                html: '<strong>VERIFICATION CODE</strong>',
+                html: '<h1>VERIFICATION CODE</h1>',
             };
-            sgMail
-                .send(msg)
+            sgMail.send(msg)
                 .then(() => {
                     console.log('Email sent')
                 })
