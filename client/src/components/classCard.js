@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import PropTypes from "prop-types";
-import {mdiDiscord, mdiWechat} from "@mdi/js"
+import {mdiDiscord, mdiWechat} from "@mdi/js";
 import ClassCardGroupChatBar from "./classCardGroupChatBar";
 import {default as Groupme} from "../icons/groupme.svg";
 import CoursePopup from "../components/coursePopup";
