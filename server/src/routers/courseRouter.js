@@ -1,5 +1,6 @@
-const router = require('express-promise-router')();
-const coursebasics = require('coursebasics');
+const express = require("express");
+const router = express.Router();
+const courseBasics = require('./courseBasics');
 
 router.get('/course/search', getcourse);
 router.post('/course/getDetail', getDetail);
@@ -8,7 +9,7 @@ module.exports = router;
 
 async function getcourse(req, res) {
     try {
-        let response = await coursebasics.findbyname(req.body);
+        let response = await courseBasics.findbyname(req.body);
         if (response) {
             res.send({
                 status: "success",
@@ -31,7 +32,7 @@ async function getcourse(req, res) {
 
 async function getDetail(req, res) {
     try {
-        let response = await coursebasics.getCourse(req.body);
+        let response = await courseBasics.getCourse(req.body);
         if (response) {
             res.send({
                 status: "success",

@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "mongoose": "^6.0.12"
+  },
+  "name": "bruinlink",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ykozxy/BruinLink.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ykozxy/BruinLink/issues"
+  },
+  "homepage": "https://github.com/ykozxy/BruinLink#readme",
+  "proxy": "http://localhost:3000"
+}

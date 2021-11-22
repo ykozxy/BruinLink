@@ -1,26 +1,24 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-<<<<<<< HEAD
-=======
-const db = mongoose.connect("mongodb + srv://samxu:<xcjsam789789>@bruinlink.b9irv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
 
->>>>>>> master
-var courseControll = {}
-courseControll.findbyname = findbyname;
-courseControll.register = register;
-courseControll.setgmLink = setgmLink;
-courseControll.setdsLink = setdsLink;
-courseControll.updateProf = updateProf;
-courseControll.getCourse = getCourse;
+var courseBasics = {}
+courseBasics.findbyname = findbyname;
+courseBasics.register = register;
+courseBasics.setgmLink = setgmLink;
+courseBasics.setdsLink = setdsLink;
+courseBasics.updateProf = updateProf;
+courseBasics.getCourse = getCourse;
+module.exports = courseBasics;
 
 const courseSchema = new Schema({
     coursename: { type: String, required: true, unique: true },
-    courseid: { type: string, required: true, unique: true },
+    courseid: { type: String, required: true, unique: true },
     profname: { type: String, required: true },
     department: { type: String, required: true },
-    GroupmeLink: { type: string },
-    DiscordLink: { type: string }
+    GroupmeLink: { type: String },
+    DiscordLink: { type: String }
 });
 const courseModel = mongoose.model('Course', courseSchema);
 
@@ -55,7 +53,7 @@ async function findbyname(keyword) {
  *
  * @return {boolean} whether register is successful or not
  */
-async function regester(coursename, profname, department) {
+async function register(coursename, profname, department) {
     try {
         const newCourse = new courseModel({
             coursename: coursename,
