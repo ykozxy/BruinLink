@@ -249,7 +249,7 @@ async function verificationCodeResponse(account_arg) {
             });
             newVerification.save();
             const msg = {
-                to: 'xcjsam@gmail.com', // Change to your recipient
+                to: email, // Change to your recipient
                 from: 'xcjsam@outlook.com', // Change to your verified sender
                 subject: 'BruinLink Registration Verification Code',
                 text: 'Your verification code is: ' + code,
