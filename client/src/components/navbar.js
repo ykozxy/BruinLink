@@ -4,14 +4,16 @@ import "./navbar.css";
 import SearchIcon from '@mui/icons-material/Search';
 import Typography from '@mui/material/Typography';
 
-function Navbar() {
-    return (
+
+class Navbar extends React.Component {
+    render(){
+        return (
         <>
             <nav className="navbar">
                 <div className="navbar-container">
                     <Link to="/" className="navbar-logo">
-                        <Typography variant="h3" sx={{mt: 1, mb: 1}}
-                        > BruinLink</Typography>
+                        <Typography variant="h3"  className='BL-logo'>
+                         BruinLink</Typography>
                     </Link>
 
                     <ul className="navbar-menu">
@@ -36,6 +38,7 @@ function Navbar() {
             </nav>
         </>
     )
+    }
 }
 
 export default Navbar
