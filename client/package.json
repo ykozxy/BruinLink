@@ -12,11 +12,11 @@
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
+    "@mdi/js": "^6.5.95",
     "@mui/core": "^5.0.0-alpha.53",
     "@mui/icons-material": "^5.0.5",
     "@mui/lab": "^5.0.0-alpha.53",
     "@mui/material": "^5.0.6",
-    "@mdi/js": "^6.5.95",
     "express": "^4.17.1",
     "jquery": "^3.6.0",
     "js-cookie": "^3.0.1",

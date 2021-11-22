@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const uuidv4 = require("uuid/v4");
+const { v4: uuidv4 } = require('uuid');
 const sgMail = require('@sendgrid/mail');
 
 const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
