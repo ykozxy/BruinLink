@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
-const schema = mongoose.Schema;
+const Schema = mongoose.Schema;
+const { v4: uuidv4 } = require('uuid');
+const sgMail = require('@sendgrid/mail');
 
 const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
+sgMail.setApiKey("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");
 
 var accountBasics = {};
 accountBasics.loginResponse = loginResponse;
@@ -11,15 +14,22 @@ accountBasics.changePasswordResponse = changePasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 module.exports = accountBasics;
 
-const accountSchema = new schema({
+const accountSchema = new Schema({
     uid: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true }
     //courseList: [courseSchema],
     //clubList: [clubSchema]
 });
 
+const verificationSchema = new Schema({
+    createdAt: { type: Date, expires: 300, default: Date.now },
+    unique: { type: String, required: true, unique: true },
+    code: { type: String, required: true, unique: true },
+});
+
 const accountModel = mongoose.model('Account', accountSchema);
+const verificationModel = mongoose.model('Verification', verificationSchema);
 
 /** @param {String} email 
     @param {String} password
@@ -125,18 +135,25 @@ async function login(email, password) {
 /** @param {String} uid
     @param {String} password
     @param {String} email
+    @param {String} unique
+    @param {String} code
  */
 
-async function register(uid, password, email) {
+async function register(uid, password, email, unique, code) {
     try {
         const newAccount = new accountModel({
             uid: uid,
             password: password,
             email: email
         });
+        let verify = await verificationModel.findOne({ unique: unique });
+        if (code != verify.code) {
+            console.log("verification code not match");
+            return false;
+        }
         let saveAccount = await newAccount.save();
         if (saveAccount == null) {
-            console.log("unable to create new account:");
+            console.log("unable to create new account");
             return false;
         }
         console.log("successfully registered");
@@ -174,7 +191,9 @@ async function registerResponse(account_arg) {
             let uid = account_arg.uid;
             let email = account_arg.email;
             let password = account_arg.password;
-            let registered = await register(uid, password, email);
+            let unique = account_arg.unique;
+            let code = account_arg.code;
+            let registered = await register(uid, password, email, unique, code);
             if (registered) {
                 return "successfully registered";
             }
@@ -220,10 +239,42 @@ async function verificationCodeResponse(account_arg) {
         let email = account_arg.email;
         let verification = verificationCode(email);
         if (verification) {
-            return "successfully sent verification code";
+            unique = uuidv4();
+            code = Math.floor(Math.random() * 1000000);
+            const newVerification = new verificationModel({
+                unique: unique,
+                code: code
+            });
+            newVerification.save();
+            const msg = {
+                to: email, // Change to your recipient
+                from: 'xcjsam@outlook.com', // Change to your verified sender
+                subject: 'BruinLink Registration Verification Code',
+                text: 'Your verification code is: ' + code,
+                html: '<strong>VERIFICATION CODE</strong>',
+            };
+            sgMail
+                .send(msg)
+                .then(() => {
+                    console.log('Email sent')
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+            return {
+                unique: unique,
+                code: code
+            };
         }
-        return "failed to send verification code";
+        return {
+            unique: "",
+            code: ""
+        };
     } catch (err) {
-        return err;
+        console.log(err);
+        return {
+            unique: "",
+            code: ""
+        };
     }
 }
