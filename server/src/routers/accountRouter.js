@@ -105,17 +105,17 @@ async function accountChangePassword(req, res) {
 async function sendVerificationCode(req, res) {
     try {
         let response = await accountBasics.verificationCodeResponse(req.body);
-        if (response == "successfully sent verification code") {
+        if (response.code != "") {
             res.send({
                 status: "success",
-                code: req.session.id,
-                message: response
+                code: response.code,
+                unique: response.unique
             })
         }
         else {
             res.send({
                 status: "failed",
-                message: response
+                message: "failded to send verification code"
             })
         } 
     } catch (err) {
