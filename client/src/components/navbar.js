@@ -22,7 +22,7 @@ class Navbar extends React.Component {
                     <ul className="navbar-menu">
                         <li className="navbar-item">
                             <Link to="/search" className="navbar-links">
-                                Search <SearchIcon/>
+                                Course
                             </Link>
                         </li>
                         <li className="navbar-item">
