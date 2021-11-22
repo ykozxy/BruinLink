@@ -7,10 +7,11 @@ import AlertToast from "./alertToast";
 
 export default class VerificationCodeInput extends React.Component {
     static propTypes = {
-        onChange: PropTypes.func.isRequired,
         email: PropTypes.string.isRequired,
         checkEmailCallback: PropTypes.func.isRequired,
         showAlert: PropTypes.func.isRequired,
+        onChange: PropTypes.func.isRequired,
+        onUniqueChange: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -25,6 +26,7 @@ export default class VerificationCodeInput extends React.Component {
 
         this.handleSendCode = this.handleSendCode.bind(this);
         this.countDown = this.countDown.bind(this);
+        this.setState = this.setState.bind(this);
         this.timer = null;
     }
 
@@ -39,7 +41,6 @@ export default class VerificationCodeInput extends React.Component {
 
         let url = config.baseUrl + config.api.account.emailVerify;
 
-        // TODO: wait for backend API implementation
         $.post(url, {email: this.props.email}, "json")
             .done((data) => {
                 console.log(data);
@@ -58,7 +59,7 @@ export default class VerificationCodeInput extends React.Component {
                 // Repetitively call countDown every second
                 this.timer = setInterval(this.countDown, 1000);
 
-                // TODO: return sessionID to parent
+                this.props.onUniqueChange(data.unique);
             })
             .fail(() => {
                     // If request failed, show an error toast.
@@ -102,6 +103,7 @@ export default class VerificationCodeInput extends React.Component {
                     required
                     name="verCode"
                     label="Verification Code"
+                    autoComplete="one-time-code"
                     onChange={this.props.onChange}
                     sx={{width: "50%"}}
                 />

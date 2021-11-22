@@ -33,6 +33,7 @@ class RegisterForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
+        this.showAlert = this.showAlert.bind(this);
     }
 
     handleSubmit(event) {
@@ -49,8 +50,8 @@ class RegisterForm extends React.Component {
         let data = {
             email: this.state.email,
             password: this.state.password,
-            verCode: this.state.verCode,
-            sessionID: this.state.sessionID,
+            code: this.state.verCode,
+            unique: this.state.sessionID,
         };
 
         // Check email address
@@ -87,7 +88,7 @@ class RegisterForm extends React.Component {
                 this.showAlert("Failed to connect to the server.");
             })
             .done((data) => {
-                console.log("data")
+                console.log(data)
             });
     }
 
@@ -141,6 +142,7 @@ class RegisterForm extends React.Component {
                     name="email"
                     label="Email"
                     // type="email"
+                    autoComplete="email"
                     onChange={this.handleChange}
                 />
 
@@ -152,6 +154,7 @@ class RegisterForm extends React.Component {
                     name="password"
                     label="Password"
                     type="password"
+                    autoComplete="new-password"
                     onChange={this.handleChange}
                 />
 
@@ -163,13 +166,15 @@ class RegisterForm extends React.Component {
                     name="verPassword"
                     label="Confirm Password"
                     type="password"
+                    autoComplete="new-password"
                     onChange={this.handleChange}
                 />
 
                 <VerificationCodeInput onChange={this.handleChange}
                                        email={this.state.email}
                                        checkEmailCallback={this.checkEmail}
-                                       showAlert={this.showAlert}/>
+                                       showAlert={this.showAlert}
+                                       onUniqueChange={(d) => this.setState({sessionID: d})}/>
 
                 <Box width={1}
                      sx={{

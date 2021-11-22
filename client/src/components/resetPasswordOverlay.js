@@ -23,6 +23,7 @@ export default class ResetPasswordOverlay extends React.Component {
         this.state = {
             email: "",
             verCode: "",
+            sessionID: "",
             newPassword: "",
             verPassword: "",
         };
@@ -42,6 +43,7 @@ export default class ResetPasswordOverlay extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
+        // TODO
     }
 
 
@@ -141,6 +143,7 @@ class ResetPasswordForm extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
+        this.showAlert = this.showAlert.bind(this);
     }
 
     handleSubmit(event) {
@@ -192,24 +195,16 @@ class ResetPasswordForm extends React.Component {
                 this.showAlert("Failed to connect to the server.");
             })
             .done(() => {
-                this.showSuccess("Reset password success!")
+                this.showAlert("Reset password success!", true)
                 setTimeout(this.props.onFinish, 2000);
             });
     }
 
-    showAlert(msg) {
+    showAlert(msg, success = false) {
         this.setState({
             showAlert: true,
             alertMessage: msg,
-            severity: "error",
-        });
-    }
-
-    showSuccess(msg) {
-        this.setState({
-            showAlert: true,
-            alertMessage: msg,
-            severity: "success",
+            severity: success ? "success" : "error",
         });
     }
 
@@ -237,7 +232,9 @@ class ResetPasswordForm extends React.Component {
                 <VerificationCodeInput
                     onChange={this.props.onChange}
                     email={this.props.email}
-                    checkEmailCallback={this.checkEmail}/>
+                    checkEmailCallback={this.checkEmail}
+                    onUniqueChange={(d) => this.setState({sessionID: d})}
+                    showAlert={this.showAlert}/>
 
                 <TextField
                     margin="normal"

@@ -116,6 +116,7 @@ class LoginForm extends React.Component {
                     name="email"
                     label="Email"
                     // type="email"
+                    autoComplete="email"
                     onChange={this.handleChange}
                 />
 
@@ -127,6 +128,7 @@ class LoginForm extends React.Component {
                     name="password"
                     label="Password"
                     type="password"
+                    autoComplete="current-password"
                     onChange={this.handleChange}
                 />
 
