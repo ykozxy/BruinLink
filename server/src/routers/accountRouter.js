@@ -108,7 +108,6 @@ async function sendVerificationCode(req, res) {
         if (response.code != "") {
             res.send({
                 status: "success",
-                code: response.code,
                 unique: response.unique
             })
         }

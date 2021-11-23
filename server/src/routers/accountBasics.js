@@ -260,15 +260,18 @@ async function verificationCodeResponse(account_arg) {
                 });
             return {
                 unique: unique,
+                code: code
             };
         }
         return {
             unique: "",
+            code: ""
         };
     } catch (err) {
         console.log(err);
         return {
             unique: "",
+            code: ""
         };
     }
 }
