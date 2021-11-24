@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { v4: uuidv4 } = require('uuid');
+const {v4: uuidv4} = require('uuid');
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
 
 const API_KEY = config.API_KEY;
-const db = mongoose.connect("mongodb+srv://samxu:xcjsam789789@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority");
 sgMail.setApiKey(API_KEY);
 
 var accountBasics = {};
@@ -17,23 +16,23 @@ accountBasics.verificationCodeResponse = verificationCodeResponse;
 module.exports = accountBasics;
 
 const accountSchema = new Schema({
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    email: {type: String, required: true, unique: true},
+    password: {type: String, required: true}
     //courseList: [courseSchema],
     //clubList: [clubSchema]
 });
 
 const verificationSchema = new Schema({
-    createdAt: { type: Date, expires: 300, default: Date.now },
-    unique: { type: String, required: true, unique: true },
-    code: { type: String, required: true, unique: true },
+    createdAt: {type: Date, expires: 300, default: Date.now},
+    unique: {type: String, required: true, unique: true},
+    code: {type: String, required: true, unique: true},
 });
 
 const accountModel = mongoose.model('Account', accountSchema);
 const verificationModel = mongoose.model('Verification', verificationSchema);
 
-/** @param {String} email 
-    @param {String} password
+/** @param {String} email
+ @param {String} password
  */
 
 async function setPassword(email, password) {
@@ -42,10 +41,10 @@ async function setPassword(email, password) {
             console.log("email or password cannot be empty");
             return false;
         }
-        const filter = { email: email };
-        const update = { password: password };
-        const options = { runValidators: true, upsert: true };
-        let account = await accountModel.updateOne(filter, { $set: update }, options);
+        const filter = {email: email};
+        const update = {password: password};
+        const options = {runValidators: true, upsert: true};
+        let account = await accountModel.updateOne(filter, {$set: update}, options);
         if (account == null) {
             console.log("account not found");
             return false;
@@ -60,8 +59,8 @@ async function setPassword(email, password) {
 }
 
 /** @param {String} uid
-    @param {String} password
-    @param {String} newemail
+ @param {String} password
+ @param {String} newemail
  */
 
 async function setEmail(uid, password, newemail) {
@@ -70,10 +69,10 @@ async function setEmail(uid, password, newemail) {
             console.log("user id or password or email address cannot be empty");
             return false;
         }
-        const filter = { uid: uid, password: password };
-        const update = { email: newemail };
-        const options = { runValidators: true, upsert: true };
-        let account = await accountModel.updateOne(filter, { $set: update }, options);
+        const filter = {uid: uid, password: password};
+        const update = {email: newemail};
+        const options = {runValidators: true, upsert: true};
+        let account = await accountModel.updateOne(filter, {$set: update}, options);
         if (account == null) {
             console.log("account not found or password incorrect");
             return false;
@@ -92,7 +91,7 @@ async function setEmail(uid, password, newemail) {
 
 async function getEmail(email) {
     try {
-        let email_get = await accountModel.findOne({ email: email }, 'email');
+        let email_get = await accountModel.findOne({email: email}, 'email');
         if (email_get == null) {
             console.log("email: " + email + " not found");
             return null;
@@ -106,12 +105,12 @@ async function getEmail(email) {
 }
 
 /** @param {String} email
-    @param {String} password
+ @param {String} password
  */
 
 async function login(email, password) {
     try {
-        let account = await accountModel.findOne({ email: email, password: password });
+        let account = await accountModel.findOne({email: email, password: password});
         if (account == null) {
             console.log("incorrect email or password");
             return {
@@ -134,10 +133,10 @@ async function login(email, password) {
 }
 
 /** @param {String} uid
-    @param {String} password
-    @param {String} email
-    @param {String} unique
-    @param {String} code
+ @param {String} password
+ @param {String} email
+ @param {String} unique
+ @param {String} code
  */
 
 async function register(password, email, unique, code) {
@@ -146,7 +145,7 @@ async function register(password, email, unique, code) {
             password: password,
             email: email
         });
-        let verify = await verificationModel.findOne({ unique: unique });
+        let verify = await verificationModel.findOne({unique: unique});
         if (code != verify.code) {
             console.log("verification code not match");
             return false;

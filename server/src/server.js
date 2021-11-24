@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -18,5 +19,29 @@ const courseRouter = require("./routers/courseRouter");
 app.use("/account", accountRouter);
 app.use("/course", courseRouter);
 
-console.log("Listening at port 3031...")
-app.listen(3031)
+async function main() {
+    console.log("Connecting to database...")
+    await mongoose.disconnect();
+    await mongoose.connect("mongodb+srv://user:user0001@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority")
+        .then(() => {
+            console.log("Database connected.");
+        }).catch((e) => {
+            throw e;
+        });
+
+    console.log("Listening at port 3031...")
+    app.listen(3031)
+}
+
+main()
+    .catch((e) => {
+        mongoose.disconnect().then(() => {
+            console.log("Database disconnected.")
+        });
+        throw e;
+    })
+    .then(() => {
+        mongoose.disconnect().then(() => {
+            console.log("Database disconnected.")
+        });
+    })
