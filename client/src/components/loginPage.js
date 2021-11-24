@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import AlertToast from "./alertToast"
 import ResetPasswordOverlay from "./resetPasswordOverlay";
 import {checkEmailFormat} from "../utils";
+import Cookies from "js-cookie";
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -68,7 +69,6 @@ class LoginForm extends React.Component {
         // If all fields are OK, trigger loading animation of register button.
         this.setState({loading: true});
 
-        // TODO: wait for backend API implementation
         $.post(url, data, "json")
             .always(() => {
                 this.setState({loading: false});
@@ -79,7 +79,10 @@ class LoginForm extends React.Component {
             .done((data) => {
                 console.log(data);
                 if (data.status === "failed") {
-                    this.showAlert("Incorrect email or password.")
+                    this.showAlert("Incorrect email or password.");
+                } else {
+                    Cookies.set("accountID", data.token);
+                    location.href = "/";
                 }
             });
     }

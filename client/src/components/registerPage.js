@@ -81,14 +81,17 @@ class RegisterForm extends React.Component {
             buttonLoading: true,
         });
 
-        // TODO: wait for backend API implementation
         $.post(url, data, "json")
             .always(() => this.setState({buttonLoading: false}))
             .fail(() => {
                 this.showAlert("Failed to connect to the server.");
             })
             .done((data) => {
-                console.log(data)
+                console.log(data);
+                this.showAlert("Register success!", true);
+                setTimeout(() => {
+                    location.href = "/login";
+                }, 1000);
             });
     }
 
