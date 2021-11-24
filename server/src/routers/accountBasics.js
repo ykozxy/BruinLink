@@ -115,19 +115,19 @@ async function login(email, password) {
         if (account == null) {
             console.log("incorrect email or password");
             return {
-                uid: "",
+                email: "",
                 succeed: false
             };
         }
         console.log("successfully logged in");
         return {
-            uid: account.uid,
+            email: account.email,
             succeed: true
         };
     } catch (err) {
         console.log(err);
         return {
-            uid: "",
+            email: "",
             succeed: false
         };
     }
@@ -159,7 +159,7 @@ async function register(password, email, unique, code) {
         console.log("successfully registered");
         return true;
     } catch (err) {
-        console(err);
+        console.error(err);
         return false;
     }
 }
@@ -200,6 +200,7 @@ async function registerResponse(account_arg) {
         }
         return "email already exist";
     } catch (err) {
+        console.error(err);
         return err;
     }
 }
@@ -256,7 +257,7 @@ async function verificationCodeResponse(account_arg) {
                     console.log('Email sent')
                 })
                 .catch((err) => {
-                    console.log(err)
+                    console.error(err);
                 });
             return {
                 unique: unique,
@@ -268,7 +269,7 @@ async function verificationCodeResponse(account_arg) {
             code: ""
         };
     } catch (err) {
-        console.log(err);
+        console.error(err);
         return {
             unique: "",
             code: ""
