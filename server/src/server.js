@@ -21,7 +21,6 @@ app.use("/course", courseRouter);
 
 async function main() {
     console.log("Connecting to database...")
-    await mongoose.disconnect();
     await mongoose.connect("mongodb+srv://user:user0001@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority")
         .then(() => {
             console.log("Database connected.");
@@ -34,14 +33,3 @@ async function main() {
 }
 
 main()
-    .catch((e) => {
-        mongoose.disconnect().then(() => {
-            console.log("Database disconnected.")
-        });
-        throw e;
-    })
-    .then(() => {
-        mongoose.disconnect().then(() => {
-            console.log("Database disconnected.")
-        });
-    })
