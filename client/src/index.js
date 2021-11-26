@@ -6,17 +6,16 @@ import {ThemeProvider} from '@mui/material/styles';
 import theme from './theme';
 import LoginPage from "./components/loginPage"
 import RegisterPage from "./components/registerPage";
-import Navbar from "./components/navbar";
 import Test from "./testing/testPage";
 import HomePage from './components/homePage';
 import SearchPage from "./components/searchPage"
+import ProfilePage from './components/profilePage';
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <CssBaseline/>
         {/* Setup react routes for page redirection */}
         <BrowserRouter>
-            <Navbar/>
             <Switch>
                 {/*<Route path="/" exact>
                     {/* TODO: put main page here and replace the Redirect element */}
@@ -27,6 +26,7 @@ ReactDOM.render(
                 <Route path="/register" component={RegisterPage}/>
                 <Route path="/login" component={LoginPage}/>
                 <Route path="/search" component={SearchPage}/>
+                <Route path="/profile" component={ProfilePage}/>
                 <Route path="/test" component={Test}/>
             </Switch>
         </BrowserRouter>

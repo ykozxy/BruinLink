@@ -8,6 +8,7 @@ import AlertToast from "./alertToast"
 import ResetPasswordOverlay from "./resetPasswordOverlay";
 import {checkEmailFormat} from "../utils";
 import Cookies from "js-cookie";
+import Navbar from "./navbar";
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -198,9 +199,12 @@ class LoginForm extends React.Component {
 export default class LoginPage extends React.Component {
     render() {
         return (
-            <Container maxWidth="sm">
-                <LoginForm/>
-            </Container>
+            <div>
+                <Navbar isLogin={false} />
+                <Container maxWidth="sm">
+                    <LoginForm/>
+                </Container>
+            </div>
         );
     }
 }

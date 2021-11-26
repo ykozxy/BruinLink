@@ -7,6 +7,7 @@ import * as config from "../config"
 import {checkEmailFormat} from "../utils";
 import AlertToast from "./alertToast";
 import VerificationCodeInput from "./verificationCodeInput";
+import Navbar from "./navbar";
 
 
 class RegisterForm extends React.Component {
@@ -234,9 +235,12 @@ class RegisterForm extends React.Component {
 export default class RegisterPage extends React.Component {
     render() {
         return (
-            <Container maxWidth="sm">
-                <RegisterForm/>
-            </Container>
+            <div>
+                <Navbar isLogin={false} />
+                <Container maxWidth="sm">
+                    <RegisterForm/>
+                </Container>
+            </div>
         );
     }
 }
