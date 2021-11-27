@@ -12,12 +12,15 @@ accountBasics.loginResponse = loginResponse;
 accountBasics.registerResponse = registerResponse;
 accountBasics.changeEmailResponse = changeEmailResponse;
 accountBasics.changePasswordResponse = changePasswordResponse;
+accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 module.exports = accountBasics;
 
 const accountSchema = new Schema({
     email: {type: String, required: true, unique: true},
-    password: {type: String, required: true}
+    password: { type: String, required: true },
+    token: { type: String, required: true, unique: true },
+    expire_date: { type: Date, default: null}
     //courseList: [courseSchema],
     //clubList: [clubSchema]
 });
@@ -35,21 +38,21 @@ const verificationModel = mongoose.model('Verification', verificationSchema);
  @param {String} password
  */
 
-async function setPassword(email, password) {
+async function setPassword(email, old_password, new_password) {
     try {
-        if (email == null || password == null) {
+        if (email == null || old_password == null || new_password == null) {
             console.log("email or password cannot be empty");
             return false;
         }
-        const filter = {email: email};
-        const update = {password: password};
+        const filter = {email: email, password: old_password};
+        const update = {password: new_password};
         const options = {runValidators: true, upsert: true};
         let account = await accountModel.updateOne(filter, {$set: update}, options);
         if (account == null) {
-            console.log("account not found");
+            console.log("account not found or old password incorrect");
             return false;
         } else {
-            console.log("set password to " + password);
+            console.log("set password to " + new_password);
             return true;
         }
     } catch (err) {
@@ -63,21 +66,26 @@ async function setPassword(email, password) {
  @param {String} newemail
  */
 
-async function setEmail(uid, password, newemail) {
+async function setEmail(old_email, password, new_email, unique, code) {
     try {
-        if (uid == null || password == null || email == null) {
-            console.log("user id or password or email address cannot be empty");
+        if (old_email == null || new_email == null || password == null) {
+            console.log("password or email address cannot be empty");
             return false;
         }
-        const filter = {uid: uid, password: password};
-        const update = {email: newemail};
+        let verify = await verificationModel.findOne({ unique: unique });
+        if (code != verify.code) {
+            console.log("verification code not match");
+            return false;
+        }
+        const filter = {email: old_email, password: password};
+        const update = {email: new_email};
         const options = {runValidators: true, upsert: true};
         let account = await accountModel.updateOne(filter, {$set: update}, options);
         if (account == null) {
             console.log("account not found or password incorrect");
             return false;
         } else {
-            console.log("set new email to " + password);
+            console.log("set new email to " + new_email);
             return true;
         }
     } catch (err) {
@@ -119,9 +127,13 @@ async function login(email, password) {
             };
         }
         console.log("successfully logged in");
+        token = uuidv4();
+        account.set({ token: token, expire_date: addDays(Date.now, 5) });
+        account.save();
         return {
             email: account.email,
-            succeed: true
+            succeed: true,
+            token: token
         };
     } catch (err) {
         console.log(err);
@@ -206,9 +218,16 @@ async function registerResponse(account_arg) {
 
 async function changePasswordResponse(account_arg) {
     try {
-        let email = account_arg.email;
-        let password = account_arg.password;
-        let changePassword = await setPassword(email, password);
+        let token = account_arg.token;
+        let old_password = account_arg.old_password;
+        let new_password = account_arg.new_password;
+        let account = await accountModel.findOne({ token: token });
+        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+            console.log("token expired");
+            return "failed to change password";
+        }
+        let email = account.email;
+        let changePassword = await setPassword(email, old_password, new_password);
         if (changePassword) {
             return "successfully changed password";
         }
@@ -218,12 +237,43 @@ async function changePasswordResponse(account_arg) {
     }
 }
 
+async function resetPasswordResponse(account_arg) {
+    try {
+        let email = account_arg.email;
+        let new_password = account_arg.new_password;
+        let unique = account_arg.unique;
+        let code = account_arg.code;
+        let verify = await verificationModel.findOne({ unique: unique });
+        if (code != verify.code) {
+            console.log("verification code not match");
+            return "verification code not match";
+        }
+        let account = await accountModel.findOne({ email: email });
+        let old_password = account.password;
+        let resetPassword = await setPassword(email, old_password, new_password);
+        if (resetPassword) {
+            return "successfully reset password";
+        }
+        return "failed to reset password";
+    } catch (err) {
+        return err;
+    }
+}
+
 async function changeEmailResponse(account_arg) {
     try {
-        let uid = account_arg.uid;
-        let email = account_arg.email;
-        let password = account_arg.password;
-        let changeEmail = await setEmail(uid, password, email);
+        let token = account_arg.token;
+        let new_email = account_arg.new_email;
+        let account = await accountModel.findOne({ token: token });
+        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+            console.log("token expired");
+            return "failed to change email";
+        }
+        let old_email = account.email;
+        let password = account.password;
+        let unique = account_arg.unique;
+        let code = account_arg.code;
+        let changeEmail = await setEmail(old_email, password, new_email, unique, code);
         if (changeEmail) {
             return "successfully changed email";
         }
