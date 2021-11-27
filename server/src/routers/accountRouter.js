@@ -4,8 +4,9 @@ const accountBasics = require('./accountBasics');
 
 router.post('/login', accountLogin);
 router.post('/register', accountRegister);
-router.put('/changeEmail', accountChangeEmail);
-router.put('/changePassword', accountChangePassword);
+router.post('/changeEmail', accountChangeEmail);
+router.post('/changePassword', accountChangePassword);
+router.post('/resetPassword', accountResetPassword);
 router.post('/emailVerify', sendVerificationCode);
 module.exports = router;
 
@@ -83,6 +84,29 @@ async function accountChangePassword(req, res) {
     try {
         let response = await accountBasics.changePasswordResponse(req.body);
         if (response == "successfully changed password") {
+            res.send({
+                status: "success",
+                message: response
+            })
+        }
+        else {
+            res.send({
+                status: "failed",
+                message: response
+            })
+        }
+    } catch (err) {
+        res.send({
+            status: "failed",
+            message: err
+        })
+    }
+}
+
+async function accountResetPassword(req, res) {
+    try {
+        let response = await accountBasics.resetPasswordResponse(req.body);
+        if (response == "successfully reset password") {
             res.send({
                 status: "success",
                 message: response
