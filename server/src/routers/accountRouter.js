@@ -16,7 +16,7 @@ async function accountLogin(req, res) {
         if (response.succeed) {
             res.send({
                 status: "success",
-                uid: response.uid,
+                token: response.token,
                 message: "successfully logged in"
             })
         }
