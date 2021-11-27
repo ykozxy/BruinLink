@@ -118,7 +118,7 @@ export default class VerificationCodeInput extends React.Component {
                         variant="outlined"
                         size="large"
                         disabled={this.state.disableButton}
-                        sx={{mt: 1}}
+                        sx={{mb: 1.5, mt: 2}}
                         onClick={this.handleSendCode}
                     >
                         {this.state.coolDown <= 0 ? "Send code" : this.state.coolDown}

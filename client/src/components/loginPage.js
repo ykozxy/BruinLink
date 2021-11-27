@@ -5,7 +5,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
 import AlertToast from "./alertToast"
-import ResetPasswordOverlay from "./resetPasswordOverlay";
 import {checkEmailFormat} from "../utils";
 import Cookies from "js-cookie";
 import Navbar from "./navbar";
@@ -22,11 +21,11 @@ class LoginForm extends React.Component {
             alertMessage: "",
             emailError: false,
             passwordError: false,
-            openPopup: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleForgetPassword = this.handleForgetPassword.bind(this);
     }
 
     handleChange(event) {
@@ -86,6 +85,10 @@ class LoginForm extends React.Component {
                     location.href = "/";
                 }
             });
+    }
+
+    handleForgetPassword() {
+        window.location.href = "/resetPassword";
     }
 
     showAlert(msg) {
@@ -181,15 +184,10 @@ class LoginForm extends React.Component {
                 />
 
                 <Typography variant="h6">
-                    <Button variant="text" onClick={() => this.setState({openPopup: true})}>
+                    <Button variant="text" onClick={this.handleForgetPassword}>
                         Forget password?
                     </Button>
                 </Typography>
-
-                <ResetPasswordOverlay
-                    open={this.state.openPopup}
-                    onClose={() => this.setState({openPopup: false})}
-                />
             </Box>
         );
     }
