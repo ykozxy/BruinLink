@@ -128,7 +128,9 @@ async function login(email, password) {
         }
         console.log("successfully logged in");
         token = uuidv4();
-        account.set({ token: token, expire_date: addDays(Date.now, 5) });
+        var expire_date = new Date();
+        expire_date.setDate(expire_date.getDate() + 5);
+        account.set({ token: token, expire_date: expire_date });
         account.save();
         return {
             email: account.email,
