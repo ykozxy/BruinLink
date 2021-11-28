@@ -3,15 +3,27 @@ import {Box} from "@mui/material";
 import Navbar from "../components/navbar";
 import ClassList from "../components/classList";
 import FilterBox from "../components/courseFilter";
+import {withRouter} from "react-router";
 
 
-export default class Test extends React.Component {
+export default withRouter(class Test extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             open: false,
         };
+    }
+
+    componentDidMount() {
+        const queryParams = new URLSearchParams(window.location.search);
+        let query = queryParams.get('query');
+        let department = queryParams.get('department');
+        let division = queryParams.get('division');
+
+        if (query) console.log(query);
+        if (department) console.log(department);
+        if (division) console.log(division);
     }
 
     render() {
@@ -30,4 +42,4 @@ export default class Test extends React.Component {
             </div>
         )
     }
-}
+})
