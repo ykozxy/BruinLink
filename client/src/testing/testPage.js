@@ -1,6 +1,8 @@
 import React from "react";
-import {Button} from "@mui/material";
-import CoursePopup from "../components/coursePopup";
+import {Box} from "@mui/material";
+import Navbar from "../components/navbar";
+import ClassList from "../components/classList";
+import FilterBox from "../components/courseFilter";
 
 
 export default class Test extends React.Component {
@@ -15,18 +17,16 @@ export default class Test extends React.Component {
     render() {
         return (
             <div>
-                <Button onClick={() => this.setState({open: true})}>
-                    Open popup
-                </Button>
-                <CoursePopup open={this.state.open}
-                             onClose={() => this.setState({open: false})}
-                             courseName="CS 35L"
-                             courseSection="Lec 1"
-                             courseID="10000000"
-                             discordLink="https://discord.com/"
-                             groupmeLink={"https://groupme.com/"}
-                    // wechatCode="https://pbs.twimg.com/profile_images/1087188469397344257/HXxlDWIf_400x400.jpg"
-                />
+                <Navbar isLogin={true}/>
+                <Box width={"100%"} sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    mt: 5,
+                }}>
+                    <FilterBox/>
+                    <ClassList/>
+                </Box>
             </div>
         )
     }

@@ -474,7 +474,7 @@ class ImageContributeForm extends React.Component {
         let data = new FormData();
         data.append("id", this.props.id);
         data.append("platform", this.props.platform);
-        data.append("accountID", accountID);
+        data.append("token", accountID);
         data.append("image", this.state.file);
 
         this.setState({loading: true});

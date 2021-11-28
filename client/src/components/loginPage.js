@@ -81,8 +81,12 @@ class LoginForm extends React.Component {
                 if (data.status === "failed") {
                     this.showAlert("Incorrect email or password.");
                 } else {
-                    Cookies.set("accountID", data.token);
-                    location.href = "/";
+                    if (data.token) {
+                        Cookies.set("accountID", data.token);
+                        location.href = "/";
+                    } else {
+                        this.showAlert("Empty token from server.")
+                    }
                 }
             });
     }
@@ -198,7 +202,7 @@ export default class LoginPage extends React.Component {
     render() {
         return (
             <div>
-                <Navbar isLogin={false} />
+                <Navbar isLogin={false}/>
                 <Container maxWidth="sm">
                     <LoginForm/>
                 </Container>
