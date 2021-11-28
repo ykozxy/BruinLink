@@ -16,10 +16,10 @@ const courseSchema = new Schema({
     courseid: { type: String, required: true, unique: true },
     profname: { type: String, required: true },
     department: { type: String, required: true },
-    division: { type: String },
+    division: { type: String, required: true },
     groupmeLink: { type: String },
     discordLink: { type: String },
-    wechatQRCode: { type: File }
+    wechatQRCode: { type: Buffer }
 });
 const courseModel = mongoose.model('Course', courseSchema);
 
