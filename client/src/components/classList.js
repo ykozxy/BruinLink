@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -16,12 +16,12 @@ const Item = styled(Paper)(({ theme }) => ({
   export default function CardList() {
     return (
       <Box 
-            sx={{ 
-                position:'absolute',
-                width: '60%',
-                transform: 'translate(60%, 50%)',
+            sx={{
+                // position:'absolute',
+                width: '70%',
+                // transform: 'translate(60%, 50%)',
                 alignItems: "flex-start",
-                
+
             }}
         >
         <Grid container rowSpacing={8} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
