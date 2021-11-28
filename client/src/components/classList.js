@@ -4,6 +4,9 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import ClassCard from "./classCard";
+import PropTypes from "prop-types";
+import $ from "jquery"
+import * as config from "../config"
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -13,7 +16,24 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
   
-  export default function CardList() {
+  class ClassList extends React.Component {
+    constructor(props) {
+      super(props);
+  }
+
+  static propTypes = {
+    courseName: PropTypes.string,
+    department: PropTypes.string,
+    division: PropTypes.string
+  }
+
+  
+    render(){
+      let url = config.baseUrl + config.api.course.search;
+
+      $.post(url, function(data){
+        console.log(data);
+      });
     return (
       <Box 
             sx={{
@@ -83,6 +103,8 @@ const Item = styled(Paper)(({ theme }) => ({
           </Grid>
         </Grid>
       </Box>
-    );
+    )}
   }
+
+  export default ClassList
 

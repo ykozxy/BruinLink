@@ -30,8 +30,11 @@ export default class FilterBox extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        
+        console.log(this.props.query)
         let url = "/search?";
         if (this.props.query) {
+            console.log(this.props.query)
             url += `query=${encodeURIComponent(this.props.query)}&`;
         }
         if (this.state.department !== "") {
