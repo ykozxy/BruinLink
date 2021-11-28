@@ -1,6 +1,8 @@
+import $ from "jquery";
 import React from "react";
 import {Autocomplete, Box, Button, Divider, Grid, TextField, Typography} from "@mui/material";
 import PropTypes from "prop-types";
+import * as config from "../config"
 
 export default class FilterBox extends React.Component {
     static propTypes = {
@@ -11,21 +13,35 @@ export default class FilterBox extends React.Component {
     constructor(props) {
         super(props);
 
-        this.departments = [];
-        this.divisions = ["Lower division", "Upper division"];
-
         this.state = {
             department: "",
             division: "",
+
+            departmentList: [],
+            divisionList: ["Lower division", "Upper division"],
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentDidMount() {
-        // TODO: wait for backend api to get department list
-        this.departments = ["Computer science", "Engineering"]
+    componentWillMount() {
+        // Skip fetch data if we already have departments
+        if (this.state.departmentList.length > 0) return;
+
+        let url = config.baseUrl + config.api.course.getDepartments;
+        $.post(url)
+            .fail(() => {
+                console.error("Failed to fetch departments.");
+                this.setState({departmentList: ["Computer science", "Engineering"]});
+            })
+            .done((data) => {
+                if (data.status === "failed") {
+                    console.error("Failed to fetch departments.");
+                } else {
+                    this.setState({departmentList: data.departments});
+                }
+            });
     }
 
     handleSubmit(event) {
@@ -83,7 +99,7 @@ export default class FilterBox extends React.Component {
                                       renderInput={(params) =>
                                           <TextField {...params} label="department"/>
                                       }
-                                      options={this.departments}/>
+                                      options={this.state.departmentList}/>
                     </Grid>
                     <Grid item xs={1}/>
 
@@ -100,7 +116,7 @@ export default class FilterBox extends React.Component {
                                       renderInput={(params) =>
                                           <TextField {...params} label="division"/>
                                       }
-                                      options={this.divisions}/>
+                                      options={this.state.divisionList}/>
                     </Grid>
                     <Grid item xs={1}/>
                 </Grid>

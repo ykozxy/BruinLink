@@ -8,6 +8,7 @@ courseBasics.setgmLink = setgmLink;
 courseBasics.setdsLink = setdsLink;
 courseBasics.updateProf = updateProf;
 courseBasics.getCourse = getCourse;
+courseBasics.getDepartmentsResponse = getDepartmentsResponse;
 module.exports = courseBasics;
 
 const courseSchema = new Schema({
@@ -15,8 +16,10 @@ const courseSchema = new Schema({
     courseid: { type: String, required: true, unique: true },
     profname: { type: String, required: true },
     department: { type: String, required: true },
-    GroupmeLink: { type: String },
-    DiscordLink: { type: String }
+    division: { type: String, required: true },
+    groupmeLink: { type: String },
+    discordLink: { type: String },
+    wechatQRCode: { type: Buffer }
 });
 const courseModel = mongoose.model('Course', courseSchema);
 
@@ -31,7 +34,8 @@ async function findbyname(keyword) {
     const s = keyword;
     var courselist= [];
     const regex = new RegExp(s, 'i');
-    courseModel.find({ title: { $regex: regex } }, function (err, result) {
+    courseModel.find({ title: { $regex: regex, $options: 'i' } },
+        function (err, result) {
         if (err) {
             console.log(err);
         }
@@ -57,7 +61,7 @@ async function register(coursename, profname, department) {
             coursename: coursename,
             profname: profname,
             courseid: new mongoose.courseModel.ObjectId(),
-            department: deparment
+            department: department
         });
         let saveCourse = await newCourse.save();
         if (saveCourse == null) {
@@ -89,8 +93,8 @@ async function setgmLink(courseid, link) {
             console.log("cannot set empty gmlink; please provide a valid gmlink");
             return;
         }
-        const filter = { courseId: courseId };
-        const update = { 'GroupmeLink': link };
+        const filter = { courseid: courseid };
+        const update = { groupmeLink: link };
         const options = { runValidators: true, upsert: true };
         let user = await courseModel.updateOne(filter, { $set: update }, options);
         if (user == null) {
@@ -120,8 +124,8 @@ async function setdsLink(courseid, link) {
             console.log("cannot set empty dslink; please provide a valid dslink");
             return;
         }
-        const filter = { courseId: courseId };
-        const update = { 'DiscordLink': link };
+        const filter = { courseid: courseid };
+        const update = { discordLink: link };
         const options = { runValidators: true, upsert: true };
         let user = await courseModel.updateOne(filter, { $set: update }, options);
         if (user == null) {
@@ -151,8 +155,8 @@ async function updateProf(courseid, profname) {
             console.log("cannot set profname null; please provide a valid profname");
             return;
         }
-        const filter = { courseId: courseId };
-        const update = { 'profname': profname };
+        const filter = { courseid: courseid };
+        const update = { profname: profname };
         const options = { runValidators: true, upsert: true };
         let user = await courseModel.updateOne(filter, { $set: update }, options);
         if (user == null) {
@@ -175,17 +179,28 @@ async function updateProf(courseid, profname) {
  *
  *  @return {object}
  */
-async function getCourse(courseId) {
+async function getCourse(courseid) {
     try {
-        let course = await courseModel.findOne({ accountId: accountId });
+        let course = await courseModel.findOne({ courseid: courseid });
         if (course == null) {
-            console.log("unable to find course by courseId: " + courseId);
+            console.log("unable to find course by courseid: " + courseid);
             return user;
         }
-        console.log("successfully find course by courseId: " + courseId);
+        console.log("successfully find course by courseid: " + courseid);
         return course;
     } catch (err) {
-        util.HandleError(err, "user.entity.js", "getUserById", "accountId: " + accountId);
+        util.HandleError(err, "user.entity.js", "getUserById", "courseid: " + courseid);
+        return null;
+    }
+}
+
+async function getDepartmentsResponse() {
+    try {
+        departmentsList = [];
+        departmentsList = courseModel.distinct("department");
+        return departmentsList;
+    } catch (err) {
+        console.log(err);
         return null;
     }
 }
