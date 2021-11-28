@@ -54,7 +54,7 @@ async function getDetail(req, res) {
     }
 }
 
-async function getDepartments(res) {
+async function getDepartments(req, res) {
     try {
         let response = await courseBasics.getDepartmentsResponse();
         if (response) {
