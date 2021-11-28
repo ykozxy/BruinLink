@@ -17,6 +17,7 @@ module.exports = {
         course: {
             search: "/course/search",
             getDetail: "/course/getDetail",
+            getDepartments: "/course/getDepartments",
         },
         club: {
             search: "/club/search",
