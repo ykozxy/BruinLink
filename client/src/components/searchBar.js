@@ -6,36 +6,48 @@ import PropTypes from "prop-types";
 export default class SearchBar extends React.Component {
     static propTypes = {
         initialQuery: PropTypes.string,
+        bgColor: PropTypes.string,
+        size: PropTypes.oneOf(["small", "medium", "large"]),
+    }
+
+    static defaultProps = {
+        initialQuery: "",
+        size: "small",
+        bgColor: "rgb(232, 241, 250)",
     }
 
     constructor(props) {
         super(props);
 
-        this.state = {query: ""};
+        this.state = {query: "", changed: false};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     handleChange(event) {
-        this.setState({query: event.target.value})
+        this.setState({query: event.target.value, changed: true})
     }
 
     handleKeyPress(event) {
         if (event.charCode === 13) {
-            window.location.href = `/search?query=${encodeURIComponent(this.state.query)}`
+            if (this.state.query !== "") {
+                window.location.href = `/search?query=${encodeURIComponent(this.state.query)}`;
+            } else {
+                window.location.href = "/search";
+            }
         }
     }
 
     render() {
         return (
-            <Box bgcolor="rgb(232, 241, 250)">
+            <Box width={1} bgcolor={this.props.bgColor}>
                 <TextField
                     fullWidth
-                    size="small"
+                    size={this.props.size}
                     variant="outlined"
                     type="search"
-                    value={this.props.initialQuery}
+                    value={this.state.changed ? this.state.query : (this.props.initialQuery == null ? "" : this.props.initialQuery)}
                     onChange={this.handleChange}
                     onKeyPress={this.handleKeyPress}
                     InputProps={{

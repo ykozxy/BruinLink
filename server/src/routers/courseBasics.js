@@ -1,27 +1,13 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import courseModel from './courseModel';
 
 var courseBasics = {};
 courseBasics.findbyname = findbyname;
-courseBasics.setgmLink = setgmLink;
-courseBasics.setdsLink = setdsLink;
 courseBasics.updateProf = updateProf;
 courseBasics.getCourseInfo = getCourseInfo;
 courseBasics.getDepartmentsResponse = getDepartmentsResponse;
 courseBasics.getCourseResponse = getCourseResponse;
 module.exports = courseBasics;
-
-const courseSchema = new Schema({
-    coursename: {type: String, required: true, unique: true},
-    courseid: {type: String, required: true, unique: true},
-    profname: {type: String, required: true},
-    department: {type: String, required: true},
-    division: {type: String, required: true},
-    groupmeLink: {type: String},
-    discordLink: {type: String},
-    wechatQRCode: {type: Buffer}
-});
-const courseModel = mongoose.model('Course', courseSchema);
 
 /**
  * finds course in mongodb by keyword
@@ -99,68 +85,6 @@ async function register(coursename, profname, department) {
         return true;
     } catch (err) {
         console.log(err);
-        return false;
-    }
-}
-
-/**
- *  setgmlink with 2 inputs
- *
- *  @param {String} courseId
- *  @param {String} link
- *
- *  @return {boolean} whether setgmLink is successful or not
- */
-async function setgmLink(courseid, link) {
-    try {
-        if (link == null || courseId == null) {
-            console.log("cannot set empty gmlink; please provide a valid gmlink");
-            return;
-        }
-        const filter = {courseid: courseid};
-        const update = {groupmeLink: link};
-        const options = {runValidators: true, upsert: true};
-        let user = await courseModel.updateOne(filter, {$set: update}, options);
-        if (user == null) {
-            console.log("unable to find the course; failed to set link");
-            return false;
-        } else {
-            console.log("set link to " + link);
-            return true;
-        }
-    } catch (err) {
-        console.log("Error pops");
-        return false;
-    }
-}
-
-/**
- *  setdslink with 2 inputs
- *
- *  @param {String} courseId
- *  @param {String} link
- *
- *  @return {boolean} whether setdsLink is successful or not
- */
-async function setdsLink(courseid, link) {
-    try {
-        if (link == null || courseId == null) {
-            console.log("cannot set empty dslink; please provide a valid dslink");
-            return;
-        }
-        const filter = {courseid: courseid};
-        const update = {discordLink: link};
-        const options = {runValidators: true, upsert: true};
-        let user = await courseModel.updateOne(filter, {$set: update}, options);
-        if (user == null) {
-            console.log("unable to find the course; failed to set link");
-            return false;
-        } else {
-            console.log("set link to " + link);
-            return true;
-        }
-    } catch (err) {
-        console.log("Error pops");
         return false;
     }
 }

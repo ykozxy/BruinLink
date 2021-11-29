@@ -8,14 +8,16 @@ export default class FilterBox extends React.Component {
     static propTypes = {
         // The string representing the search query of the search page
         query: PropTypes.string,
+        department: PropTypes.string,
+        division: PropTypes.string,
     }
 
     constructor(props) {
         super(props);
 
         this.state = {
-            department: "",
-            division: "",
+            department: props.department == null ? null : props.department,
+            division: props.division == null? null : (props.division === "lower" ? "Lower division" : "Upper division"),
 
             departmentList: [],
             divisionList: ["Lower division", "Upper division"],
@@ -48,16 +50,15 @@ export default class FilterBox extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        console.log(this.props.query)
         let url = "/search?";
-        if (this.props.query) {
+        if (this.props.query != null && this.props.query !== "") {
             console.log(this.props.query)
             url += `query=${encodeURIComponent(this.props.query)}&`;
         }
-        if (this.state.department !== "") {
+        if (this.state.department != null && this.state.department !== "") {
             url += `department=${encodeURIComponent(this.state.department.toLowerCase())}&`;
         }
-        if (this.state.division !== "") {
+        if (this.state.division != null && this.state.division !== "") {
             let d = this.state.division === "Lower division" ? "lower" : "upper";
             url += `division=${encodeURIComponent(d)}&`;
         }
@@ -97,6 +98,7 @@ export default class FilterBox extends React.Component {
                     <Grid item xs={8}>
                         <Autocomplete disablePortal
                                       fullWidth
+                                      value={this.state.department}
                                       onChange={(e, v) => this.handleChange("department", v)}
                                       renderInput={(params) =>
                                           <TextField {...params} label="department"/>
@@ -114,6 +116,7 @@ export default class FilterBox extends React.Component {
                     <Grid item xs={8}>
                         <Autocomplete disablePortal
                                       fullWidth
+                                      value={this.state.division}
                                       onChange={(e, v) => this.handleChange("division", v)}
                                       renderInput={(params) =>
                                           <TextField {...params} label="division"/>

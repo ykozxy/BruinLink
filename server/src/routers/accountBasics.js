@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 const {v4: uuidv4} = require('uuid');
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
+import accountModel from './accountModel';
+import verificationModel from './accountModel';
 
 const API_KEY = config.API_KEY;
 sgMail.setApiKey(API_KEY);
@@ -14,25 +16,8 @@ accountBasics.changeEmailResponse = changeEmailResponse;
 accountBasics.changePasswordResponse = changePasswordResponse;
 accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
+accountBasics.getEmailResponse = getEmailResponse;
 module.exports = accountBasics;
-
-const accountSchema = new Schema({
-    email: {type: String, required: true, unique: true},
-    password: { type: String, required: true },
-    token: { type: String, required: true, unique: true },
-    expire_date: { type: Date, default: null}
-    //courseList: [courseSchema],
-    //clubList: [clubSchema]
-});
-
-const verificationSchema = new Schema({
-    createdAt: {type: Date, expires: 300, default: Date.now},
-    unique: {type: String, required: true, unique: true},
-    code: {type: String, required: true, unique: true},
-});
-
-const accountModel = mongoose.model('Account', accountSchema);
-const verificationModel = mongoose.model('Verification', verificationSchema);
 
 /** @param {String} email
  @param {String} password
@@ -94,14 +79,19 @@ async function setEmail(old_email, password, new_email, unique, code) {
     }
 }
 
-/** @param {String} email
+/** @param {String} token
  */
 
-async function getEmail(email) {
+async function getEmail(token) {
     try {
-        let email_get = await accountModel.findOne({email: email}, 'email');
-        if (email_get == null) {
-            console.log("email: " + email + " not found");
+        let account = await accountModel.findOne({ token: token });
+        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+            console.log("token expired");
+            return null;
+        }
+        email = account.email;
+        if (email == null) {
+            console.log("token: " + token + " not found");
             return null;
         }
         console.log("email successfully found: " + email);
@@ -324,6 +314,23 @@ async function verificationCodeResponse(account_arg) {
         return {
             unique: "",
             code: ""
+        };
+    }
+}
+
+async function getEmailResponse(account_arg) {
+    try {
+        let token = account_arg.token;
+        let email = await getEmail(token);
+        return {
+            email: email,
+            succeed: true
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            email: "",
+            succeed: false
         };
     }
 }

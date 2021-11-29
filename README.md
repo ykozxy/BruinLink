@@ -1,4 +1,16 @@
 <!-- Add banner here -->
+<!-- [![Contributors](https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square)
+)](https://github.com/ykozxy/BruinLink/graphs/contributors)
+-->
+[contributors-shield]: https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square
+[contributors-url]: https://github.com/ykozxy/BruinLink/graphs/contributors
+
+<!--
+
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+-->
 
 # BruinLink
 BruinLink is a website which designs for students in UCLA. Our project website is a platform gathering the social media links or QR codes of UCLA class group chats and clubs. When you want to join clubs or find classmates, it’s inconvenient to search many possible keywords on Google to look for a club you are interested in or ask others many times whether there is a GroupMe link for a certain course.
@@ -69,24 +81,15 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 
 # Installation
 [(Back to top)](#table-of-contents)
+
 You will find the detalls in the client and server folders.
 
-<!--To have BruinLink, please clone it to your PC. 
-```sh
-git clone https://github.com/ykozxy/BruinLink.git
-```
-
-Our project use React, [Node](http://nodejs.org) and [npm](https://npmjs.com), so please install it first before you start the program if you don't have it.
-
-```sh
-$ npm install --global standard-readme-spec
-```
--->
 
 # Usage
 [(Back to top)](#table-of-contents)
 
 <!-- This is optional and it is used to give the user info on how to use the project after installation. This could be added in the Installation section also. -->
+See the details README.dm in client folder please. 
 
 # Development
 [(Back to top)](#table-of-contents)
@@ -151,3 +154,4 @@ Leave a star in GitHub, give a clap in Medium and share this guide if you found 
 <!-- Add the footer here -->
 
 <!-- ![Footer](https://github.com/navendu-pottekkat/awesome-readme/blob/master/fooooooter.png) -->
+

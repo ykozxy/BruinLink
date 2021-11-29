@@ -64,7 +64,6 @@ const Item = styled(Paper)(({ theme }) => ({
               });
       console.log(classArray)
 
-
     return (
       <Box 
             sx={{

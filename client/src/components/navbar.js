@@ -11,6 +11,12 @@ import {Box, Grid} from "@mui/material";
 class Navbar extends React.Component {
     static propTypes = {
         isLogin: PropTypes.bool.isRequired,
+        showSearchBar: PropTypes.bool,
+        query: PropTypes.string,
+    }
+
+    static defaultProps = {
+        showSearchBar: true,
     }
 
     constructor(props) {
@@ -32,7 +38,7 @@ class Navbar extends React.Component {
                     </Grid>
                     <Grid item xs={1}/>
                     <Grid item xs={17}>
-                        <SearchBar/>
+                        {this.props.showSearchBar ? <SearchBar initialQuery={this.props.query}/> : <></>}
                     </Grid>
                     <Grid item xs={18}>
                         {
