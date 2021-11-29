@@ -1,6 +1,6 @@
 <!-- Add banner here -->
 
-# Project Title
+# BruinLink
 
 <!-- Add buttons here -->
 
@@ -70,15 +70,14 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 # Installation
 [(Back to top)](#table-of-contents)
 
-<!-- *You might have noticed the **Back to top** button(if not, please notice, it's right there!). This is a good idea because it makes your README **easy to navigate.*** 
+To have BruinLink, please clone it. 
+```git clone https://github.com/ykozxy/BruinLink.git```
 
-The first one should be how to install(how to generally use your project or set-up for editing in their machine).
+Our project use React, [Node](http://nodejs.org) and [npm](https://npmjs.com), so please install it first before you start the program if you don't have it.
 
-This should give the users a concrete idea with instructions on how they can use your project repo with all the steps.
-
-Following this steps, **they should be able to run this in their device.**
-
-A method I use is after completing the README, I go through the instructions from scratch and check if it is working. -->
+```sh
+$ npm install --global standard-readme-spec
+```
 
 <!-- Here is a sample instruction:
 
