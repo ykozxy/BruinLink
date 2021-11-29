@@ -100,13 +100,18 @@ async function setEmail(old_email, password, new_email, unique, code) {
 
 async function getEmail(token) {
     try {
-        let email_get = await accountModel.findOne({token: token}, 'email');
-        if (email_get == null) {
+        let account = await accountModel.findOne({ token: token });
+        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+            console.log("token expired");
+            return null;
+        }
+        email = account.email;
+        if (email == null) {
             console.log("token: " + token + " not found");
             return null;
         }
-        console.log("email successfully found: " + email_get);
-        return email_get.email;
+        console.log("email successfully found: " + email);
+        return email;
     } catch (err) {
         console.log(err);
         return null;
