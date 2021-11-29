@@ -202,7 +202,7 @@ export default class LoginPage extends React.Component {
     render() {
         return (
             <div>
-                <Navbar isLogin={false}/>
+                <Navbar isLogin={false} showSearchBar={false}/>
                 <Container maxWidth="sm">
                     <LoginForm/>
                 </Container>
