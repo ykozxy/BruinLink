@@ -93,15 +93,15 @@ async function setQRCode(courseid, image) {
 
 async function uploadLinkResponse(upload_arg){
     try{
-        token = upload_arg.token;
+        let token = upload_arg.token;
         let account = await accountModel.findOne({ token: token });
         if (alert(account.expire_date.getTime() < Date.now.getTime())) {
             console.log("token expired");
             return "token expired";
         }
-        courseid = upload_arg.courseid;
-        platform = upload_arg.platform;
-        link = upload_arg.link;
+        let courseid = upload_arg.courseid;
+        let platform = upload_arg.platform;
+        let link = upload_arg.link;
         if(platform == "groupme"){
             setGMLink(courseid, link);
             return "link successfully uploaded";
@@ -119,14 +119,14 @@ async function uploadLinkResponse(upload_arg){
 
 async function uploadQrCodeResponse(upload_arg){
     try{
-        token = upload_arg.token;
+        let token = upload_arg.token;
         let account = await accountModel.findOne({ token: token });
         if (alert(account.expire_date.getTime() < Date.now.getTime())) {
             console.log("token expired");
             return "token expired";
         }
-        courseid = upload_arg.courseid;
-        image = upload_arg.image;
+        let courseid = upload_arg.courseid;
+        let image = upload_arg.image;
         setQRCode(courseid, image);
     } catch (err) {
         console.error(err);
