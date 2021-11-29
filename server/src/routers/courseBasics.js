@@ -12,14 +12,14 @@ courseBasics.getCourseResponse = getCourseResponse;
 module.exports = courseBasics;
 
 const courseSchema = new Schema({
-    coursename: { type: String, required: true, unique: true },
-    courseid: { type: String, required: true, unique: true },
-    profname: { type: String, required: true },
-    department: { type: String, required: true },
-    division: { type: String, required: true },
-    groupmeLink: { type: String },
-    discordLink: { type: String },
-    wechatQRCode: { type: Buffer }
+    coursename: {type: String, required: true, unique: true},
+    courseid: {type: String, required: true, unique: true},
+    profname: {type: String, required: true},
+    department: {type: String, required: true},
+    division: {type: String, required: true},
+    groupmeLink: {type: String},
+    discordLink: {type: String},
+    wechatQRCode: {type: Buffer}
 });
 const courseModel = mongoose.model('Course', courseSchema);
 
@@ -36,10 +36,10 @@ async function findbyname(course, department, division) {
     let department_key = new RegExp(department, 'i');
     let division_key = new RegExp(division, 'i');
     var i;
-    courses = courseModel.find({
-        coursename: {$regex: course_key, $options: 'i'},
-        department: {$regex: department_key, $options: 'i'},
-        divison: {$regex: division_key, $options: 'i'}
+    let courses = await courseModel.find({
+        coursename: {$regex: course_key},
+        department: {$regex: department_key},
+        divison: {$regex: division_key}
     });
     for (i = 0; i < courses.length; i++) {
         get_course = courses[i];
@@ -67,9 +67,10 @@ async function findbyname(course, department, division) {
                 discord: discord
             });
         }
-        return courselist;
     }
+    return courselist;
 }
+
 /**
  *  register user with 3 inputs
  *
@@ -96,31 +97,30 @@ async function register(coursename, profname, department) {
         console.log("successfully register new user.");
         console.log(newCourse);
         return true;
-    }
-    catch (err) {
+    } catch (err) {
         console.log(err);
         return false;
     }
 }
 
 /**
-*  setgmlink with 2 inputs
-*
-*  @param {String} courseId
-*  @param {String} link
-*
-*  @return {boolean} whether setgmLink is successful or not
-*/
+ *  setgmlink with 2 inputs
+ *
+ *  @param {String} courseId
+ *  @param {String} link
+ *
+ *  @return {boolean} whether setgmLink is successful or not
+ */
 async function setgmLink(courseid, link) {
     try {
         if (link == null || courseId == null) {
             console.log("cannot set empty gmlink; please provide a valid gmlink");
             return;
         }
-        const filter = { courseid: courseid };
-        const update = { groupmeLink: link };
-        const options = { runValidators: true, upsert: true };
-        let user = await courseModel.updateOne(filter, { $set: update }, options);
+        const filter = {courseid: courseid};
+        const update = {groupmeLink: link};
+        const options = {runValidators: true, upsert: true};
+        let user = await courseModel.updateOne(filter, {$set: update}, options);
         if (user == null) {
             console.log("unable to find the course; failed to set link");
             return false;
@@ -135,23 +135,23 @@ async function setgmLink(courseid, link) {
 }
 
 /**
-*  setdslink with 2 inputs
-*
-*  @param {String} courseId
-*  @param {String} link
-*
-*  @return {boolean} whether setdsLink is successful or not
-*/
+ *  setdslink with 2 inputs
+ *
+ *  @param {String} courseId
+ *  @param {String} link
+ *
+ *  @return {boolean} whether setdsLink is successful or not
+ */
 async function setdsLink(courseid, link) {
     try {
         if (link == null || courseId == null) {
             console.log("cannot set empty dslink; please provide a valid dslink");
             return;
         }
-        const filter = { courseid: courseid };
-        const update = { discordLink: link };
-        const options = { runValidators: true, upsert: true };
-        let user = await courseModel.updateOne(filter, { $set: update }, options);
+        const filter = {courseid: courseid};
+        const update = {discordLink: link};
+        const options = {runValidators: true, upsert: true};
+        let user = await courseModel.updateOne(filter, {$set: update}, options);
         if (user == null) {
             console.log("unable to find the course; failed to set link");
             return false;
@@ -166,23 +166,23 @@ async function setdsLink(courseid, link) {
 }
 
 /**
-*  updateProf with 2 inputs
-*
-*  @param {String} courseId
-*  @param {String} profname
-*
-*  @return {boolean} whether updateProf is successful or not
-*/
+ *  updateProf with 2 inputs
+ *
+ *  @param {String} courseId
+ *  @param {String} profname
+ *
+ *  @return {boolean} whether updateProf is successful or not
+ */
 async function updateProf(courseid, profname) {
     try {
         if (profname == null || courseId == null) {
             console.log("cannot set profname null; please provide a valid profname");
             return;
         }
-        const filter = { courseid: courseid };
-        const update = { profname: profname };
-        const options = { runValidators: true, upsert: true };
-        let user = await courseModel.updateOne(filter, { $set: update }, options);
+        const filter = {courseid: courseid};
+        const update = {profname: profname};
+        const options = {runValidators: true, upsert: true};
+        let user = await courseModel.updateOne(filter, {$set: update}, options);
         if (user == null) {
             console.log("unable to find the course; failed to set profname");
             return false;
@@ -206,7 +206,7 @@ async function updateProf(courseid, profname) {
 
 async function getCourseInfo(courseid) {
     try {
-        let course = await courseModel.findOne({ courseid: courseid });
+        let course = await courseModel.findOne({courseid: courseid});
         if (course == null) {
             console.log("unable to find course by courseid: " + courseid);
             return user;

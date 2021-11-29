@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const courseBasics = require('./courseBasics');
 
-router.get('/search', getCourse);
+router.post('/search', getCourse);
 router.post('/getDetail', getDetail);
 router.post('/getDepartments', getDepartments);
 
@@ -25,6 +25,7 @@ async function getCourse(req, res) {
             })
         }
     } catch (err) {
+        console.error(err);
         res.send({
             status: "error",
             message: err

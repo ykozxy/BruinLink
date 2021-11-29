@@ -1,7 +1,7 @@
 <!-- Add banner here -->
 
 # BruinLink
-
+BruinLink is a website which designs for students in UCLA. Our project website is a platform gathering the social media links or QR codes of UCLA class group chats and clubs. When you want to join clubs or find classmates, it’s inconvenient to search many possible keywords on Google to look for a club you are interested in or ask others many times whether there is a GroupMe link for a certain course.
 <!-- Add buttons here -->
 
 <!-- Describe your project in brief -->
@@ -69,23 +69,19 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 
 # Installation
 [(Back to top)](#table-of-contents)
+You will find the detalls in the client and server folders.
 
-To have BruinLink, please clone it. 
-```git clone https://github.com/ykozxy/BruinLink.git```
+<!--To have BruinLink, please clone it to your PC. 
+```sh
+git clone https://github.com/ykozxy/BruinLink.git
+```
 
 Our project use React, [Node](http://nodejs.org) and [npm](https://npmjs.com), so please install it first before you start the program if you don't have it.
 
 ```sh
 $ npm install --global standard-readme-spec
 ```
-
-<!-- Here is a sample instruction:
-
-To use this project, first clone the repo on your device using the command below:
-
-```git init```
-
-```git clone https://github.com/navendu-pottekkat/nsfw-filter.git``` -->
+-->
 
 # Usage
 [(Back to top)](#table-of-contents)
@@ -105,6 +101,8 @@ Ideally, you should keep the README simple. If you need to add more complex expl
 
 # Contribute
 [(Back to top)](#table-of-contents)
+### Contributors
+<a href="https://github.com/ykozxy/BruinLink/graphs/contributors">
 
 <!-- This is where you can let people know how they can **contribute** to your project. Some of the ways are given below.
 
