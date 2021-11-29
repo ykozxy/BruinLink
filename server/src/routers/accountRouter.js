@@ -8,6 +8,7 @@ router.post('/changeEmail', accountChangeEmail);
 router.post('/changePassword', accountChangePassword);
 router.post('/resetPassword', accountResetPassword);
 router.post('/emailVerify', sendVerificationCode);
+router.post("/getEmail", getEmail);
 module.exports = router;
 
 async function accountLogin(req, res) {
@@ -149,3 +150,25 @@ async function sendVerificationCode(req, res) {
     }
 }
 
+async function getEmail(req, res) {
+    try {
+        let response = await accountBasics.getEmailResponse(req.body);
+        if (response.succeed) {
+            res.send({
+                status: "success",
+                email: response.email
+            })
+        }
+        else {
+            res.send({
+                status: "failed",
+                message: ""
+            })
+        }
+    } catch (err) {
+        res.send({
+            status: "failed",
+            message: err
+        })
+    }
+}

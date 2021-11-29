@@ -13,6 +13,7 @@ module.exports = {
             changeEmail: "/account/changeEmail",
             changePassword: "/account/changePassword",
             resetPassword: "/account/resetPassword",
+            getEmail: "/account/getEmail",
         },
         course: {
             search: "/course/search",

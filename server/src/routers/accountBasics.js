@@ -14,6 +14,7 @@ accountBasics.changeEmailResponse = changeEmailResponse;
 accountBasics.changePasswordResponse = changePasswordResponse;
 accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
+accountBasics.getEmailResponse = getEmailResponse;
 module.exports = accountBasics;
 
 const accountSchema = new Schema({
@@ -94,18 +95,18 @@ async function setEmail(old_email, password, new_email, unique, code) {
     }
 }
 
-/** @param {String} email
+/** @param {String} token
  */
 
-async function getEmail(email) {
+async function getEmail(token) {
     try {
-        let email_get = await accountModel.findOne({email: email}, 'email');
+        let email_get = await accountModel.findOne({token: token}, 'email');
         if (email_get == null) {
-            console.log("email: " + email + " not found");
+            console.log("token: " + token + " not found");
             return null;
         }
-        console.log("email successfully found: " + email);
-        return email;
+        console.log("email successfully found: " + email_get);
+        return email_get.email;
     } catch (err) {
         console.log(err);
         return null;
@@ -324,6 +325,23 @@ async function verificationCodeResponse(account_arg) {
         return {
             unique: "",
             code: ""
+        };
+    }
+}
+
+async function getEmailResponse(account_arg) {
+    try {
+        let token = account_arg.token;
+        let email = await getEmail(token);
+        return {
+            email: email,
+            succeed: true
+        }
+    } catch (e) {
+        console.log(e);
+        return {
+            email: "",
+            succeed: false
         };
     }
 }
