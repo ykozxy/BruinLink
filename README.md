@@ -1,11 +1,12 @@
 <!-- Add banner here -->
-[![Contributors](https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square)
+<!-- [![Contributors](https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square)
 )](https://github.com/ykozxy/BruinLink/graphs/contributors)
-
-
-<!--
+-->
 [contributors-shield]: https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square
 [contributors-url]: https://github.com/ykozxy/BruinLink/graphs/contributors
+
+<!--
+
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
