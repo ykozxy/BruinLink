@@ -1,7 +1,7 @@
 import $ from "jquery"
 import React from "react";
 import PropTypes from "prop-types";
-import {Alert, Box, Button, Grid, Popover, Stack, SvgIcon, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Grid, Popover, Skeleton, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
@@ -88,7 +88,13 @@ class LinkDisplay extends React.Component {
     }
 
     handleOpenLink() {
-        window.open(this.props.link);
+        let protocol = /^http/;
+        if (protocol.test(this.props.link)) {
+            window.open(this.props.link);
+        } else {
+            console.log(`Link "${this.props.link}" doesn't have a protocol.`);
+            window.open(`//${this.props.link}`);
+        }
     }
 
     render() {
@@ -131,8 +137,10 @@ class LinkDisplay extends React.Component {
 
 class CodeDisplay extends React.Component {
     static propTypes = {
-        /* The link to the qr codek */
-        link: PropTypes.string.isRequired,
+        /* The buffer of the image */
+        buffer: PropTypes.string.isRequired,
+        /* The image type of the buffer */
+        imageType: PropTypes.string.isRequired,
     }
 
     constructor(props) {
@@ -176,7 +184,10 @@ class CodeDisplay extends React.Component {
                                  vertical: 'bottom',
                                  horizontal: 'center',
                              }}>
-                        <img src={this.props.link} alt="QR code"/>
+                        <img src={`data:${this.props.imageType};base64,${this.props.buffer}`}
+                             alt="QR code"
+                             style={{maxWidth: 700, maxHeight: 500}}
+                        />
                     </Popover>
                 </Grid>
             </Grid>
@@ -557,11 +568,15 @@ export default class GroupChatBar extends React.Component {
         /* Unique ID of the course/club */
         id: PropTypes.string.isRequired,
 
+        /* When set to true, will treat props.link as a link to the QR code image  */
+        isQrCode: PropTypes.bool,
+
         /* The link of group chat, null for no-link */
         link: PropTypes.string,
 
-        /* When set to true, will treat props.link as a link to an the QR code image  */
-        isQrCode: PropTypes.bool,
+        /* Image buffer and type of QR code */
+        imageBuffer: PropTypes.string,
+        imageType: PropTypes.string,
 
         /* Icon config. Must provide a file or svg pat. */
         // SVG path of icon
@@ -570,8 +585,25 @@ export default class GroupChatBar extends React.Component {
         iconImg: PropTypes.string,
         // Color of SVG icons
         iconColor: PropTypes.string,
+
+        loading: PropTypes.bool,
     }
 
+    renderGroupChatStatus() {
+        // Display components based on link type and availability
+        if (this.props.link || (this.props.imageBuffer && this.props.imageType)) {
+            if (this.props.isQrCode) {
+                return <CodeDisplay buffer={this.props.imageBuffer} imageType={this.props.imageType}/>
+            } else {
+                return <LinkDisplay link={this.props.link}/>
+            }
+        } else {
+            return <NoLinkDisplay type={this.props.isQrCode ? "img" : "link"}
+                                  id={this.props.id}
+                                  name={this.props.name}
+                                  platform={this.props.name.toLowerCase()}/>
+        }
+    }
 
     render() {
         /* Generate the correct icon component */
@@ -606,15 +638,9 @@ export default class GroupChatBar extends React.Component {
                 <Grid item xs={5}/>
                 <Grid item xs={35}>
                     {
-                        // Display components based on link type and availability
-                        this.props.link ?
-                            (this.props.isQrCode ?
-                                    <CodeDisplay link={this.props.link}/> :
-                                    <LinkDisplay link={this.props.link}/>
-                            ) :
-                            <NoLinkDisplay type={this.props.isQrCode ? "img" : "link"} id={this.props.id}
-                                           name={this.props.name}
-                                           platform={this.props.name.toLowerCase()}/>
+                        this.props.loading ?
+                            <Skeleton variant="rectangle" animation="wave"/> :
+                            this.renderGroupChatStatus()
                     }
                 </Grid>
             </Grid>
