@@ -1,11 +1,8 @@
 <!-- Add banner here -->
-<!-- [![Contributors](https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square)
-)](https://github.com/ykozxy/BruinLink/graphs/contributors)
--->
-[contributors-shield]: https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square
-[contributors-url]: https://github.com/ykozxy/BruinLink/graphs/contributors
-
+[![Contributors](https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square)
+](https://github.com/ykozxy/BruinLink/graphs/contributors)
 <!--
+https://img.shields.io/github/contributors/github.com/ykozxy/BruinLink/graphs/.svg?style=for-the-badge
 
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -51,15 +48,9 @@ I use [**Shields IO**](https://shields.io/) for making badges. It is a simple an
 
 ![Tweet](https://img.shields.io/twitter/url?style=flat-square&logo=twitter&url=https%3A%2F%2Fnavendu.me%2Fnsfw-filter%2Findex.html): This is not essential but it is a cool way to let others know about your project! Clicking this button automatically opens twitter and writes a tweet about your project and link to it. All the user has to do is to click tweet. Isn't that neat? -->
 
-# Demo-Preview
+# Motivation
 
-<!-- Add a demo for your project -->
-
-<!-- After you have written about your project, it is a good idea to have a demo/preview(**video/gif/screenshots** are good options) of your project so that people can know what to expect in your project. You could also add the demo in the previous section with the product description.
-
-Here is a random GIF as a placeholder.
-
-![Random GIF](https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif) -->
+We are committed to offer all the Bruins a platform to find your group whatever classes or clubs. You don't need to worry where your groups are, just search here. And if there is no class or club you need, you can either create it by your own or subscribe it until others does.
 
 # Table of contents
 
@@ -68,7 +59,7 @@ Here is a random GIF as a placeholder.
 Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README. -->
 
 - [Project Title](#project-title)
-- [Demo-Preview](#demo-preview)
+- [Motivation](#motivation)
 - [Table of contents](#table-of-contents)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -82,7 +73,7 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 # Installation
 [(Back to top)](#table-of-contents)
 
-You will find the detalls in the client and server folders.
+You will find the detalls in the [client](https://github.com/ykozxy/BruinLink/blob/master/client/README.md) and [server](https://github.com/ykozxy/BruinLink/blob/master/server/README.md) folders.
 
 
 # Usage
@@ -107,6 +98,12 @@ Ideally, you should keep the README simple. If you need to add more complex expl
 ### Contributors
 <a href="https://github.com/ykozxy/BruinLink/graphs/contributors">
 
+[Xuyang Zhou](https://github.com/ykozxy)
+[Sam Xu](https://github.com/samxu01)
+[Laiyin Dai](https://github.com/ng666)
+[Mike Shi](https://github.com/Spiderpc)
+[Shiyan Fu](https://github.com/Fshiyan)
+
 <!-- This is where you can let people know how they can **contribute** to your project. Some of the ways are given below.
 
 Also this shows how you can add subsections within a section. -->
@@ -130,6 +127,8 @@ You could also give guidelines for submitting and issue or a pull request to you
 Personally and by standard, you should use a [issue template](https://github.com/navendu-pottekkat/nsfw-filter/blob/master/ISSUE_TEMPLATE.md) and a [pull request template](https://github.com/navendu-pottekkat/nsfw-filter/blob/master/PULL_REQ_TEMPLATE.md)(click for examples) so that when a user opens a new issue they could easily format it as per your project guidelines.
 
 You could also add contact details for people to get in touch with you regarding your project. -->
+
+We will update here after we finishing 1.0 ver.
 
 # License
 [(Back to top)](#table-of-contents)
