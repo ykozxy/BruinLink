@@ -7,8 +7,9 @@ courseBasics.register = register;
 courseBasics.setgmLink = setgmLink;
 courseBasics.setdsLink = setdsLink;
 courseBasics.updateProf = updateProf;
-courseBasics.getCourse = getCourse;
+courseBasics.getCourseInfo = getCourseInfo;
 courseBasics.getDepartmentsResponse = getDepartmentsResponse;
+courseBasics.getCourseResponse = getCourseResponse;
 module.exports = courseBasics;
 
 const courseSchema = new Schema({
@@ -30,19 +31,43 @@ const courseModel = mongoose.model('Course', courseSchema);
  * @return {list} a course instance of courseModel
  *      when err or user not found, course = null
  */
-async function findbyname(keyword) {
-    const s = keyword;
+async function findbyname(course, department, division) {
     var courselist= [];
-    const regex = new RegExp(s, 'i');
-    courseModel.find({ title: { $regex: regex, $options: 'i' } },
-        function (err, result) {
-        if (err) {
-            console.log(err);
-        }
-        else {
-             courselist.push(result);
-        }
-    })
+    let course_key = new RegExp(course, 'i');
+    let department_key = new RegExp(department, 'i');
+    let division_key = new RegExp(division, 'i'),
+    var i;
+    courses = courseModel.find({
+        coursename: { $regex: course_key, $options: 'i' },
+        department: { $regex: department_key, $options: 'i' },
+        divison: { $regex: division_key, $options: 'i' }
+    });
+    for (i = 0; i < courses.length; i++) {
+        get_course = courses[i];
+        if (get_course != null) {
+            let wechat = false;
+            let groupme = false;
+            let discord = false;
+            if (get_course.wechatQRCode != null) {
+                wechat = true;
+            }
+            if (get_course.groupmeLink != null) {
+                groupme = true;
+            }
+            if (get_course.discord != null) {
+                discord = true;
+            }
+            courselist.push({
+                courseid: get_course.courseid,
+                coursename: get_course.coursename,
+                profname: get_course.profname,
+                department: get_course.department,
+                divison: get_course.divison,
+                wechat: wechat,
+                groupme: groupme,
+                discord: discord
+            });
+    }
     return courselist;
 }
 
@@ -179,7 +204,8 @@ async function updateProf(courseid, profname) {
  *
  *  @return {object}
  */
-async function getCourse(courseid) {
+
+async function getCourseInfo(courseid) {
     try {
         let course = await courseModel.findOne({ courseid: courseid });
         if (course == null) {
@@ -199,6 +225,18 @@ async function getDepartmentsResponse() {
         departmentsList = [];
         departmentsList = courseModel.distinct("department");
         return departmentsList;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getCourseResponse(course_arg) {
+    try {
+        coursename = course_arg.coursename;
+        department = course_arg.department;
+        division = course_arg.division;
+        return findbyname(coursename, department, division);
     } catch (err) {
         console.log(err);
         return null;
