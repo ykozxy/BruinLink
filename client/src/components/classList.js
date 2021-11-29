@@ -34,8 +34,8 @@ const Item = styled(Paper)(({ theme }) => ({
         let data = {coursename:this.props.courseName,
                     department: this.props.department,
                     division: this.props.division};
-          //console.log("Search Data from User:");
-          //console.log(data);
+          console.log("Search Data from User:");
+          console.log(data);
       // let data = {coursename:"",
       //             department: "",
       //             division: ""}
@@ -46,6 +46,8 @@ const Item = styled(Paper)(({ theme }) => ({
               })
 
               .done((data) => {
+                if(data.courselist){
+                  //console.log("CourseList:");
                   //console.log(data.courselist);
                   for (let i =0;i<data.courselist.length;i++)
                   {
@@ -61,6 +63,10 @@ const Item = styled(Paper)(({ theme }) => ({
                   // />)
                   classArray.push(class_returned);
                   }
+                }
+                else{
+                  location.href='/'
+                }
               });
       console.log(classArray)
 
