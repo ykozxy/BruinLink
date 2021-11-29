@@ -37,7 +37,9 @@ export default withRouter(class SearchPage extends React.Component {
                                 justifyContent: "flex-start",
                                 mt: 5,
                             }}>
-                                <FilterBox/>
+                                <FilterBox query={this.state.query}
+                                           department={this.state.department}
+                                           division={this.state.division}/>
                                 <ClassList/>
                             </Box>
                         </div>
@@ -53,7 +55,9 @@ export default withRouter(class SearchPage extends React.Component {
                     justifyContent: "flex-start",
                     mt: 5,
                 }}>
-                    <FilterBox/>
+                    <FilterBox query={this.state.query}
+                               department={this.state.department}
+                               division={this.state.division}/>
                     <ClassList 
                         courseName={this.state.query}
                         department={this.state.department}

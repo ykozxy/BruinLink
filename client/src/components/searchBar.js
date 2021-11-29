@@ -11,6 +11,7 @@ export default class SearchBar extends React.Component {
     }
 
     static defaultProps = {
+        initialQuery: "",
         size: "small",
         bgColor: "rgb(232, 241, 250)",
     }
@@ -18,14 +19,14 @@ export default class SearchBar extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {query: ""};
+        this.state = {query: "", changed: false};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
     handleChange(event) {
-        this.setState({query: event.target.value})
+        this.setState({query: event.target.value, changed: true})
     }
 
     handleKeyPress(event) {
@@ -42,7 +43,7 @@ export default class SearchBar extends React.Component {
                     size={this.props.size}
                     variant="outlined"
                     type="search"
-                    value={this.props.initialQuery}
+                    value={this.state.changed ? this.state.query : this.props.initialQuery}
                     onChange={this.handleChange}
                     onKeyPress={this.handleKeyPress}
                     InputProps={{
