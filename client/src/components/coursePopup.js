@@ -12,7 +12,7 @@ export default class CoursePopup extends React.Component {
         open: PropTypes.bool.isRequired,
         onClose: PropTypes.func.isRequired,
         courseName: PropTypes.string.isRequired,
-        courseSection: PropTypes.string.isRequired,
+        professorName: PropTypes.string.isRequired,
         courseID: PropTypes.string.isRequired,
         wechatCode: PropTypes.string,
         discordLink: PropTypes.string,
@@ -64,7 +64,7 @@ export default class CoursePopup extends React.Component {
                             </Box>
                             --
                             <Box display="inline" sx={{ml: 1}}>
-                                {this.props.courseSection}
+                                {this.props.professorName}
                             </Box>
                         </Typography>
 

@@ -34,6 +34,7 @@ const Item = styled(Paper)(({ theme }) => ({
       $.post(url, function(data){
         console.log(data);
       });
+
     return (
       <Box 
             sx={{
@@ -53,7 +54,7 @@ const Item = styled(Paper)(({ theme }) => ({
             }}>
             <ClassCard
                 courseName="CS 35L" 
-                courseSection="Lecture 1" 
+                professorName="Paul Eggert" 
                 courseID="10000000"
                 discordLink="https://discord.com/"
                 groupmeLink="https://groupme.com/"
@@ -68,7 +69,7 @@ const Item = styled(Paper)(({ theme }) => ({
             }}>
             <ClassCard 
                 courseName="CS 35L" 
-                courseSection="Lecture 2" 
+                professorName="Paul Eggert-2" 
                 courseID="10000000"
                 //discordLink="https://discord.com/"
                 //groupmeLink={"https://groupme.com/"}
@@ -82,7 +83,7 @@ const Item = styled(Paper)(({ theme }) => ({
             }}>
             <ClassCard 
                 courseName="CS M51A" 
-                courseSection="Lecture 1" 
+                professorName="Korf" 
                 courseID="10000000"
                 //discordLink="https://discord.com/"
                 groupmeLink="https://groupme.com/"
@@ -96,7 +97,7 @@ const Item = styled(Paper)(({ theme }) => ({
             }}>
             <ClassCard
                 courseName="CS 180" 
-                courseSection="Lecture 1" 
+                professorName="C" 
                 courseID="10000000"
                 discordLink="https://discord.com/"
                 groupmeLink="https://groupme.com/" />

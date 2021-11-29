@@ -36,7 +36,7 @@ handleClick(){
 
 static propTypes = {
   courseName: PropTypes.string.isRequired,
-  courseSection: PropTypes.string.isRequired,
+  professorName: PropTypes.string.isRequired,
   courseID: PropTypes.string.isRequired,
   wechatCode: PropTypes.string,
   discordLink: PropTypes.string,
@@ -55,7 +55,7 @@ return (
           {this.props.courseName}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {this.props.courseSection}
+          {this.props.professorName}
         </Typography>
         <ClassCardGroupChatBar 
           name="Discord"
@@ -88,7 +88,7 @@ return (
           open={this.state.open}
           onClose={() => this.setState({open: false})}
           courseName={this.props.courseName}
-          courseSection={this.props.courseSection}
+          professorName={this.props.professorName}
           courseID={this.props.courseID}
           wechatCode={this.props.wechatCode}
           discordLink={this.props.discordLink}
