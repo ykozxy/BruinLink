@@ -140,8 +140,9 @@ async function getCourseDetail(courseid) {
         let wechatQRCode = null;
         let content_type = null;
         if (course.wechatQRCode != null){
-            wechatQRCode = btoa(String.fromCharCode(...new Uint8Array(course.wechatQRCode)));
-            content_type = course.content_type;
+            // wechatQRCode = btoa(String.fromCharCode(...new Uint8Array(course.wechatQRCode.image)));
+            wechatQRCode = course.wechatQRCode.image.toString('base64');
+            content_type = course.wechatQRCode.content_type;
         }
         return {
             coursename: course.coursename,
@@ -153,7 +154,7 @@ async function getCourseDetail(courseid) {
             content_type: content_type
         };
     } catch (err) {
-        util.HandleError(err, "user.entity.js", "getUserById", "courseid: " + courseid);
+        console.error(err);
         return null;
     }
 }
@@ -183,7 +184,7 @@ async function getCourseResponse(course_arg) {
 
 async function getDetailResponse(course_arg) {
     try {
-        courseid = course_arg.courseid;
+        let courseid = course_arg.courseid;
         return getCourseDetail(courseid);
     } catch (err) {
         console.log(err);

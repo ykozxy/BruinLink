@@ -76,7 +76,7 @@ async function setQRCode(courseid, image, content_type) {
             return;
         }
         const filter = {courseid: courseid};
-        const update = {wechatQRCode: image.buffer, content_type: content_type };
+        const update = {wechatQRCode: {image: image.buffer, content_type: content_type}};
         const options = {runValidators: true, upsert: true};
         let user = await courseModel.updateOne(filter, {$set: update}, options);
         if (user == null) {
