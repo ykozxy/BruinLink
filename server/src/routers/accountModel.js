@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-import courseModel from './courseModel';
+const courseModel = require("./courseModel");
 
 const accountSchema = new Schema({
     email: {type: String, required: true, unique: true},

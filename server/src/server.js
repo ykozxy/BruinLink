@@ -16,8 +16,10 @@ app.use(function (req, res, next) {
 
 const accountRouter = require("./routers/accountRouter");
 const courseRouter = require("./routers/courseRouter");
+const uploadRouter = require("./routers/uploadRouter");
 app.use("/account", accountRouter);
 app.use("/course", courseRouter);
+app.use("/upload", uploadRouter);
 
 async function main() {
     console.log("Connecting to database...")

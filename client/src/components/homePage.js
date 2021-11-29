@@ -40,7 +40,7 @@ class HomePage extends React.Component {
                             </Typography>
                         </Box>
                         <Box width={0.7}>
-                            <Typography variant="body2" sx={{ml: 0.3,mb:-0.5}}>
+                            <Typography variant="body2" sx={{ml: 0.3, mb: -0.5}}>
                                 Search your class or professor...
                             </Typography>
                             <SearchBar size="large" bgColor="#DCDCDC"/>

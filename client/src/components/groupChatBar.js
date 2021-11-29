@@ -472,8 +472,8 @@ class ImageContributeForm extends React.Component {
 
         let url = config.baseUrl + config.api.upload.uploadQrCode;
         let data = new FormData();
-        data.append("id", this.props.id);
-        data.append("platform", this.props.platform);
+        data.append("courseid", this.props.id);
+        // data.append("platform", this.props.platform);
         data.append("token", accountID);
         data.append("image", this.state.file);
 

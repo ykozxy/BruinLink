@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-import courseModel from './courseModel';
+const courseModel = require('./courseModel');
 
 var courseBasics = {};
 courseBasics.findbyname = findbyname;

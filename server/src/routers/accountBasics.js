@@ -3,8 +3,10 @@ const Schema = mongoose.Schema;
 const {v4: uuidv4} = require('uuid');
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
-import accountModel from './accountModel';
-import verificationModel from './accountModel';
+const accountModel = require('./accountModel');
+const verificationModel = require('./verificationModel');
+// import accountModel from './accountModel';
+// import verificationModel from './accountModel';
 
 const API_KEY = config.API_KEY;
 sgMail.setApiKey(API_KEY);

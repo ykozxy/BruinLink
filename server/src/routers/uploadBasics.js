@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-import courseModel from './courseModel';
+const courseModel  = require('./courseModel');
+const accountModel = require("./accountModel");
 
 var uploadBasics = {};
 uploadBasics.uploadLinkResponse = uploadLinkResponse;
