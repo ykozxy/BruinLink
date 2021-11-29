@@ -76,7 +76,7 @@ async function setQRCode(courseid, image) {
             return;
         }
         const filter = {courseid: courseid};
-        const update = {wechatQRCode: image};
+        const update = {wechatQRCode: image.buffer};
         const options = {runValidators: true, upsert: true};
         let user = await courseModel.updateOne(filter, {$set: update}, options);
         if (user == null) {
@@ -118,7 +118,7 @@ async function uploadLinkResponse(upload_arg){
     }
 }
 
-async function uploadQrCodeResponse(upload_arg){
+async function uploadQrCodeResponse(upload_arg, file){
     try{
         let token = upload_arg.token;
         let account = await accountModel.findOne({ token: token });
@@ -127,7 +127,7 @@ async function uploadQrCodeResponse(upload_arg){
             return "token expired";
         }
         let courseid = upload_arg.courseid;
-        let image = upload_arg.image;
+        let image = file;
         await setQRCode(courseid, image);
     } catch (err) {
         console.error(err);

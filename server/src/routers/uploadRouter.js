@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const uploadBasics = require('./uploadBasics');
 
+const multer = require('multer');
+const upload = multer();
+
 router.post('/link', uploadLink);
-router.post('/qrcode', uploadQrCode);
+router.post('/qrcode', upload.single("image"), uploadQrCode);
 
 module.exports = router;
 
@@ -32,9 +35,10 @@ async function uploadLink(req, res) {
     }
 }
 
+
 async function uploadQrCode(req, res) {
     try {
-        let response = await uploadBasics.uploadQrCodeResponse(req.body);
+        let response = await uploadBasics.uploadQrCodeResponse(req.body, req.file);
         console.log(response);
         if (response == "QR Code successfully uploaded") {
             res.send({

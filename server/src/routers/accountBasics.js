@@ -87,7 +87,7 @@ async function setEmail(old_email, password, new_email, unique, code) {
 async function getEmail(token) {
     try {
         let account = await accountModel.findOne({ token: token });
-        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+        if (account.expire_date.getTime() < Date.now()) {
             console.log("token expired");
             return null;
         }

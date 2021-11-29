@@ -1,16 +1,15 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const formidable = require('express-formidable');
 
 
 const app = express();
 
 app.use(express.json());
-// app.use(bodyParser.urlencoded({
-//     extended: true,
-// }));
-app.use(formidable());
+app.use(bodyParser.urlencoded({
+    extended: true,
+}));
+// app.use(formidable());
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

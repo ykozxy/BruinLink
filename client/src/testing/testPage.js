@@ -32,7 +32,8 @@ export default withRouter(class Test extends React.Component {
 
         let url = config.baseUrl + config.api.account.getEmail;
         let data = {token: Cookies.get("accountID")};
-
+        console.log(url);
+        console.log(data);
         $.post(url, data, "json")
             .done((d) => {
                 console.log(d);
