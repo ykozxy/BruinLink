@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var courseBasics = {}
+var courseBasics = {};
 courseBasics.findbyname = findbyname;
-courseBasics.register = register;
 courseBasics.setgmLink = setgmLink;
 courseBasics.setdsLink = setdsLink;
 courseBasics.updateProf = updateProf;
@@ -32,15 +31,15 @@ const courseModel = mongoose.model('Course', courseSchema);
  *      when err or user not found, course = null
  */
 async function findbyname(course, department, division) {
-    var courselist= [];
+    var courselist = [];
     let course_key = new RegExp(course, 'i');
     let department_key = new RegExp(department, 'i');
-    let division_key = new RegExp(division, 'i'),
+    let division_key = new RegExp(division, 'i');
     var i;
     courses = courseModel.find({
-        coursename: { $regex: course_key, $options: 'i' },
-        department: { $regex: department_key, $options: 'i' },
-        divison: { $regex: division_key, $options: 'i' }
+        coursename: {$regex: course_key, $options: 'i'},
+        department: {$regex: department_key, $options: 'i'},
+        divison: {$regex: division_key, $options: 'i'}
     });
     for (i = 0; i < courses.length; i++) {
         get_course = courses[i];
@@ -67,10 +66,10 @@ async function findbyname(course, department, division) {
                 groupme: groupme,
                 discord: discord
             });
+        }
+        return courselist;
     }
-    return courselist;
 }
-
 /**
  *  register user with 3 inputs
  *
