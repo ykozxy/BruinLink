@@ -30,9 +30,22 @@ const Item = styled(Paper)(({ theme }) => ({
   
     render(){
       let url = config.baseUrl + config.api.course.search;
+      // let data = {coursename:this.props.courseName,
+      //             department: this.props.department,
+      //             division: this.props.division}
 
-      $.post(url, function(data){
-        console.log(data);
+            let data = {coursename:"CS",
+                  department: "computer science",
+                  division: "lower"}
+      console.log(data)
+      $.get(url, data,"json")
+      .fail(() => {
+          console.log("Failed to connect to the server.");
+      })
+
+      .done((data) => {
+          console.log(data);
+
       });
 
     return (

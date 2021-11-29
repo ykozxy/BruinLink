@@ -11,6 +11,7 @@ module.exports = router;
 async function getCourse(req, res) {
     try {
         let response = await courseBasics.getCourseResponse(req.body);
+        console.log(response);
         if (response) {
             res.send({
                 status: "success",
