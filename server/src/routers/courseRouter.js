@@ -35,20 +35,21 @@ async function getCourse(req, res) {
 
 async function getDetail(req, res) {
     try {
-        let response = await courseBasics.getCourseInfo(req.body);
-        if (response) {
+        let response = await courseBasics.getDetailResponse(req.body);
+        if (response != null) {
             res.send({
                 status: "success",
-                message: response
+                detail: response
             });
         }
         else {
             res.send({
                 status: "failed",
-                message: response
+                message: "failed to get course detail"
             })
         }
     } catch (err) {
+        console.error(err);
         res.send({
             status: "error",
             message: err

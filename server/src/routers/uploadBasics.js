@@ -69,14 +69,14 @@ async function setDSLink(courseid, link) {
     }
 }
 
-async function setQRCode(courseid, image) {
+async function setQRCode(courseid, image, content_type) {
     try {
         if (image == null || courseid == null) {
             console.log("cannot set empty image; please provide a valid image");
             return;
         }
         const filter = {courseid: courseid};
-        const update = {wechatQRCode: image.buffer};
+        const update = {wechatQRCode: image.buffer, content_type: content_type };
         const options = {runValidators: true, upsert: true};
         let user = await courseModel.updateOne(filter, {$set: update}, options);
         if (user == null) {
@@ -128,7 +128,8 @@ async function uploadQrCodeResponse(upload_arg, file){
         }
         let courseid = upload_arg.courseid;
         let image = file;
-        await setQRCode(courseid, image);
+        let content_type = file.mimetype;
+        await setQRCode(courseid, image, content_type);
     } catch (err) {
         console.error(err);
         return err;

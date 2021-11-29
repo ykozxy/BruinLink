@@ -4,9 +4,10 @@ const courseModel = require('./courseModel');
 var courseBasics = {};
 courseBasics.findbyname = findbyname;
 courseBasics.updateProf = updateProf;
-courseBasics.getCourseInfo = getCourseInfo;
+courseBasics.getDetailResponse = getDetailResponse;
 courseBasics.getDepartmentsResponse = getDepartmentsResponse;
 courseBasics.getCourseResponse = getCourseResponse;
+
 module.exports = courseBasics;
 
 /**
@@ -128,15 +129,29 @@ async function updateProf(courseid, profname) {
  *  @return {object}
  */
 
-async function getCourseInfo(courseid) {
+async function getCourseDetail(courseid) {
     try {
         let course = await courseModel.findOne({courseid: courseid});
         if (course == null) {
             console.log("unable to find course by courseid: " + courseid);
-            return user;
+            return null;
         }
         console.log("successfully find course by courseid: " + courseid);
-        return course;
+        let wechatQRCode = null;
+        let content_type = null;
+        if (course.wechatQRCode != null){
+            wechatQRCode = btoa(String.fromCharCode(...new Uint8Array(course.wechatQRCode)));
+            content_type = course.content_type;
+        }
+        return {
+            coursename: course.coursename,
+            profname: course.profname,
+            department: course.department,
+            discordLink: course.discordLink,
+            groupmeLink: course.groupmeLink,
+            wechatQRCode: wechatQRCode,
+            content_type: content_type
+        };
     } catch (err) {
         util.HandleError(err, "user.entity.js", "getUserById", "courseid: " + courseid);
         return null;
@@ -160,6 +175,16 @@ async function getCourseResponse(course_arg) {
         department = course_arg.department;
         division = course_arg.division;
         return findbyname(coursename, department, division);
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function getDetailResponse(course_arg) {
+    try {
+        courseid = course_arg.courseid;
+        return getCourseDetail(courseid);
     } catch (err) {
         console.log(err);
         return null;
