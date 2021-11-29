@@ -25,6 +25,7 @@ async function getCourse(req, res) {
             })
         }
     } catch (err) {
+        console.error(err);
         res.send({
             status: "error",
             message: err

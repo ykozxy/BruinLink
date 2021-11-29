@@ -36,10 +36,10 @@ async function findbyname(course, department, division) {
     let department_key = new RegExp(department, 'i');
     let division_key = new RegExp(division, 'i');
     var i;
-    await courseModel.find({
-        coursename: {$regex: course_key, $options: 'i'},
-        department: {$regex: department_key, $options: 'i'},
-        divison: {$regex: division_key, $options: 'i'}
+    let courses = await courseModel.find({
+        coursename: {$regex: course_key},
+        department: {$regex: department_key},
+        divison: {$regex: division_key}
     });
     for (i = 0; i < courses.length; i++) {
         get_course = courses[i];
