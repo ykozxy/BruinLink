@@ -29,24 +29,26 @@ const Item = styled(Paper)(({ theme }) => ({
 
   
     render(){
-      let url = config.baseUrl + config.api.course.search;
-      // let data = {coursename:this.props.courseName,
-      //             department: this.props.department,
-      //             division: this.props.division}
+        let url = config.baseUrl + config.api.course.search;
+        // let data = {coursename:this.props.courseName,
+        //             department: this.props.department,
+        //             division: this.props.division}
 
-            let data = {coursename:"CS",
-                  department: "computer science",
-                  division: "lower"}
-      console.log(data)
-      $.get(url, data,"json")
-      .fail(() => {
-          console.log("Failed to connect to the server.");
-      })
+        let data = {
+            coursename: "CS",
+            department: "computer science",
+            division: "lower"
+        }
 
-      .done((data) => {
-          console.log(data);
+        console.log(data)
+        $.post(url, data, "json")
+            .fail(() => {
+                console.log("Failed to connect to the server.");
+            })
 
-      });
+            .done((data) => {
+                console.log(data);
+            });
 
     return (
       <Box 

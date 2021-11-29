@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const courseBasics = require('./courseBasics');
 
-router.get('/search', getCourse);
+router.post('/search', getCourse);
 router.post('/getDetail', getDetail);
 router.post('/getDepartments', getDepartments);
 
