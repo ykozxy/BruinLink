@@ -31,7 +31,11 @@ export default class SearchBar extends React.Component {
 
     handleKeyPress(event) {
         if (event.charCode === 13) {
-            window.location.href = `/search?query=${encodeURIComponent(this.state.query)}`
+            if (this.state.query !== "") {
+                window.location.href = `/search?query=${encodeURIComponent(this.state.query)}`;
+            } else {
+                window.location.href = "/search";
+            }
         }
     }
 
@@ -43,7 +47,7 @@ export default class SearchBar extends React.Component {
                     size={this.props.size}
                     variant="outlined"
                     type="search"
-                    value={this.state.changed ? this.state.query : this.props.initialQuery}
+                    value={this.state.changed ? this.state.query : (this.props.initialQuery == null ? "" : this.props.initialQuery)}
                     onChange={this.handleChange}
                     onKeyPress={this.handleKeyPress}
                     InputProps={{
