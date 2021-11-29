@@ -44,7 +44,7 @@ const Item = styled(Paper)(({ theme }) => ({
       })
 
 
-        console.log(data)
+        // console.log(data)
         $.post(url, data, "json")
             .fail(() => {
                 console.log("Failed to connect to the server.");

@@ -6,6 +6,13 @@ import PropTypes from "prop-types";
 export default class SearchBar extends React.Component {
     static propTypes = {
         initialQuery: PropTypes.string,
+        bgColor: PropTypes.string,
+        size: PropTypes.oneOf(["small", "medium", "large"]),
+    }
+
+    static defaultProps = {
+        size: "small",
+        bgColor: "rgb(232, 241, 250)",
     }
 
     constructor(props) {
@@ -29,10 +36,10 @@ export default class SearchBar extends React.Component {
 
     render() {
         return (
-            <Box bgcolor="rgb(232, 241, 250)">
+            <Box width={1} bgcolor={this.props.bgColor}>
                 <TextField
                     fullWidth
-                    size="small"
+                    size={this.props.size}
                     variant="outlined"
                     type="search"
                     value={this.props.initialQuery}
