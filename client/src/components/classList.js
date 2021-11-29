@@ -7,6 +7,7 @@ import ClassCard from "./classCard";
 import PropTypes from "prop-types";
 import $ from "jquery"
 import * as config from "../config"
+import { Typography } from '@mui/material';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -30,29 +31,39 @@ const Item = styled(Paper)(({ theme }) => ({
   
     render(){
         let url = config.baseUrl + config.api.course.search;
-        // let data = {coursename:this.props.courseName,
-        //             department: this.props.department,
-        //             division: this.props.division}
+        let data = {coursename:this.props.courseName,
+                    department: this.props.department,
+                    division: this.props.division};
+          //console.log("Search Data from User:");
+          //console.log(data);
+      // let data = {coursename:"",
+      //             department: "",
+      //             division: ""}
+        let classArray=[];
+          $.post(url, data, "json")
+              .fail(() => {
+                  console.log("Failed to connect to the server.");
+              })
 
-      let data = {coursename:"CS",
-                  department: "computer science",
-                  division: "lower"}
-      
-      $.get(url, data,"json")
-      .fail(() => {
-          console.log("Failed to connect to the server.");
-      })
+              .done((data) => {
+                  //console.log(data.courselist);
+                  for (let i =0;i<data.courselist.length;i++)
+                  {
+                    var class_returned=data.courselist[i];
+                    //console.log(class_returned);
+                  //   classArray.push(<ClassCard
+                  //     courseName={class_returned.coursename}
+                  //     professorName={class_returned.profname}
+                  //     courseID={class_returned.courseid}
+                  //     discordLink="https://discord.com/"
+                  //     groupmeLink="https://groupme.com/"
+                  //     wechatCode="https://pbs.twimg.com/profile_images/1087188469397344257/HXxlDWIf_400x400.jpg"
+                  // />)
+                  classArray.push(class_returned);
+                  }
+              });
+      console.log(classArray)
 
-
-        console.log(data)
-        $.post(url, data, "json")
-            .fail(() => {
-                console.log("Failed to connect to the server.");
-            })
-
-            .done((data) => {
-                console.log(data);
-            });
 
     return (
       <Box 
@@ -65,6 +76,20 @@ const Item = styled(Paper)(({ theme }) => ({
             }}
         >
         <Grid container rowSpacing={8} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12} sm={12} md={6} lg={4}
+            sx={{
+                '&:hover': {
+                opacity: [0.9, 0.8, 0.7],
+                },
+            }}>
+              {classArray.map((class_) => (
+                <Typography>{class_}</Typography>
+              ))
+              }
+          </Grid>
+        </Grid>
+
+        {/* <Grid container rowSpacing={8} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12} sm={12} md={6} lg={4}
             sx={{
                 '&:hover': {
@@ -121,8 +146,9 @@ const Item = styled(Paper)(({ theme }) => ({
                 discordLink="https://discord.com/"
                 groupmeLink="https://groupme.com/" />
           </Grid>
-        </Grid>
+        </Grid> */}
       </Box>
+
     )}
   }
 

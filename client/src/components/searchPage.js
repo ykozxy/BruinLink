@@ -19,7 +19,7 @@ export default withRouter(class SearchPage extends React.Component {
        
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const queryParams = new URLSearchParams(window.location.search);
         let query = queryParams.get('query');
         let department = queryParams.get('department');
@@ -33,7 +33,7 @@ export default withRouter(class SearchPage extends React.Component {
         this.state.department=department;
         this.state.division=division;
 
-        // if (this.state.query) console.log("query:"+this.state.query);
+        //if (this.state.query) console.log("query:"+this.state.query);
         // if (this.state.department) console.log("depa:"+this.state.department);
         // if (this.state.division) console.log("division:"+this.state.division);
     }
@@ -58,6 +58,7 @@ export default withRouter(class SearchPage extends React.Component {
                         </div>
                     )
                   }
+            //console.log("??query??"+this.state.query)
         }
         return (
             <div>
