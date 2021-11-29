@@ -1,8 +1,13 @@
 import React from "react";
 import {Box, InputAdornment, TextField} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
+import PropTypes from "prop-types";
 
 export default class SearchBar extends React.Component {
+    static propTypes = {
+        initialQuery: PropTypes.string,
+    }
+
     constructor(props) {
         super(props);
 
@@ -30,6 +35,7 @@ export default class SearchBar extends React.Component {
                     size="small"
                     variant="outlined"
                     type="search"
+                    value={this.props.initialQuery}
                     onChange={this.handleChange}
                     onKeyPress={this.handleKeyPress}
                     InputProps={{

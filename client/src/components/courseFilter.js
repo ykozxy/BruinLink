@@ -47,7 +47,7 @@ export default class FilterBox extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        
+
         console.log(this.props.query)
         let url = "/search?";
         if (this.props.query) {
@@ -55,10 +55,11 @@ export default class FilterBox extends React.Component {
             url += `query=${encodeURIComponent(this.props.query)}&`;
         }
         if (this.state.department !== "") {
-            url += `department=${encodeURIComponent(this.state.department)}&`;
+            url += `department=${encodeURIComponent(this.state.department.toLowerCase())}&`;
         }
         if (this.state.division !== "") {
-            url += `division=${encodeURIComponent(this.state.division)}&`;
+            let d = this.state.division === "Lower division" ? "lower" : "upper";
+            url += `division=${encodeURIComponent(d)}&`;
         }
         window.location.href = url;
     }
