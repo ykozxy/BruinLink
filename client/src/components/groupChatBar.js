@@ -362,9 +362,9 @@ class LinkContributeForm extends React.Component {
 
         let url = config.baseUrl + config.api.upload.uploadLink;
         let data = {
-            id: this.props.id,
+            courseid: this.props.id,
             platform: this.props.platform,
-            accountID: accountID,
+            token: accountID,
             link: this.state.link
         };
 
@@ -377,11 +377,7 @@ class LinkContributeForm extends React.Component {
         }
 
         this.setState({loading: true});
-        $.post(url, data, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR)
-        }, "json")
+        $.post(url, data, "json")
             .always(() => {
                 this.setState({loading: false});
             })

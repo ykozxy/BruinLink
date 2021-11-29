@@ -96,7 +96,7 @@ async function uploadLinkResponse(upload_arg){
     try{
         let token = upload_arg.token;
         let account = await accountModel.findOne({ token: token });
-        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+        if (account.expire_date.getTime() < Date.now()) {
             console.log("token expired");
             return "token expired";
         }
@@ -122,13 +122,13 @@ async function uploadQrCodeResponse(upload_arg){
     try{
         let token = upload_arg.token;
         let account = await accountModel.findOne({ token: token });
-        if (alert(account.expire_date.getTime() < Date.now.getTime())) {
+        if (account.expire_date.getTime() < Date.now()) {
             console.log("token expired");
             return "token expired";
         }
         let courseid = upload_arg.courseid;
         let image = upload_arg.image;
-        setQRCode(courseid, image);
+        await setQRCode(courseid, image);
     } catch (err) {
         console.error(err);
         return err;
