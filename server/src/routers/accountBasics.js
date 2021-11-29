@@ -3,6 +3,8 @@ const Schema = mongoose.Schema;
 const {v4: uuidv4} = require('uuid');
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
+import accountModel from './accountModel';
+import verificationModel from './accountModel';
 
 const API_KEY = config.API_KEY;
 sgMail.setApiKey(API_KEY);
@@ -16,24 +18,6 @@ accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 accountBasics.getEmailResponse = getEmailResponse;
 module.exports = accountBasics;
-
-const accountSchema = new Schema({
-    email: {type: String, required: true, unique: true},
-    password: { type: String, required: true },
-    token: { type: String, required: true, unique: true },
-    expire_date: { type: Date, default: null}
-    //courseList: [courseSchema],
-    //clubList: [clubSchema]
-});
-
-const verificationSchema = new Schema({
-    createdAt: {type: Date, expires: 300, default: Date.now},
-    unique: {type: String, required: true, unique: true},
-    code: {type: String, required: true, unique: true},
-});
-
-const accountModel = mongoose.model('Account', accountSchema);
-const verificationModel = mongoose.model('Verification', verificationSchema);
 
 /** @param {String} email
  @param {String} password
