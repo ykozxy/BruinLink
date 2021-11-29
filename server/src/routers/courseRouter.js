@@ -2,25 +2,25 @@ const express = require("express");
 const router = express.Router();
 const courseBasics = require('./courseBasics');
 
-router.get('/search', getcourse);
+router.get('/search', getCourse);
 router.post('/getDetail', getDetail);
 router.post('/getDepartments', getDepartments);
 
 module.exports = router;
 
-async function getcourse(req, res) {
+async function getCourse(req, res) {
     try {
-        let response = await courseBasics.findbyname(req.body);
+        let response = await courseBasics.getCourseResponse(req.body);
         if (response) {
             res.send({
                 status: "success",
-                message: response
+                courselist: response
             });
         }
         else {
             res.send({
                 status: "failed",
-                message: response
+                message: "failed to get course list"
             })
         }
     } catch (err) {
@@ -33,7 +33,7 @@ async function getcourse(req, res) {
 
 async function getDetail(req, res) {
     try {
-        let response = await courseBasics.getCourse(req.body);
+        let response = await courseBasics.getCourseInfo(req.body);
         if (response) {
             res.send({
                 status: "success",

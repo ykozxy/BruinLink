@@ -4,6 +4,7 @@ import Navbar from "../components/navbar";
 import ClassList from "../components/classList";
 import FilterBox from "../components/courseFilter";
 import {withRouter} from "react-router";
+import SearchBar from "../components/searchBar";
 
 
 export default withRouter(class Test extends React.Component {
@@ -39,6 +40,7 @@ export default withRouter(class Test extends React.Component {
                     <FilterBox/>
                     <ClassList/>
                 </Box>
+                <SearchBar/>
             </div>
         )
     }
