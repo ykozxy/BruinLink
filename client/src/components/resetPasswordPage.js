@@ -6,13 +6,15 @@ import * as config from "../config"
 import {checkEmailFormat} from "../utils";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AlertToast from "./alertToast";
-import Navbar from "./navbar";
+import Navbar from "./navbar"
+import Cookies from 'js-cookie';
 
 export default class ResetPasswordPage extends React.Component {
     render() {
+        let c = Cookies.get("accountID");
         return (
             <div>
-                <Navbar isLogin={false}/>
+                <Navbar isLogin={c!=null}/>
                 <Container maxWidth="sm">
                     <ResetPasswordForm/>
                 </Container>

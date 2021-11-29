@@ -34,10 +34,10 @@ const Item = styled(Paper)(({ theme }) => ({
       //             department: this.props.department,
       //             division: this.props.division}
 
-            let data = {coursename:"CS",
+      let data = {coursename:"CS",
                   department: "computer science",
                   division: "lower"}
-      console.log(data)
+      
       $.get(url, data,"json")
       .fail(() => {
           console.log("Failed to connect to the server.");

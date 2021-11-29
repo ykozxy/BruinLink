@@ -1,20 +1,25 @@
 import React from 'react'
 import Navbar from "./navbar";
 import Cookies from 'js-cookie';
+import {Link} from "react-router-dom";
 import {Button,Box, Typography} from "@mui/material";
-
+import * as config from "../config"
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import SendIcon from '@mui/icons-material/Send';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
 
 class ProfilePage extends React.Component{
 
     constructor(props) {
         super(props);
+        this.state={
+            email:null,
+            password:null
+        }
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -25,9 +30,9 @@ class ProfilePage extends React.Component{
 
     render(){
         {
-            let c = Cookies.get("accountID");
-            //let c = "123";
-                  if (!c) {
+            let user_token = Cookies.get("accountID");
+            //let user_token = "123";
+                  if (!user_token) {
                     return (
                         <div>
                             <Navbar isLogin={false} />
@@ -35,6 +40,21 @@ class ProfilePage extends React.Component{
                         </div>
                     )
                   }
+            // let data={token:user_token}
+            
+            // //get user account information from backend
+            // //let url = config.baseUrl + config.api.account.login;
+
+            // $.get(url, data,"json")
+            // .fail(() => {
+            //     console.log("Failed to connect to the server.");
+            // })
+
+            // .done((data) => {
+            //     console.log(data);
+
+            // });
+
         }
         return (
             <div>
@@ -72,16 +92,27 @@ class ProfilePage extends React.Component{
                         </MenuItem>
 
                         <MenuItem/>
+                        <MenuItem/>
                         
 
                         <MenuItem>
-                        <ListItemIcon>
-                            <DraftsIcon fontSize="small" />
-                        </ListItemIcon>
-                        <Typography variant="inherit" noWrap>
-                            A very long text that overflows
-                        </Typography>
+                            <ListItemIcon>
+                                <VpnKeyIcon fontSize="medium" />
+                            </ListItemIcon>
+                            <Typography variant="h5"  noWrap>
+                                Password
+                            </Typography>
                         </MenuItem>
+
+                        <MenuItem>
+                        <ListItemIcon>
+                                <SendIcon fontSize="small" />
+                        </ListItemIcon>
+                            <Link to='/resetPassword'>
+                            Reset Password
+                            </Link>
+                        </MenuItem>
+
                     </MenuList>
                     </Paper>                    
 
