@@ -10,32 +10,17 @@ export default withRouter(class SearchPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            open: false,
-            query: null,
-            department: null,
-            division: null
-        };
-       
-    }
-
-    componentDidMount() {
         const queryParams = new URLSearchParams(window.location.search);
         let query = queryParams.get('query');
         let department = queryParams.get('department');
         let division = queryParams.get('division');
 
-
-        // if (query) console.log(query);
-        // if (department) console.log(department);
-        // if (division) console.log(division);
-        this.state.query=query;
-        this.state.department=department;
-        this.state.division=division;
-
-        // if (this.state.query) console.log("query:"+this.state.query);
-        // if (this.state.department) console.log("depa:"+this.state.department);
-        // if (this.state.division) console.log("division:"+this.state.division);
+        this.state = {
+            open: false,
+            query: query,
+            department: department,
+            division : division,
+        };
     }
 
     render(){
@@ -61,7 +46,7 @@ export default withRouter(class SearchPage extends React.Component {
         }
         return (
             <div>
-                <Navbar isLogin={true}/>
+                <Navbar isLogin={true} query={this.state.query}/>
                 <Box width={"100%"} sx={{
                     display: "flex",
                     flexDirection: "row",
