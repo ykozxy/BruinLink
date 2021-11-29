@@ -11,16 +11,37 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import SendIcon from '@mui/icons-material/Send';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import $ from "jquery"
 
 class ProfilePage extends React.Component{
 
     constructor(props) {
         super(props);
+        
+
         this.state={
             email:null,
-            password:null
         }
         this.handleClick = this.handleClick.bind(this);
+        
+    }
+
+    componentDidMount() {
+        let user_token = Cookies.get("accountID");
+        if(user_token){
+            let url = config.baseUrl + config.api.account.getEmail;
+            let data={token:user_token}
+            //console.log(data)
+            $.post(url, data,"json")
+            .fail(() => {
+                console.log("Failed to connect to the server.");
+            })
+
+            .done((data) => {
+                this.setState({email:data.email})
+
+            });
+        }
     }
 
     handleClick(){
@@ -88,7 +109,7 @@ class ProfilePage extends React.Component{
                             <ListItemIcon>
                                 <SendIcon fontSize="small" />
                             </ListItemIcon>
-                            <Typography variant="inherit">xxxxxxxx@qq.com</Typography>
+                            <Typography variant="inherit">{this.state.email}</Typography>
                         </MenuItem>
 
                         <MenuItem/>
