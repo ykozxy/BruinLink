@@ -31,8 +31,9 @@ export default class FilterBox extends React.Component {
 
         let url = config.baseUrl + config.api.course.getDepartments;
         $.post(url)
-            .fail(() => {
+            .fail((e) => {
                 console.error("Failed to fetch departments.");
+                console.log(e);
                 this.setState({departmentList: ["Computer science", "Engineering"]});
             })
             .done((data) => {
