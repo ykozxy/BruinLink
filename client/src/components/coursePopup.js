@@ -28,12 +28,17 @@ export default class CoursePopup extends React.Component {
             wechatCodeBuffer: null,
             wechatCodeType: null,
         };
+
+        this.refresh = this.refresh.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         // Do not fetch image / links unless we are opening this popup
-        if (!(this.props.open && !prevProps.open)) return;
+        if (this.props.open && !prevProps.open)
+            this.refresh();
+    }
 
+    refresh() {
         this.setState({fetchFinished: false});
 
         let url = config.baseUrl + config.api.course.getDetail;
@@ -110,12 +115,14 @@ export default class CoursePopup extends React.Component {
                                       link={this.state.discordLink}
                                       iconSvgPath={mdiDiscord}
                                       iconColor="#5969ea"
-                                      loading={!this.state.fetchFinished}/>
+                                      loading={!this.state.fetchFinished}
+                                      onRefresh={this.refresh}/>
                         <GroupChatBar name="Groupme"
                                       id={this.props.courseID}
                                       link={this.state.groupmeLink}
                                       iconImg={Groupme}
-                                      loading={!this.state.fetchFinished}/>
+                                      loading={!this.state.fetchFinished}
+                                      onRefresh={this.refresh}/>
                         <GroupChatBar name="WeChat"
                                       id={this.props.courseID}
                                       isQrCode
@@ -123,7 +130,8 @@ export default class CoursePopup extends React.Component {
                                       imageBuffer={this.state.wechatCodeBuffer}
                                       iconSvgPath={mdiWechat}
                                       iconColor="#5ecc72"
-                                      loading={!this.state.fetchFinished}/>
+                                      loading={!this.state.fetchFinished}
+                                      onRefresh={this.refresh}/>
                     </Box>
                 </Box>
             </Modal>

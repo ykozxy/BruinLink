@@ -205,10 +205,13 @@ class NoLinkDisplay extends React.Component {
         name: PropTypes.string.isRequired,
         /* Name of the groupchat */
         platform: PropTypes.oneOf(["discord", "wechat", "groupme"]).isRequired,
+        /* Callback function for refresh the popup */
+        onRefresh: PropTypes.func.isRequired,
     }
 
     constructor(props) {
         super(props);
+        // TODO: check subscription on open
         this.state = {
             loading: false,
             subscribed: false,
@@ -245,21 +248,24 @@ class NoLinkDisplay extends React.Component {
             // Then subscribe
             url = config.baseUrl + config.api.subscription.subscribe;
         }
-        let data = {id: this.props.id};
+
+        let c = Cookies.get("accountID");
+        let data = {course: this.props.id, token: c};
 
         this.setState({loading: true});
-        $.post(url, data, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR)
-        }, "json")
+        $.post(url, data, "json")
             .always(() => {
                 this.setState({loading: false});
             })
-            .done(() => {
-                this.setState(prev => ({subscribed: !prev.subscribed}));
-                let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
-                this.showAlert(msg + this.props.name + "!", true);
+            .done((data) => {
+                if (data.status === "success") {
+                    this.setState(prev => ({subscribed: !prev.subscribed}));
+                    let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
+                    this.showAlert(msg + this.props.name + "!", true);
+                    setTimeout(() => this.props.onRefresh(), 1500);
+                } else {
+                    console.error(data);
+                }
             })
             .fail(() => {
                 this.showAlert("Failed to connect to the server.", false);
@@ -308,11 +314,13 @@ class NoLinkDisplay extends React.Component {
                             <ImageContributeForm id={this.props.id}
                                                  onClose={() => this.handlePopupClose()}
                                                  platform={this.props.platform}
-                                                 showAlert={(m, s) => this.showAlert(m, s)}/> :
+                                                 showAlert={(m, s) => this.showAlert(m, s)}
+                                                 onRefresh={this.props.onRefresh}/> :
                             <LinkContributeForm id={this.props.id}
                                                 onClose={() => this.handlePopupClose()}
                                                 platform={this.props.platform}
-                                                showAlert={(m, s) => this.showAlert(m, s)}/>
+                                                showAlert={(m, s) => this.showAlert(m, s)}
+                                                onRefresh={this.props.onRefresh}/>
                         }
                     </Popover>
                 </Grid>
@@ -344,6 +352,7 @@ class LinkContributeForm extends React.Component {
         platform: PropTypes.oneOf(["groupme", "discord"]).isRequired,
         showAlert: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
+        onRefresh: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -398,6 +407,7 @@ class LinkContributeForm extends React.Component {
             .done(() => {
                 this.setState({success: true});
                 setTimeout(() => this.props.onClose(), 1500);
+                setTimeout(() => this.props.onRefresh(), 1500);
             });
     }
 
@@ -451,6 +461,7 @@ class ImageContributeForm extends React.Component {
         platform: PropTypes.oneOf(["wechat"]).isRequired,
         showAlert: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
+        onRefresh: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -507,6 +518,7 @@ class ImageContributeForm extends React.Component {
             .done(() => {
                 this.setState({success: true});
                 setTimeout(() => this.props.onClose(), 1500);
+                setTimeout(() => this.props.onRefresh(), 1500);
             });
     }
 
@@ -587,6 +599,8 @@ export default class GroupChatBar extends React.Component {
         iconColor: PropTypes.string,
 
         loading: PropTypes.bool,
+
+        onRefresh: PropTypes.func.isRequired,
     }
 
     renderGroupChatStatus() {
@@ -601,7 +615,8 @@ export default class GroupChatBar extends React.Component {
             return <NoLinkDisplay type={this.props.isQrCode ? "img" : "link"}
                                   id={this.props.id}
                                   name={this.props.name}
-                                  platform={this.props.name.toLowerCase()}/>
+                                  platform={this.props.name.toLowerCase()}
+                                  onRefresh={this.props.onRefresh}/>
         }
     }
 
