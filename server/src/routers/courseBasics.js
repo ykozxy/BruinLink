@@ -39,10 +39,10 @@ async function findbyname(course, department, division) {
             if (get_course.wechatQRCode.image != null) {
                 wechat = true;
             }
-            if (get_course.groupmeLink != null) {
+            if (get_course.groupmeLink != null && get_course.groupmeLink != "") {
                 groupme = true;
             }
-            if (get_course.discordLink != null) {
+            if (get_course.discordLink != null&& get_course.discordLink != "") {
                 discord = true;
             }
             courselist.push({
