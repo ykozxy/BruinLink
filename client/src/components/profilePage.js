@@ -26,6 +26,7 @@ class ProfilePage extends React.Component {
             courseList: [],
         }
         this.handleClick = this.handleClick.bind(this);
+        this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
     }
 
     componentDidMount() {
@@ -190,7 +191,8 @@ class ProfilePage extends React.Component {
                                     this.state.courseList.map(element =>
                                         <ListItem key={element.id}
                                                   secondaryAction={
-                                                      <IconButton edge="end"
+                                                      <IconButton onClick={() => this.handleUnsubscribe(element.id)}
+                                                                  edge="end"
                                                                   aria-label="unsubscribe">
                                                           <IconTooltip msg="Unsubscribe" success
                                                                        icon={<MarkEmailReadIcon/>}/>
