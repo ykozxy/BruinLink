@@ -28,7 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
             classArray: [],
             alertOpen: false,
             alertSuccess: false,
-            alertMsg: false,
+            alertMsg: "",
         }
     }
 
@@ -54,13 +54,14 @@ const Item = styled(Paper)(({ theme }) => ({
   //             division: ""}
 let _classArray=[]
       $.post(url, data, "json")
-          .fail(() => {
-              console.log("Failed to connect to the server.");
+          .fail((err) => {
+              console.error(err);
               this.showAlert("Failed to connect to the server.", false);
           })
 
           .done((data) => {
             if(data.courselist){
+                // console.log(data.courselist);
                _classArray=[...data.courselist]
               //console.log("CourseList:");
               //console.log(data.courselist);

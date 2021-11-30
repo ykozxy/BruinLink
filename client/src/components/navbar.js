@@ -9,6 +9,7 @@ import {Box, Grid} from "@mui/material";
 import Cookies from "js-cookie";
 import * as config from "../config";
 import $ from "jquery";
+import AlertToast from "./alertToast";
 
 
 class Navbar extends React.Component {
@@ -25,7 +26,13 @@ class Navbar extends React.Component {
         super(props);
 
         let user_token = Cookies.get("accountID");
-        this.state = {login: user_token != null}
+        this.state = {
+            login: user_token != null,
+
+            alertOpen: false,
+            alertMsg: "",
+            alertSuccess: false,
+        }
     }
 
     componentDidMount() {
@@ -35,21 +42,30 @@ class Navbar extends React.Component {
             let data = {token: user_token}
 
             $.post(url, data, "json")
-                .fail(() => {
-                    console.log("Failed to connect to the server.");
+                .fail((err) => {
+                    this.showAlert("Failed to connect to the server.", false);
+                    console.error(err);
                 })
                 .done((data) => {
                     if (data.status === "success") {
                         this.setState({login: true})
                     } else {
-                        console.log("Token expired!");
-                        console.log(data);
+                        this.showAlert("Token expired, please login again", false);
+                        console.error(data);
                         Cookies.remove("accountID");
                     }
                 });
         } else {
             this.setState({login: false});
         }
+    }
+
+    showAlert(msg, success) {
+        this.setState({
+            alertOpen: true,
+            alertMsg: msg,
+            alertSuccess: success,
+        })
     }
 
     render() {
@@ -76,7 +92,9 @@ class Navbar extends React.Component {
                                     <Grid container columns={10} alignItems="center">
                                         <Grid item xs={3}/>
                                         <Grid item xs={3}>
-                                            <Link to="/search" className="navbar-links">
+                                            <Link to="/search"
+                                                  className="navbar-links"
+                                                  onClick={() => window.location.reload()}>
                                                 Course
                                             </Link>
                                         </Grid>
@@ -94,8 +112,8 @@ class Navbar extends React.Component {
                                     alignItems: "center",
                                 }}>
                                     <Box sx={{mx: 2}}>
-                                        <Link to="/search" className="navbar-links">
-                                            Course
+                                        <Link to="/register" className="navbar-links">
+                                            Sign Up
                                         </Link>
                                     </Box>
                                     <Box sx={{mx: 2}}>
@@ -104,14 +122,20 @@ class Navbar extends React.Component {
                                         </Link>
                                     </Box>
                                     <Box sx={{mx: 2}}>
-                                        <Link to="/register" className="navbar-links">
-                                            Sign Up
+                                        <Link to="/search"
+                                              className="navbar-links"
+                                              onClick={() => window.location.reload()}>
+                                            Course
                                         </Link>
                                     </Box>
                                 </Box>)
                         }
                     </Grid>
                 </Grid>
+                <AlertToast alertMessage={this.state.alertMsg}
+                            showAlert={this.state.alertOpen}
+                            onClose={() => this.setState({alertOpen: false})}
+                            severity={this.state.alertSuccess ? "success" : "error"}/>
                 {/*</div>*/}
             </nav>
         )

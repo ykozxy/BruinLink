@@ -15,6 +15,7 @@ import ClassIcon from '@mui/icons-material/Class';
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import $ from "jquery"
 import IconTooltip from "./iconTooltip";
+import AlertToast from "./alertToast";
 
 class ProfilePage extends React.Component {
 
@@ -24,6 +25,10 @@ class ProfilePage extends React.Component {
         this.state = {
             email: null,
             courseList: [],
+
+            alertOpen: false,
+            alertMsg: "",
+            alertSuccess: false,
         }
         this.handleClick = this.handleClick.bind(this);
         this.handleUnsubscribe = this.handleUnsubscribe.bind(this);
@@ -38,8 +43,9 @@ class ProfilePage extends React.Component {
         let data = {token: user_token}
         //console.log(data)
         $.post(url, data, "json")
-            .fail(() => {
-                console.log("Failed to connect to the server.");
+            .fail((err) => {
+                this.showAlert("Failed to connect to the server", false);
+                console.error(err);
             })
 
             .done((data) => {
@@ -61,9 +67,13 @@ class ProfilePage extends React.Component {
                         courses.push({name: element.coursename, professor: element.profname, id: element.courseid});
                     });
                     this.setState({courseList: courses});
+                } else {
+                    this.showAlert("Failed to fetch course list.", false);
+                    console.error(data);
                 }
             })
             .fail((err) => {
+                this.showAlert("Failed to connect to the server", false);
                 console.error(err);
             })
             .always(() => this.setState({loading: false}));
@@ -90,6 +100,14 @@ class ProfilePage extends React.Component {
             .fail(() => {
                 this.showAlert("Failed to connect to the server.", false);
             });
+    }
+
+    showAlert(msg, success) {
+        this.setState({
+            alertOpen: true,
+            alertMsg: msg,
+            alertSuccess: success,
+        })
     }
 
     render() {
@@ -218,6 +236,10 @@ class ProfilePage extends React.Component {
                         Log Out
                     </Button>
                 </Box>
+                <AlertToast alertMessage={this.state.alertMsg}
+                            showAlert={this.state.alertOpen}
+                            onClose={() => this.setState({alertOpen: false})}
+                            severity={this.state.alertSuccess ? "success" : "error"}/>
             </div>
         )
     }

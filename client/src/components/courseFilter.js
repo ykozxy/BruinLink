@@ -3,6 +3,7 @@ import React from "react";
 import {Autocomplete, Box, Button, Divider, Grid, TextField, Typography} from "@mui/material";
 import PropTypes from "prop-types";
 import * as config from "../config"
+import AlertToast from "./alertToast";
 
 export default class FilterBox extends React.Component {
     static propTypes = {
@@ -17,10 +18,14 @@ export default class FilterBox extends React.Component {
 
         this.state = {
             department: props.department == null ? null : props.department,
-            division: props.division == null? null : (props.division === "lower" ? "Lower division" : "Upper division"),
+            division: props.division == null ? null : (props.division === "lower" ? "Lower division" : "Upper division"),
 
             departmentList: [],
             divisionList: ["Lower division", "Upper division"],
+
+            alertOpen: false,
+            alertMsg: "",
+            alertSuccess: false,
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,13 +39,14 @@ export default class FilterBox extends React.Component {
         let url = config.baseUrl + config.api.course.getDepartments;
         $.post(url)
             .fail((e) => {
-                console.error("Failed to fetch departments.");
-                console.log(e);
+                this.showAlert("Failed to connect to the server.", false);
+                console.error(e);
                 this.setState({departmentList: ["Computer science", "Engineering"]});
             })
             .done((data) => {
                 if (data.status === "failed") {
-                    console.error("Failed to fetch departments.");
+                    this.showAlert("Failed to fetch departments.", false);
+                    console.error(data);
                 } else {
                     this.setState({departmentList: data.departments});
                 }
@@ -52,7 +58,6 @@ export default class FilterBox extends React.Component {
 
         let url = "/search?";
         if (this.props.query != null && this.props.query !== "") {
-            console.log(this.props.query)
             url += `query=${encodeURIComponent(this.props.query)}&`;
         }
         if (this.state.department != null && this.state.department !== "") {
@@ -67,6 +72,14 @@ export default class FilterBox extends React.Component {
 
     handleChange(field, newValue) {
         this.setState({[field]: newValue});
+    }
+
+    showAlert(msg, success) {
+        this.setState({
+            alertOpen: true,
+            alertMsg: msg,
+            alertSuccess: success,
+        })
     }
 
     render() {
@@ -131,6 +144,10 @@ export default class FilterBox extends React.Component {
                         sx={{mt: 2, mb: 2}}>
                     Apply
                 </Button>
+                <AlertToast alertMessage={this.state.alertMsg}
+                            showAlert={this.state.alertOpen}
+                            onClose={() => this.setState({alertOpen: false})}
+                            severity={this.state.alertSuccess ? "success" : "error"}/>
             </Box>
         );
     }
