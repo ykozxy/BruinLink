@@ -7,6 +7,7 @@ import {mdiDiscord, mdiWechat} from "@mdi/js"
 import GroupChatBar from "./groupChatBar";
 import {default as Groupme} from "../icons/groupme.svg";
 import * as config from "../config"
+import Cookies from "js-cookie";
 
 
 export default class CoursePopup extends React.Component {
@@ -27,6 +28,7 @@ export default class CoursePopup extends React.Component {
             groupmeLink: null,
             wechatCodeBuffer: null,
             wechatCodeType: null,
+            subscribed: false,
         };
 
         this.refresh = this.refresh.bind(this);
@@ -41,12 +43,14 @@ export default class CoursePopup extends React.Component {
     refresh() {
         this.setState({fetchFinished: false});
 
+        /* Fetch group chat links */
         let url = config.baseUrl + config.api.course.getDetail;
         let data = {courseid: this.props.courseID};
 
         $.post(url, data, "json")
-            .then((data) => {
+            .done((data) => {
                 if (data.status === "success") {
+                    console.log("Fetched groupchat links!")
                     this.setState({
                         discordLink: data.detail.discordLink,
                         groupmeLink: data.detail.groupmeLink,
@@ -59,7 +63,36 @@ export default class CoursePopup extends React.Component {
                 console.error(err);
             })
             .always(() => {
-                this.setState({fetchFinished: true});
+                /* Fetch course list */
+                let c = Cookies.get("accountID");
+                if (!c) {
+                    console.error("User not login!")
+                    return;
+                }
+
+                url = config.baseUrl + config.api.subscription.getSubscriptions;
+                data = {token: c};
+
+                $.post(url, data, "json")
+                    .done((data) => {
+                        if (data.status === "success") {
+                            let flag = false;
+                            data.courselist.forEach(element => {
+                                if (element.courseid === this.props.courseID) {
+                                    // We already subscribed
+                                    flag = true;
+                                }
+                            });
+                            this.setState({subscribed: flag});
+                            console.log(`Subscription: ` + flag);
+                        } else {
+                            console.error(data);
+                        }
+                    })
+                    .fail((err) => {
+                        console.error(err);
+                    })
+                    .always(() => this.setState({fetchFinished: true}))
             });
     }
 
@@ -115,13 +148,15 @@ export default class CoursePopup extends React.Component {
                                       iconSvgPath={mdiDiscord}
                                       iconColor="#5969ea"
                                       loading={!this.state.fetchFinished}
-                                      onRefresh={this.refresh}/>
+                                      onRefresh={this.refresh}
+                                      subscribed={this.state.subscribed}/>
                         <GroupChatBar name="Groupme"
                                       id={this.props.courseID}
                                       link={this.state.groupmeLink}
                                       iconImg={Groupme}
                                       loading={!this.state.fetchFinished}
-                                      onRefresh={this.refresh}/>
+                                      onRefresh={this.refresh}
+                                      subscribed={this.state.subscribed}/>
                         <GroupChatBar name="WeChat"
                                       id={this.props.courseID}
                                       isQrCode
@@ -130,7 +165,8 @@ export default class CoursePopup extends React.Component {
                                       iconSvgPath={mdiWechat}
                                       iconColor="#5ecc72"
                                       loading={!this.state.fetchFinished}
-                                      onRefresh={this.refresh}/>
+                                      onRefresh={this.refresh}
+                                      subscribed={this.state.subscribed}/>
                     </Box>
                 </Box>
             </Modal>

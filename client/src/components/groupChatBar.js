@@ -149,6 +149,8 @@ class NoLinkDisplay extends React.Component {
         id: PropTypes.string.isRequired,
         /* Course/club name */
         name: PropTypes.string.isRequired,
+
+        subscribed: PropTypes.bool.isRequired,
         /* Name of the groupchat */
         platform: PropTypes.oneOf(["discord", "wechat", "groupme"]).isRequired,
         /* Callback function for refresh the popup */
@@ -159,7 +161,6 @@ class NoLinkDisplay extends React.Component {
         super(props);
         this.state = {
             loading: false,
-            subscribed: false,
             subscribeSuccess: false,
 
             showAlert: false,
@@ -168,39 +169,6 @@ class NoLinkDisplay extends React.Component {
             showPopover: false,
             popoverAnchor: null,
         }
-    }
-
-    componentDidMount() {
-        let c = Cookies.get("accountID");
-        if (!c) {
-            this.showAlert("User not login!", false);
-            return;
-        }
-
-        this.setState({loading: true});
-
-        let url = config.baseUrl + config.api.subscription.getSubscriptions;
-        let data = {token: c};
-
-        $.post(url, data, "json")
-            .done((data) => {
-                if (data.status === "success") {
-                    // console.log(this.props.platform);
-                    // console.log(data);
-                    data.courselist.forEach(element => {
-                        if (element.courseid === this.props.id) {
-                            // We already subscribed
-                            this.setState({subscribed: true});
-                        }
-                    });
-                } else {
-                    console.error(data);
-                }
-            })
-            .fail((err) => {
-                console.error(err);
-            })
-            .always(() => this.setState({loading: false}));
     }
 
     handleContribute(e) {
@@ -219,7 +187,7 @@ class NoLinkDisplay extends React.Component {
 
     handleSubscribe() {
         let url;
-        if (this.state.subscribed) {
+        if (this.props.subscribed) {
             // Then unsubscribe
             url = config.baseUrl + config.api.subscription.unsubscribe;
         } else {
@@ -232,21 +200,22 @@ class NoLinkDisplay extends React.Component {
 
         this.setState({loading: true});
         $.post(url, data, "json")
-            .always(() => {
-                this.setState({loading: false});
-            })
             .done((data) => {
                 if (data.status === "success") {
                     // this.setState(prev => ({subscribed: !prev.subscribed}));
-                    let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
+                    let msg = this.props.subscribed ? "Subscribed to " : "Unsubscribed from ";
                     this.showAlert(msg + this.props.name + "!", true);
+                    // setTimeout(() => {
+                    this.setState({loading: false});
                     this.props.onRefresh();
+                    // }, 200);
                 } else {
                     console.error(data);
                 }
             })
             .fail(() => {
                 this.showAlert("Failed to connect to the server.", false);
+                this.setState({loading: false});
             });
     }
 
@@ -306,18 +275,18 @@ class NoLinkDisplay extends React.Component {
                 <Grid item>
                     <LoadingButton size="small"
                                    variant="contained"
-                                   color={this.state.subscribed ? "success" : "warning"}
-                                   endIcon={this.state.subscribed ? <MarkEmailReadIcon/> : <EmailIcon/>}
+                                   color={this.props.subscribed ? "success" : "warning"}
+                                   endIcon={this.props.subscribed ? <MarkEmailReadIcon/> : <EmailIcon/>}
                                    loadingPosition="end"
                                    loading={this.state.loading}
                                    onClick={() => this.handleSubscribe()}
                                    sx={{textTransform: "none"}}>
-                        Subscribe{this.state.subscribed ? "d" : ""}
+                        Subscribe{this.props.subscribed ? "d" : ""}
                     </LoadingButton>
                     <AlertToast alertMessage={this.state.alertMessage}
                                 showAlert={this.state.showAlert}
                                 onClose={() => this.setState({showAlert: false})}
-                                severity={this.state.subscribeSuccess ? "success" : "error"}/>
+                                severity={this.props.subscribeSuccess ? "success" : "error"}/>
                 </Grid>
             </Grid>
         );
@@ -553,6 +522,8 @@ export default class GroupChatBar extends React.Component {
         /* Unique ID of the course/club */
         id: PropTypes.string.isRequired,
 
+        subscribed: PropTypes.bool.isRequired,
+
         /* When set to true, will treat props.link as a link to the QR code image  */
         isQrCode: PropTypes.bool,
 
@@ -589,7 +560,8 @@ export default class GroupChatBar extends React.Component {
                                   id={this.props.id}
                                   name={this.props.name}
                                   platform={this.props.name.toLowerCase()}
-                                  onRefresh={this.props.onRefresh}/>
+                                  onRefresh={this.props.onRefresh}
+                                  subscribed={this.props.subscribed}/>
         }
     }
 
