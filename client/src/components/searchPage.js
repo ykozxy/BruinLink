@@ -5,6 +5,8 @@ import Cookies from 'js-cookie';
 import FilterBox from "../components/courseFilter";
 import {withRouter} from "react-router";
 import {Box} from "@mui/material";
+import * as config from "../config"
+import $ from "jquery"
 
 export default withRouter(class SearchPage extends React.Component {
     constructor(props) {
@@ -21,7 +23,10 @@ export default withRouter(class SearchPage extends React.Component {
             department: department,
             division : division,
         };
+
+        //this.createClassArray=this.createClassArray.bind(this)
     }
+
 
     render(){
         {
@@ -47,6 +52,7 @@ export default withRouter(class SearchPage extends React.Component {
                   }
             //console.log("??query??"+this.state.query)
         }
+
         return (
             <div>
                 <Navbar isLogin={true} query={this.state.query}/>
@@ -59,10 +65,8 @@ export default withRouter(class SearchPage extends React.Component {
                     <FilterBox query={this.state.query}
                                department={this.state.department}
                                division={this.state.division}/>
-                    <ClassList 
-                        courseName={this.state.query}
-                        department={this.state.department}
-                        division={this.state.division}  
+
+                    <ClassList courseName={this.state.query} department={this.state.department} division={this.state.division}
                         />
                 </Box>
             </div>
