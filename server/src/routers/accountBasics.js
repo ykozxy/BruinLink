@@ -372,8 +372,8 @@ async function unsubscribecourse(account_arg){
             console.log("token expired");
             return "failed to subscribe, time out";
         }
-        let courseID = course._id.toString('base64');
-        let userID = account._id.toString('base64'); 
+        let courseID = course._id;
+        let userID = account._id; 
         account.courses_subscribed = account.courses_subscribed.filter(function(ele)
         {
             return ele != courseID;
