@@ -30,7 +30,8 @@ module.exports = {
         },
         subscription: {
             subscribe: "/subscription/subscribe",
-            unsubscribe: "/subscription/unsubscribe"
+            unsubscribe: "/subscription/unsubscribe",
+            getSubscriptions: "/subscription/getSubscriptions",
         },
         report: {
             reportLink: "/report/link"

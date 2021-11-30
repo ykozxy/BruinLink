@@ -1,12 +1,9 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 const {v4: uuidv4} = require('uuid');
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
 const accountModel = require('./accountModel');
+const courseModel = require("./courseModel");
 const verificationModel = require('./verificationModel');
-// import accountModel from './accountModel';
-// import verificationModel from './accountModel';
 
 const API_KEY = config.API_KEY;
 sgMail.setApiKey(API_KEY);
@@ -19,6 +16,9 @@ accountBasics.changePasswordResponse = changePasswordResponse;
 accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 accountBasics.getEmailResponse = getEmailResponse;
+accountBasics.subscribecourse = subscribecourse;
+accountBasics.unsubscribecourse = unsubscribecourse;
+accountBasics.getsubscription = getsubscription;
 module.exports = accountBasics;
 
 /** @param {String} email
@@ -81,6 +81,7 @@ async function setEmail(old_email, password, new_email, unique, code) {
     }
 }
 
+
 /** @param {String} token
  */
 
@@ -94,6 +95,21 @@ async function getEmail(token) {
         email = account.email;
         if (email == null) {
             console.log("token: " + token + " not found");
+            return null;
+        }
+        console.log("email successfully found: " + email);
+        return email;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+async function findEmail(email) {
+    try {
+        let account = await accountModel.findOne({ email: email });
+        if (account == null) {
+            console.log("email cannot found");
             return null;
         }
         console.log("email successfully found: " + email);
@@ -191,7 +207,7 @@ async function loginResponse(account_arg) {
 
 async function registerResponse(account_arg) {
     try {
-        let email_get = await getEmail(account_arg.email);
+        let email_get = await findEmail(account_arg.email);
         if (email_get == null) {
             let email = account_arg.email;
             let password = account_arg.password;
@@ -334,5 +350,92 @@ async function getEmailResponse(account_arg) {
             email: "",
             succeed: false
         };
+    }
+}
+
+async function subscribecourse(account_arg){
+    try{
+        let token = account_arg.token;
+        let courseid = account_arg.course;
+        let course = await courseModel.findOne({ courseid: courseid });
+        let account = await accountModel.findOne({ token: token });
+        if (account.expire_date.getTime() < Date.now()) {
+            console.log("token expired");
+            return "failed to subscribe, time out";
+        }
+        var a = true;
+        for (i=0; i<account.courses_subscribed; i++)
+        {
+            courseID = account.courses_subscribed[i];
+            if (course._id == courseID)
+            {
+                a = false;
+            }
+        }
+        if (a == false)
+        {
+            return "already subscribed"
+        }
+        account.courses_subscribed.push(course._id);
+        course.users_subscribed.push(account._id);
+        account.save();
+        course.save();
+        return "success";
+    }catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+async function unsubscribecourse(account_arg){
+    try{
+        let token = account_arg.token;
+        let courseid = account_arg.course;
+        let course = await courseModel.findOne({ courseid: courseid });
+        let account = await accountModel.findOne({ token: token });
+        if (account.expire_date.getTime() < Date.now()) {
+            console.log("token expired");
+            return "failed to subscribe, time out";
+        }
+        let courseID = course._id;
+        let userID = account._id; 
+        account.courses_subscribed = account.courses_subscribed.filter(function(ele)
+        {
+            return ele != courseID;
+        });
+        course.users_subscribed = course.users_subscribed.filter(function(ele)
+        {
+            return ele != userID;
+        });
+        account.save();
+        course.save();
+        return "successfully unsubscribed";
+    }catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+async function getsubscription(account_arg){
+    try{
+        var subscriptionlist = [];
+        let token = account_arg.token;
+        let account = await accountModel.findOne({ token: token });
+        if (account.expire_date.getTime() < Date.now()) {
+            console.log("token expired");
+            return "failed to subscribe, time out";
+        }
+        for (i=0; i<account.courses_subscribed.length;i++)
+        {
+            courseID= account.courses_subscribed[i];
+            let a = await courseModel.findOne({ _id: courseID });
+            subscriptionlist.push({courseid: a.courseid,
+                coursename: a.coursename,
+                profname: a.profname});
+        }
+        return subscriptionlist;
+    }catch (err) {
+        console.log(err);
+        return err;
     }
 }

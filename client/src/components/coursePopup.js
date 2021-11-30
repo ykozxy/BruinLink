@@ -1,3 +1,4 @@
+import $ from "jquery";
 import React from "react";
 import PropTypes from "prop-types";
 import {Box, Button, Modal, Typography} from "@mui/material";
@@ -5,6 +6,7 @@ import {Close} from "@mui/icons-material";
 import {mdiDiscord, mdiWechat} from "@mdi/js"
 import GroupChatBar from "./groupChatBar";
 import {default as Groupme} from "../icons/groupme.svg";
+import * as config from "../config"
 
 
 export default class CoursePopup extends React.Component {
@@ -14,15 +16,54 @@ export default class CoursePopup extends React.Component {
         courseName: PropTypes.string.isRequired,
         professorName: PropTypes.string.isRequired,
         courseID: PropTypes.string.isRequired,
-        wechatCode: PropTypes.string,
-        discordLink: PropTypes.string,
-        groupmeLink: PropTypes.string,
     }
 
     constructor(props) {
         super(props);
 
+        this.state = {
+            fetchFinished: false,
+            discordLink: null,
+            groupmeLink: null,
+            wechatCodeBuffer: null,
+            wechatCodeType: null,
+        };
+
+        this.refresh = this.refresh.bind(this);
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        // Do not fetch image / links unless we are opening this popup
+        if (this.props.open && !prevProps.open)
+            this.refresh();
+    }
+
+    refresh() {
+        this.setState({fetchFinished: false});
+
+        let url = config.baseUrl + config.api.course.getDetail;
+        let data = {courseid: this.props.courseID};
+
+        $.post(url, data, "json")
+            .then((data) => {
+                console.log(data);
+                if (data.status === "success") {
+                    this.setState({
+                        discordLink: data.detail.discordLink,
+                        groupmeLink: data.detail.groupmeLink,
+                        wechatCodeBuffer: data.detail.wechatQRCode,
+                        wechatCodeType: data.detail.content_type,
+                    })
+                }
+            })
+            .fail((err) => {
+                console.error(err);
+            })
+            .always(() => {
+                this.setState({fetchFinished: true});
+            });
+    }
+
 
     render() {
         return (
@@ -71,18 +112,26 @@ export default class CoursePopup extends React.Component {
                         {/* Links & Codes */}
                         <GroupChatBar name="Discord"
                                       id={this.props.courseID}
-                                      link={this.props.discordLink}
+                                      link={this.state.discordLink}
                                       iconSvgPath={mdiDiscord}
-                                      iconColor="#5969ea"/>
+                                      iconColor="#5969ea"
+                                      loading={!this.state.fetchFinished}
+                                      onRefresh={this.refresh}/>
                         <GroupChatBar name="Groupme"
                                       id={this.props.courseID}
-                                      link={this.props.groupmeLink}
-                                      iconImg={Groupme}/>
+                                      link={this.state.groupmeLink}
+                                      iconImg={Groupme}
+                                      loading={!this.state.fetchFinished}
+                                      onRefresh={this.refresh}/>
                         <GroupChatBar name="WeChat"
                                       id={this.props.courseID}
-                                      link={this.props.wechatCode} isQrCode
+                                      isQrCode
+                                      imageType={this.state.wechatCodeType}
+                                      imageBuffer={this.state.wechatCodeBuffer}
                                       iconSvgPath={mdiWechat}
-                                      iconColor="#5ecc72"/>
+                                      iconColor="#5ecc72"
+                                      loading={!this.state.fetchFinished}
+                                      onRefresh={this.refresh}/>
                     </Box>
                 </Box>
             </Modal>

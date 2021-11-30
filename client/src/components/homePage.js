@@ -6,20 +6,17 @@ import SearchBar from "./searchBar";
 import {Box, Typography} from "@mui/material";
 
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
         let c = Cookies.get("accountID");
         return (
             <div>
                 <Navbar isLogin={c != null} showSearchBar={false}/>
                 <Box sx={{
+                    height: "90vh",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
+                    justifyContent: "center",
                 }}>
                     <Box width={0.7}
                          sx={{
@@ -39,7 +36,7 @@ class HomePage extends React.Component {
                                 -- A platform to find group chats for every class you have.
                             </Typography>
                         </Box>
-                        <Box width={0.7}>
+                        <Box sx={{width: "500px"}}>
                             <Typography variant="body2" sx={{ml: 0.3, mb: -0.5}}>
                                 Search your class or professor...
                             </Typography>

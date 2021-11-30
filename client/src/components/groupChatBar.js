@@ -1,9 +1,7 @@
 import $ from "jquery"
 import React from "react";
 import PropTypes from "prop-types";
-import {Alert, Box, Button, Grid, Popover, Stack, SvgIcon, TextField, Typography} from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import {Box, Button, Grid, Popover, Skeleton, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import LaunchIcon from '@mui/icons-material/Launch';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -17,59 +15,7 @@ import AlertToast from "./alertToast";
 import * as config from "../config"
 import {checkUrlFormat} from "../utils";
 import Cookies from 'js-cookie'
-
-class IconTooltip extends React.Component {
-    static propTypes = {
-        msg: PropTypes.string.isRequired,
-        success: PropTypes.bool,
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {open: false, anchorEL: null};
-    }
-
-    handleShowTooltip(event) {
-        this.setState({open: true, anchorEL: event.currentTarget});
-    }
-
-    handleHideTooltip() {
-        this.setState({open: false, anchorEL: null});
-    }
-
-    render() {
-        return (
-            <Box sx={{display: "flex", alignItems: "center"}}>
-                <Box sx={{display: "flex", alignItems: "center"}}
-                     onMouseEnter={(e) => this.handleShowTooltip(e)}
-                     onMouseLeave={() => this.handleHideTooltip()}>
-                    {this.props.success ? <CheckCircleIcon color="success"/>
-                        : <CancelIcon color="error"/>
-                    }
-                </Box>
-                <Popover open={this.state.open}
-                         anchorEl={this.state.anchorEL}
-                         onClose={() => this.handleHideTooltip()}
-                         style={{pointerEvents: 'none'}}
-                         anchorOrigin={{
-                             vertical: 'top',
-                             horizontal: 'center',
-                         }}
-                         transformOrigin={{
-                             vertical: 'bottom',
-                             horizontal: 'center',
-                         }}>
-                    <Box borderRadius={1}>
-                        <Alert severity={this.props.success ? "success" : "error"}
-                               sx={{pl: 1.5, pr: 1.5, pu: 0.5, pb: 0.5}}>
-                            {this.props.msg}
-                        </Alert>
-                    </Box>
-                </Popover>
-            </Box>
-        )
-    }
-}
+import IconTooltip from "./iconTooltip";
 
 class LinkDisplay extends React.Component {
     static propTypes = {
@@ -88,7 +34,13 @@ class LinkDisplay extends React.Component {
     }
 
     handleOpenLink() {
-        window.open(this.props.link);
+        let protocol = /^http/;
+        if (protocol.test(this.props.link)) {
+            window.open(this.props.link);
+        } else {
+            console.log(`Link "${this.props.link}" doesn't have a protocol.`);
+            window.open(`//${this.props.link}`);
+        }
     }
 
     render() {
@@ -97,7 +49,7 @@ class LinkDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip success msg={"Group chat link available!"}/>
+                        <IconTooltip success showTooltipIcon msg={"Group chat link available!"}/>
                     </Stack>
                 </Grid>
 
@@ -131,8 +83,10 @@ class LinkDisplay extends React.Component {
 
 class CodeDisplay extends React.Component {
     static propTypes = {
-        /* The link to the qr codek */
-        link: PropTypes.string.isRequired,
+        /* The buffer of the image */
+        buffer: PropTypes.string.isRequired,
+        /* The image type of the buffer */
+        imageType: PropTypes.string.isRequired,
     }
 
     constructor(props) {
@@ -153,7 +107,7 @@ class CodeDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip success msg={"Group chat QR code available!"}/>
+                        <IconTooltip success showTooltipIcon msg={"Group chat QR code available!"}/>
                     </Stack>
                 </Grid>
 
@@ -176,7 +130,10 @@ class CodeDisplay extends React.Component {
                                  vertical: 'bottom',
                                  horizontal: 'center',
                              }}>
-                        <img src={this.props.link} alt="QR code"/>
+                        <img src={`data:${this.props.imageType};base64,${this.props.buffer}`}
+                             alt="QR code"
+                             style={{maxWidth: 700, maxHeight: 500}}
+                        />
                     </Popover>
                 </Grid>
             </Grid>
@@ -194,10 +151,13 @@ class NoLinkDisplay extends React.Component {
         name: PropTypes.string.isRequired,
         /* Name of the groupchat */
         platform: PropTypes.oneOf(["discord", "wechat", "groupme"]).isRequired,
+        /* Callback function for refresh the popup */
+        onRefresh: PropTypes.func.isRequired,
     }
 
     constructor(props) {
         super(props);
+        // TODO: check subscription on open
         this.state = {
             loading: false,
             subscribed: false,
@@ -209,6 +169,35 @@ class NoLinkDisplay extends React.Component {
             showPopover: false,
             popoverAnchor: null,
         }
+    }
+
+    componentDidMount() {
+        let c = Cookies.get("accountID");
+        if (!c) {
+            this.showAlert("User not login!", false);
+            return;
+        }
+
+        this.setState({loading: true});
+
+        let url = config.baseUrl + config.api.subscription.getSubscriptions;
+        let data = {token: c};
+
+        $.post(url, data, "json")
+            .done((data) => {
+                if (data.status === "success") {
+                    data.courselist.forEach(element => {
+                        if (element.courseid === this.props.id) {
+                            // We already subscribed
+                            this.setState({subscribed: true});
+                        }
+                    })
+                }
+            })
+            .fail((err) => {
+                console.error(err);
+            })
+            .always(() => this.setState({loading: false}));
     }
 
     handleContribute(e) {
@@ -234,21 +223,24 @@ class NoLinkDisplay extends React.Component {
             // Then subscribe
             url = config.baseUrl + config.api.subscription.subscribe;
         }
-        let data = {id: this.props.id};
+
+        let c = Cookies.get("accountID");
+        let data = {course: this.props.id, token: c};
 
         this.setState({loading: true});
-        $.post(url, data, function (data, status, jqXHR) {
-            console.log(data);
-            console.log(status);
-            console.log(jqXHR)
-        }, "json")
+        $.post(url, data, "json")
             .always(() => {
                 this.setState({loading: false});
             })
-            .done(() => {
-                this.setState(prev => ({subscribed: !prev.subscribed}));
-                let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
-                this.showAlert(msg + this.props.name + "!", true);
+            .done((data) => {
+                if (data.status === "success") {
+                    this.setState(prev => ({subscribed: !prev.subscribed}));
+                    let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
+                    this.showAlert(msg + this.props.name + "!", true);
+                    setTimeout(() => this.props.onRefresh(), 1500);
+                } else {
+                    console.error(data);
+                }
             })
             .fail(() => {
                 this.showAlert("Failed to connect to the server.", false);
@@ -268,8 +260,8 @@ class NoLinkDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip
-                            msg={"No group chat " + (this.props.type === "img" ? "QR code" : "link") + " yet!"}/>
+                        <IconTooltip showTooltipIcon
+                                     msg={"No group chat " + (this.props.type === "img" ? "QR code" : "link") + " yet!"}/>
                     </Stack>
                 </Grid>
 
@@ -297,11 +289,13 @@ class NoLinkDisplay extends React.Component {
                             <ImageContributeForm id={this.props.id}
                                                  onClose={() => this.handlePopupClose()}
                                                  platform={this.props.platform}
-                                                 showAlert={(m, s) => this.showAlert(m, s)}/> :
+                                                 showAlert={(m, s) => this.showAlert(m, s)}
+                                                 onRefresh={this.props.onRefresh}/> :
                             <LinkContributeForm id={this.props.id}
                                                 onClose={() => this.handlePopupClose()}
                                                 platform={this.props.platform}
-                                                showAlert={(m, s) => this.showAlert(m, s)}/>
+                                                showAlert={(m, s) => this.showAlert(m, s)}
+                                                onRefresh={this.props.onRefresh}/>
                         }
                     </Popover>
                 </Grid>
@@ -309,7 +303,7 @@ class NoLinkDisplay extends React.Component {
                 <Grid item>
                     <LoadingButton size="small"
                                    variant="contained"
-                                   color="warning"
+                                   color={this.state.subscribed ? "success" : "warning"}
                                    endIcon={this.state.subscribed ? <MarkEmailReadIcon/> : <EmailIcon/>}
                                    loadingPosition="end"
                                    loading={this.state.loading}
@@ -333,6 +327,7 @@ class LinkContributeForm extends React.Component {
         platform: PropTypes.oneOf(["groupme", "discord"]).isRequired,
         showAlert: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
+        onRefresh: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -387,6 +382,7 @@ class LinkContributeForm extends React.Component {
             .done(() => {
                 this.setState({success: true});
                 setTimeout(() => this.props.onClose(), 1500);
+                setTimeout(() => this.props.onRefresh(), 1500);
             });
     }
 
@@ -440,6 +436,7 @@ class ImageContributeForm extends React.Component {
         platform: PropTypes.oneOf(["wechat"]).isRequired,
         showAlert: PropTypes.func.isRequired,
         onClose: PropTypes.func.isRequired,
+        onRefresh: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -496,6 +493,7 @@ class ImageContributeForm extends React.Component {
             .done(() => {
                 this.setState({success: true});
                 setTimeout(() => this.props.onClose(), 1500);
+                setTimeout(() => this.props.onRefresh(), 1500);
             });
     }
 
@@ -557,11 +555,15 @@ export default class GroupChatBar extends React.Component {
         /* Unique ID of the course/club */
         id: PropTypes.string.isRequired,
 
+        /* When set to true, will treat props.link as a link to the QR code image  */
+        isQrCode: PropTypes.bool,
+
         /* The link of group chat, null for no-link */
         link: PropTypes.string,
 
-        /* When set to true, will treat props.link as a link to an the QR code image  */
-        isQrCode: PropTypes.bool,
+        /* Image buffer and type of QR code */
+        imageBuffer: PropTypes.string,
+        imageType: PropTypes.string,
 
         /* Icon config. Must provide a file or svg pat. */
         // SVG path of icon
@@ -570,8 +572,28 @@ export default class GroupChatBar extends React.Component {
         iconImg: PropTypes.string,
         // Color of SVG icons
         iconColor: PropTypes.string,
+
+        loading: PropTypes.bool,
+
+        onRefresh: PropTypes.func.isRequired,
     }
 
+    renderGroupChatStatus() {
+        // Display components based on link type and availability
+        if (this.props.link || (this.props.imageBuffer && this.props.imageType)) {
+            if (this.props.isQrCode) {
+                return <CodeDisplay buffer={this.props.imageBuffer} imageType={this.props.imageType}/>
+            } else {
+                return <LinkDisplay link={this.props.link}/>
+            }
+        } else {
+            return <NoLinkDisplay type={this.props.isQrCode ? "img" : "link"}
+                                  id={this.props.id}
+                                  name={this.props.name}
+                                  platform={this.props.name.toLowerCase()}
+                                  onRefresh={this.props.onRefresh}/>
+        }
+    }
 
     render() {
         /* Generate the correct icon component */
@@ -606,15 +628,9 @@ export default class GroupChatBar extends React.Component {
                 <Grid item xs={5}/>
                 <Grid item xs={35}>
                     {
-                        // Display components based on link type and availability
-                        this.props.link ?
-                            (this.props.isQrCode ?
-                                    <CodeDisplay link={this.props.link}/> :
-                                    <LinkDisplay link={this.props.link}/>
-                            ) :
-                            <NoLinkDisplay type={this.props.isQrCode ? "img" : "link"} id={this.props.id}
-                                           name={this.props.name}
-                                           platform={this.props.name.toLowerCase()}/>
+                        this.props.loading ?
+                            <Skeleton variant="rectangle" animation="wave"/> :
+                            this.renderGroupChatStatus()
                     }
                 </Grid>
             </Grid>

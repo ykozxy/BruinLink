@@ -27,7 +27,7 @@ export default class FilterBox extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         // Skip fetch data if we already have departments
         if (this.state.departmentList.length > 0) return;
 
@@ -74,6 +74,7 @@ export default class FilterBox extends React.Component {
             <Box component="form"
                  onSubmit={this.handleSubmit}
                  width={"40%"}
+                 borderRadius={2}
                  sx={{
                      border: 1,
                      borderColor: 'grey.500',

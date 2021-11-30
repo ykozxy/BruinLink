@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const courseBasics = require('./courseBasics');
+const accountBasics = require('./accountBasics');
 
-router.post('/search', getCourse);
-router.post('/getDetail', getDetail);
-router.post('/getDepartments', getDepartments);
-
+router.post('/subscribe', usersubscribecourse);
+router.post("/unsubscribe", userunsubscribecourse);
+router.post("/getSubscriptions", getusersubscription);
 module.exports = router;
 
-async function getCourse(req, res) {
+async function usersubscribecourse(req, res){
     try {
-        let response = await courseBasics.getCourseResponse(req.body);
+        let response = await accountBasics.subscribecourse(req.body);
         console.log(response);
         if (response) {
             res.send({
@@ -21,7 +20,7 @@ async function getCourse(req, res) {
         else {
             res.send({
                 status: "failed",
-                message: "failed to get course list"
+                message: "failed to subscribe"
             })
         }
     } catch (err) {
@@ -33,49 +32,53 @@ async function getCourse(req, res) {
     }
 }
 
-async function getDetail(req, res) {
+async function userunsubscribecourse(req, res){
     try {
-        let response = await courseBasics.getDetailResponse(req.body);
-        if (response != null) {
-            res.send({
-                status: "success",
-                detail: response
-            });
-        }
-        else {
-            res.send({
-                status: "failed",
-                message: "failed to get course detail"
-            })
-        }
-    } catch (err) {
-        console.error(err);
-        res.send({
-            status: "error",
-            message: err
-        });
-    }
-}
-
-async function getDepartments(req, res) {
-    try {
-        let response = await courseBasics.getDepartmentsResponse();
+        let response = await accountBasics.unsubscribecourse(req.body);
+        console.log(response);
         if (response) {
             res.send({
                 status: "success",
-                departments: response
+                courselist: response
             });
         }
         else {
             res.send({
                 status: "failed",
-                message: "failed to get departments list"
+                message: "failed tounsubscribe"
             })
         }
     } catch (err) {
+        console.error(err);
         res.send({
             status: "error",
             message: err
         });
     }
 }
+
+async function getusersubscription(req, res){
+    try {
+        let response = await accountBasics.getsubscription(req.body);
+        console.log(response);
+        if (response) {
+            res.send({
+                status: "success",
+                courselist: response
+            });
+        }
+        else {
+            res.send({
+                status: "failed",
+                message: "failed to list"
+            })
+        }
+    } catch (err) {
+        console.error(err);
+        res.send({
+            status: "error",
+            message: err
+        });
+    }
+}
+
