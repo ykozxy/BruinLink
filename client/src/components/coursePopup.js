@@ -46,7 +46,6 @@ export default class CoursePopup extends React.Component {
 
         $.post(url, data, "json")
             .then((data) => {
-                console.log(data);
                 if (data.status === "success") {
                     this.setState({
                         discordLink: data.detail.discordLink,

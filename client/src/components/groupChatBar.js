@@ -233,7 +233,7 @@ class NoLinkDisplay extends React.Component {
             })
             .done((data) => {
                 if (data.status === "success") {
-                    this.setState(prev => ({subscribed: !prev.subscribed}));
+                    // this.setState(prev => ({subscribed: !prev.subscribed}));
                     let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
                     this.showAlert(msg + this.props.name + "!", true);
                     this.props.onRefresh();
@@ -477,11 +477,6 @@ class ImageContributeForm extends React.Component {
             contentType: false,
             cache: false,
             processData: false,
-            success: function (data, status, jqXHR) {
-                console.log(data);
-                console.log(status);
-                console.log(jqXHR)
-            }
         })
             .always(() => {
                 this.setState({loading: false});
