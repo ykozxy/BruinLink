@@ -85,7 +85,7 @@ return (
           showAlert={this.state.showAlert}
           onClose={() => this.setState({showAlert: false})}
           severity="warning"/>
-          {console.log(this.props.courseID)}
+
         <CoursePopup 
           open={this.state.open}
           onClose={() => this.setState({open: false})}
