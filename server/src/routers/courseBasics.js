@@ -8,6 +8,7 @@ courseBasics.updateProf = updateProf;
 courseBasics.getDetailResponse = getDetailResponse;
 courseBasics.getDepartmentsResponse = getDepartmentsResponse;
 courseBasics.getCourseResponse = getCourseResponse;
+courseBasics.register = register;
 
 module.exports = courseBasics;
 

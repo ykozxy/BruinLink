@@ -185,12 +185,16 @@ class NoLinkDisplay extends React.Component {
         $.post(url, data, "json")
             .done((data) => {
                 if (data.status === "success") {
+                    // console.log(this.props.platform);
+                    // console.log(data);
                     data.courselist.forEach(element => {
                         if (element.courseid === this.props.id) {
                             // We already subscribed
                             this.setState({subscribed: true});
                         }
                     });
+                } else {
+                    console.error(data);
                 }
             })
             .fail((err) => {
