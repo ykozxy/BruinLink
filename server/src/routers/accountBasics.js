@@ -105,6 +105,21 @@ async function getEmail(token) {
     }
 }
 
+async function findEmail(email) {
+    try {
+        let account = await accountModel.findOne({ email: email });
+        if (account == null) {
+            console.log("email cannot found");
+            return null;
+        }
+        console.log("email successfully found: " + email);
+        return email;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
 /** @param {String} email
  @param {String} password
  */
@@ -192,7 +207,7 @@ async function loginResponse(account_arg) {
 
 async function registerResponse(account_arg) {
     try {
-        let email_get = await getEmail(account_arg.email);
+        let email_get = await findEmail(account_arg.email);
         if (email_get == null) {
             let email = account_arg.email;
             let password = account_arg.password;
