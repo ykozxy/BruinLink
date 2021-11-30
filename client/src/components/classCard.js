@@ -51,12 +51,13 @@ return (
         borderColor: 'grey.500',
         }}>
       <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h5" component="div" sx={{height:60}}>
           {this.props.courseName}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
           {this.props.professorName}
         </Typography>
+        <div/>
         <ClassCardGroupChatBar 
           name="Discord"
           id={this.props.courseID}
