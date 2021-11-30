@@ -73,7 +73,8 @@ async function register(course_arg) {
             coursename: course_arg.coursename,
             profname: course_arg.profname,
             courseid: new mongoose.courseModel.ObjectId(),
-            department: course_arg.department
+            department: course_arg.department,
+            division: course_arg.division
         });
         let saveCourse = await newCourse.save();
         if (saveCourse == null) {
