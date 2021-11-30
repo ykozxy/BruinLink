@@ -6,11 +6,6 @@ import SearchBar from "./searchBar";
 import {Box, Typography} from "@mui/material";
 
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
         let c = Cookies.get("accountID");
         return (
