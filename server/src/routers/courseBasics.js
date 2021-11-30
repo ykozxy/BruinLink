@@ -4,7 +4,6 @@ const courseModel = require('./courseModel');
 
 var courseBasics = {};
 courseBasics.findbyname = findbyname;
-courseBasics.updateProf = updateProf;
 courseBasics.getDetailResponse = getDetailResponse;
 courseBasics.getDepartmentsResponse = getDepartmentsResponse;
 courseBasics.getCourseResponse = getCourseResponse;
@@ -89,37 +88,6 @@ async function register(course_arg) {
         return true;
     } catch (err) {
         console.log(err);
-        return false;
-    }
-}
-
-/**
- *  updateProf with 2 inputs
- *
- *  @param {String} courseId
- *  @param {String} profname
- *
- *  @return {boolean} whether updateProf is successful or not
- */
-async function updateProf(courseid, profname) {
-    try {
-        if (profname == null || courseId == null) {
-            console.log("cannot set profname null; please provide a valid profname");
-            return;
-        }
-        const filter = {courseid: courseid};
-        const update = {profname: profname};
-        const options = {runValidators: true, upsert: true};
-        let user = await courseModel.updateOne(filter, {$set: update}, options);
-        if (user == null) {
-            console.log("unable to find the course; failed to set profname");
-            return false;
-        } else {
-            console.log("set profname to " + profname);
-            return true;
-        }
-    } catch (err) {
-        console.log("Error pops");
         return false;
     }
 }
