@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const accountModel = require ('./accountModel');
 
 const courseSchema = new Schema({
     coursename: {type: String, required: true},
@@ -11,7 +10,7 @@ const courseSchema = new Schema({
     groupmeLink: {type: String},
     discordLink: {type: String},
     wechatQRCode: { image: {type: Buffer}, content_type: {type: String} },
-    users_subscribed: [{ type: String }]
+    users_subscribed: [{ type: String, unique: true }]
 });
 const courseModel = mongoose.model('Course', courseSchema);
 module.exports = courseModel;
