@@ -33,13 +33,13 @@ class HomePage extends React.Component {
                                 Welcome to BruinLink!
                             </Typography>
                             <Typography variant="body1" sx={{mb: 5}}>
-                                -- A platform to find group chats for every class you have.
+                                 A platform to find group chats for every class you have.
                             </Typography>
                         </Box>
                         <Box sx={{width: "500px"}}>
-                            <Typography variant="body2" sx={{ml: 0.3, mb: -0.3}}>
-                                Search your class or professor...
-                            </Typography>
+                            {/* <Typography variant="body2" sx={{ml: 0.3, mb: -0.3}}>
+                                Search your class :)
+                            </Typography> */}
                             {/*<SearchBar size="large" bgColor="#DCDCDC"/>*/}
                             <SearchBar size="large" bgColor="#fff"/>
                         </Box>
