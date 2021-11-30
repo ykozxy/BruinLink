@@ -85,7 +85,7 @@ courses = [
     {
         "coursename": "Life Sciences 7B",
         "profname": "Pires, D.B., Kremer, C.T.",
-        "department": "Life Siences",
+        "department": "Life Sciences",
         "division": "lower",
     }
 ]
