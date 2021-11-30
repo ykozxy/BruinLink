@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const courseModel  = require('./courseModel');
 const accountModel = require("./accountModel");
 
@@ -121,7 +120,33 @@ async function uploadLinkResponse(upload_arg){
 }
 
 async function subscriptionEmailSend(courseid, platform) {
+    try{
+        let course = await courseModel.findOne({ courseid: courseid });
+        let coursename = course.coursename;
+        for (i=0; i<course.users_subscribed.length;i++)
+        {
+            userID = course.users_subscribed[i];
+            let account = await accountModel.findOne({ _id: userID });
+            let email = account.email;
+            const msg = {
+                to: email,
+                from: 'xcjsam@outlook.com',
+                subject: 'BruinLink Subscription Notification',
+                text: 'Your subscribed course ' + coursename + ' has updated its ' + platform + ' link/QR code.',
+            };
+            sgMail.send(msg)
+                .then(() => {
+                    console.log('Email sent')
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
 
+        }
+    }catch (err) {
+        console.error(err);
+        return err;
+    }
 }
 
 async function uploadQrCodeResponse(upload_arg, file){
