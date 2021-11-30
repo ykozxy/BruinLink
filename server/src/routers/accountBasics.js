@@ -21,6 +21,7 @@ accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 accountBasics.getEmailResponse = getEmailResponse;
 accountBasics.subscribecourse = subscribecourse;
+accountBasics.unsubscribecourse = unsubscribecourse
 module.exports = accountBasics;
 
 /** @param {String} email
