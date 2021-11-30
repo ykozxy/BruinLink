@@ -6,11 +6,13 @@ import Typography from '@mui/material/Typography';
 import SearchBar from "./searchBar"
 import LetterAvatars from './letterAvatar';
 import {Box, Grid} from "@mui/material";
+import Cookies from "js-cookie";
+import * as config from "../config";
+import $ from "jquery";
 
 
 class Navbar extends React.Component {
     static propTypes = {
-        isLogin: PropTypes.bool.isRequired,
         showSearchBar: PropTypes.bool,
         query: PropTypes.string,
     }
@@ -21,6 +23,33 @@ class Navbar extends React.Component {
 
     constructor(props) {
         super(props);
+
+        let user_token = Cookies.get("accountID");
+        this.state = {login: user_token != null}
+    }
+
+    componentDidMount() {
+        let user_token = Cookies.get("accountID");
+        if (user_token) {
+            let url = config.baseUrl + config.api.account.getEmail;
+            let data = {token: user_token}
+
+            $.post(url, data, "json")
+                .fail(() => {
+                    console.log("Failed to connect to the server.");
+                })
+                .done((data) => {
+                    if (data.status === "success") {
+                        this.setState({login: true})
+                    } else {
+                        console.log("Token expired!");
+                        console.log(data);
+                        Cookies.remove("accountID");
+                    }
+                });
+        } else {
+            this.setState({login: false});
+        }
     }
 
     render() {
@@ -42,7 +71,7 @@ class Navbar extends React.Component {
                     </Grid>
                     <Grid item xs={18}>
                         {
-                            this.props.isLogin ?
+                            this.state.login ?
                                 (
                                     <Grid container columns={10} alignItems="center">
                                         <Grid item xs={3}/>
