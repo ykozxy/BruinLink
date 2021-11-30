@@ -34,7 +34,7 @@ class HomePage extends React.Component {
                                 -- A platform to find group chats for every class you have.
                             </Typography>
                         </Box>
-                        <Box width={0.7}>
+                        <Box sx={{width: "500px"}}>
                             <Typography variant="body2" sx={{ml: 0.3, mb: -0.5}}>
                                 Search your class or professor...
                             </Typography>
