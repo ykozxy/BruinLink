@@ -155,7 +155,7 @@ class ProfilePage extends React.Component {
                                 <Typography variant="inherit">{this.state.email}</Typography>
                             </MenuItem>
 
-                            <Divider orientation="horizontal"/>
+                            <Divider orientation="horizontal" sx={{my: 2}}/>
 
                             <MenuItem>
                                 <ListItemIcon>
@@ -175,7 +175,7 @@ class ProfilePage extends React.Component {
                                 </Link>
                             </MenuItem>
 
-                            <Divider orientation="horizontal"/>
+                            <Divider orientation="horizontal" sx={{my: 2}}/>
 
                             <MenuItem>
                                 <ListItemIcon>
@@ -187,7 +187,10 @@ class ProfilePage extends React.Component {
                             </MenuItem>
 
                             <List>
-                                {
+                                {this.state.courseList.length === 0 ?
+                                    <ListItem key={0} sx={{mt: -1, ml: 0.5}}>
+                                        None
+                                    </ListItem> :
                                     this.state.courseList.map(element =>
                                         <ListItem key={element.id}
                                                   secondaryAction={
