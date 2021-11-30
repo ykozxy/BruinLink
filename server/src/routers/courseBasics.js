@@ -1,3 +1,4 @@
+const {v4: uuidv4} = require('uuid');
 const mongoose = require('mongoose');
 const courseModel = require('./courseModel');
 
@@ -72,7 +73,7 @@ async function register(course_arg) {
         const newCourse = new courseModel({
             coursename: course_arg.coursename,
             profname: course_arg.profname,
-            courseid: new mongoose.courseModel.ObjectId(),
+            courseid: uuidv4(),
             department: course_arg.department,
             division: course_arg.division
         });
