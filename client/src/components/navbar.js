@@ -60,6 +60,12 @@ class Navbar extends React.Component {
         }
     }
 
+    smartPageRefresh(targetUrl) {
+        if (window.location.href.includes(targetUrl)) {
+            setTimeout(() => window.location.reload(), 200);
+        }
+    }
+
     showAlert(msg, success) {
         this.setState({
             alertOpen: true,
@@ -94,7 +100,8 @@ class Navbar extends React.Component {
                                         <Grid item xs={3}>
                                             <Link to="/search"
                                                   className="navbar-links"
-                                                  onClick={() => window.location.reload()}>
+                                                  onClick={() => this.smartPageRefresh("/search")}
+                                            >
                                                 Course
                                             </Link>
                                         </Grid>
@@ -124,7 +131,8 @@ class Navbar extends React.Component {
                                     <Box sx={{mx: 2}}>
                                         <Link to="/search"
                                               className="navbar-links"
-                                              onClick={() => window.location.reload()}>
+                                              onClick={() => this.smartPageRefresh("/search")}
+                                        >
                                             Course
                                         </Link>
                                     </Box>
