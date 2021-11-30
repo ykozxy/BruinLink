@@ -128,7 +128,7 @@ let _classArray=[]
   
     render(){
       {console.log(this.state.classArray)}
-      {console.log((this.state.classArray[0]))}
+      // {console.log((this.state.classArray[0]))}
     return (
       <Box 
             sx={{

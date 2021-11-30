@@ -157,7 +157,6 @@ class NoLinkDisplay extends React.Component {
 
     constructor(props) {
         super(props);
-        // TODO: check subscription on open
         this.state = {
             loading: false,
             subscribed: false,
@@ -191,7 +190,7 @@ class NoLinkDisplay extends React.Component {
                             // We already subscribed
                             this.setState({subscribed: true});
                         }
-                    })
+                    });
                 }
             })
             .fail((err) => {
@@ -237,7 +236,7 @@ class NoLinkDisplay extends React.Component {
                     this.setState(prev => ({subscribed: !prev.subscribed}));
                     let msg = this.state.subscribed ? "Subscribed to " : "Unsubscribed from ";
                     this.showAlert(msg + this.props.name + "!", true);
-                    setTimeout(() => this.props.onRefresh(), 1500);
+                    this.props.onRefresh();
                 } else {
                     console.error(data);
                 }
