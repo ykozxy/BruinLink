@@ -299,7 +299,10 @@ async function verificationCodeResponse(account_arg) {
         let verification = verificationCode(email);
         if (verification) {
             unique = uuidv4();
-            code = Math.floor(Math.random() * 1000000);
+            code = 0;
+            while (code < 100000){
+                code = Math.floor(Math.random() * 1000000);
+            }
             const newVerification = new verificationModel({
                 unique: unique,
                 code: code
