@@ -139,7 +139,7 @@ async function getCourseDetail(courseid) {
         console.log("successfully find course by courseid: " + courseid);
         let wechatQRCode = null;
         let content_type = null;
-        if (course.wechatQRCode != null){
+        if (course.wechatQRCode.image != null){
             // wechatQRCode = btoa(String.fromCharCode(...new Uint8Array(course.wechatQRCode.image)));
             wechatQRCode = course.wechatQRCode.image.toString('base64');
             content_type = course.wechatQRCode.content_type;
