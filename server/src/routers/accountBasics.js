@@ -360,3 +360,32 @@ async function subscribecourse(account_arg){
         return err;
     }
 }
+
+async function unsubscribecourse(account_arg){
+    try{
+        let token = account_arg.token;
+        let courseid = account_arg.course;
+        let course = await courseModel.findOne({ courseid: courseid });
+        let account = await accountModel.findOne({ token: token });
+        if (account.expire_date.getTime() < Date.now()) {
+            console.log("token expired");
+            return "failed to subscribe, time out";
+        }
+        let courseID = course._id.toString('base64');
+        let userID = account._id.toString('base64'); 
+        account.courses_subscribed = account.courses_subscribed.filter(function(ele)
+        {
+            return ele != courseID;
+        });
+        course.users_subscribed = course.users_subscribed.filter(function(ele)
+        {
+            return ele != userID;
+        });
+        account.save();
+        course.save();
+        return "successfully unsubscribed";
+    }catch (err) {
+        console.log(err);
+        return err;
+    }
+}
