@@ -405,7 +405,9 @@ async function getsubscription(account_arg){
         {
             courseID= account.courses_subscribed[i];
             let a = await courseModel.findOne({ _id: courseID });
-            subscriptionlist.push(a);
+            subscriptionlist.push({courseid: a.courseid,
+                coursename: a.coursename,
+                profname: a.profname});
         }
         return subscriptionlist;
     }catch (err) {
