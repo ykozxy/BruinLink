@@ -143,7 +143,7 @@ let _classArray=[]
               {
                 this.state.classArray.map(function(_class){
                   return (
-                    <Grid item xs={12} sm={12} md={6} lg={4}
+                    <Grid key={_class.courseid} item xs={12} sm={12} md={6} lg={4}
             sx={{
                 '&:hover': {
                 opacity: [0.9, 0.8, 0.7],
