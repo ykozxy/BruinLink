@@ -12,7 +12,7 @@ class HomePage extends React.Component {
             <div>
                 <Navbar isLogin={c != null} showSearchBar={false}/>
                 <Box sx={{
-                    height: "90vh",
+                    height: "70vh",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
