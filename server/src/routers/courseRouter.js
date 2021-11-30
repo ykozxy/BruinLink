@@ -5,6 +5,7 @@ const courseBasics = require('./courseBasics');
 router.post('/search', getCourse);
 router.post('/getDetail', getDetail);
 router.post('/getDepartments', getDepartments);
+router.post('/addCourse', addcourse);
 
 module.exports = router;
 
@@ -70,6 +71,29 @@ async function getDepartments(req, res) {
             res.send({
                 status: "failed",
                 message: "failed to get departments list"
+            })
+        }
+    } catch (err) {
+        res.send({
+            status: "error",
+            message: err
+        });
+    }
+}
+
+async function addcourse(req, res) {
+    try {
+        let response = await courseBasics.register(req.body);
+        if (response) {
+            res.send({
+                status: "success",
+                departments: response
+            });
+        }
+        else {
+            res.send({
+                status: "failed",
+                message: "failed to regester class"
             })
         }
     } catch (err) {

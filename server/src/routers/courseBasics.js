@@ -67,13 +67,13 @@ async function findbyname(course, department, division) {
  *
  * @return {boolean} whether register is successful or not
  */
-async function register(coursename, profname, department) {
+async function register(course_arg) {
     try {
         const newCourse = new courseModel({
-            coursename: coursename,
-            profname: profname,
+            coursename: course_arg.coursename,
+            profname: course_arg.profname,
             courseid: new mongoose.courseModel.ObjectId(),
-            department: department
+            department: course_arg.department
         });
         let saveCourse = await newCourse.save();
         if (saveCourse == null) {
@@ -81,7 +81,7 @@ async function register(coursename, profname, department) {
             console.log(newCourse);
             return false;
         }
-        console.log("successfully register new user.");
+        console.log("successfully register new course.");
         console.log(newCourse);
         return true;
     } catch (err) {
