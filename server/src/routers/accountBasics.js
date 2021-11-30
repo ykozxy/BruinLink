@@ -21,7 +21,8 @@ accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 accountBasics.getEmailResponse = getEmailResponse;
 accountBasics.subscribecourse = subscribecourse;
-accountBasics.unsubscribecourse = unsubscribecourse
+accountBasics.unsubscribecourse = unsubscribecourse;
+accountBasics.getsubscription = getsubscription;
 module.exports = accountBasics;
 
 /** @param {String} email
@@ -385,6 +386,28 @@ async function unsubscribecourse(account_arg){
         account.save();
         course.save();
         return "successfully unsubscribed";
+    }catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+async function getsubscription(account_arg){
+    try{
+        var subscriptionlist = [];
+        let token = account_arg.token;
+        let account = await accountModel.findOne({ token: token });
+        if (account.expire_date.getTime() < Date.now()) {
+            console.log("token expired");
+            return "failed to subscribe, time out";
+        }
+        for (i=0; i<account.courses_subscribed.length;i++)
+        {
+            courseID= account.courses_subscribed[i];
+            let a = await courseModel.findOne({ _id: courseID });
+            subscriptionlist.push(a);
+        }
+        return subscriptionlist;
     }catch (err) {
         console.log(err);
         return err;
