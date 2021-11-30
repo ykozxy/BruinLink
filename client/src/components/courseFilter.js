@@ -56,7 +56,7 @@ export default class FilterBox extends React.Component {
             url += `query=${encodeURIComponent(this.props.query)}&`;
         }
         if (this.state.department != null && this.state.department !== "") {
-            url += `department=${encodeURIComponent(this.state.department.toLowerCase())}&`;
+            url += `department=${encodeURIComponent(this.state.department)}&`;
         }
         if (this.state.division != null && this.state.division !== "") {
             let d = this.state.division === "Lower division" ? "lower" : "upper";
