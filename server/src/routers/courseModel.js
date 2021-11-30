@@ -10,7 +10,7 @@ const courseSchema = new Schema({
     groupmeLink: {type: String},
     discordLink: {type: String},
     wechatQRCode: { image: {type: Buffer}, content_type: {type: String}},
-    users_subscribed: [{ type: String, unique: true }]
+    users_subscribed: [{ type: String}]
 });
 const courseModel = mongoose.model('Course', courseSchema);
 module.exports = courseModel;

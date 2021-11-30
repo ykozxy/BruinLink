@@ -6,7 +6,7 @@ const accountSchema = new Schema({
     password: { type: String, required: true },
     token: { type: String, unique: true },
     expire_date: { type: Date, default: null},
-    courses_subscribed: [{ type: String, unique: true}]
+    courses_subscribed: [{ type: String}]
     //clubList: [clubSchema]
 });
 

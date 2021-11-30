@@ -367,7 +367,7 @@ async function subscribecourse(account_arg){
             return "failed to subscribe, time out";
         }
         var a = true;
-        for (i=0; i<account.courses_subscribed; i++)
+        for (i=0; i<account.courses_subscribed.length; i++)
         {
             courseID = account.courses_subscribed[i];
             if (course._id == courseID)
