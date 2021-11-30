@@ -381,8 +381,8 @@ async function subscribecourse(account_arg){
         }
         account.courses_subscribed.push(course._id);
         course.users_subscribed.push(account._id);
-        account.save();
-        course.save();
+        await account.save();
+        await course.save();
         return "success";
     }catch (err) {
         console.log(err);
@@ -410,8 +410,8 @@ async function unsubscribecourse(account_arg){
         {
             return ele != userID;
         });
-        account.save();
-        course.save();
+        await account.save();
+        await course.save();
         return "successfully unsubscribed";
     }catch (err) {
         console.log(err);
