@@ -350,8 +350,8 @@ async function subscribecourse(account_arg){
             console.log("token expired");
             return "failed to subscribe, time out";
         }
-        account.courses_subscribed.push(course)
-        course.users_subscribed.push(account)
+        account.courses_subscribed.push(course._id)
+        course.users_subscribed.push(account._id)
     }catch (err) {
         console.log(err);
         return err;

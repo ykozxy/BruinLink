@@ -7,7 +7,7 @@ const accountSchema = new Schema({
     password: { type: String, required: true },
     token: { type: String, required: true, unique: true },
     expire_date: { type: Date, default: null},
-    courses_subscribed: [{ type: Schema.Types.ObjectId, ref: 'Course' }]
+    courses_subscribed: [{ type: String }]
     //clubList: [clubSchema]
 });
 
