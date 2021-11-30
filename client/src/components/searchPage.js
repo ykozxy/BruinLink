@@ -50,7 +50,7 @@ export default withRouter(class SearchPage extends React.Component {
         return (
             <div>
                 <Navbar isLogin={true} query={this.state.query}/>
-                <Container maxWidth="large">
+                <Container maxWidth="lg">
                     <Box width={"100%"} sx={{
                         display: "flex",
                         flexDirection: "row",
