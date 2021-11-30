@@ -4,6 +4,7 @@ const {v4: uuidv4} = require('uuid');
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
 const accountModel = require('./accountModel');
+const courseModel = require("./courseModel");
 const verificationModel = require('./verificationModel');
 // import accountModel from './accountModel';
 // import verificationModel from './accountModel';
@@ -19,6 +20,7 @@ accountBasics.changePasswordResponse = changePasswordResponse;
 accountBasics.resetPasswordResponse = resetPasswordResponse;
 accountBasics.verificationCodeResponse = verificationCodeResponse;
 accountBasics.getEmailResponse = getEmailResponse;
+accountBasics.subscribecourse = subscribecourse;
 module.exports = accountBasics;
 
 /** @param {String} email
@@ -80,6 +82,7 @@ async function setEmail(old_email, password, new_email, unique, code) {
         return false;
     }
 }
+
 
 /** @param {String} token
  */
@@ -334,5 +337,23 @@ async function getEmailResponse(account_arg) {
             email: "",
             succeed: false
         };
+    }
+}
+
+async function subscribecourse(account_arg){
+    try{
+        let token = account_arg.token
+        let courseid = account_arg.course
+        let course = await courseModel.findOne({ courseid: courseid });
+        let account = await accountModel.findOne({ token: token });
+        if (account.expire_date.getTime() < Date.now.getTime()) {
+            console.log("token expired");
+            return "failed to subscribe, time out";
+        }
+        account.courses_subscribed.push(course)
+        course.users_subscribed.push(account)
+    }catch (err) {
+        console.log(err);
+        return err;
     }
 }
