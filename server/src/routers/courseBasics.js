@@ -50,7 +50,7 @@ async function findbyname(course, department, division) {
                 coursename: get_course.coursename,
                 profname: get_course.profname,
                 department: get_course.department,
-                divison: get_course.divison,
+                divison: get_course.division,
                 wechat: wechat,
                 groupme: groupme,
                 discord: discord
