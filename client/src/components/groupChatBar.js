@@ -38,7 +38,7 @@ class LinkDisplay extends React.Component {
         if (protocol.test(this.props.link)) {
             window.open(this.props.link);
         } else {
-            console.log(`Link "${this.props.link}" doesn't have a protocol.`);
+            console.warn(`Opening "${this.props.link}" which doesn't have a protocol.`);
             window.open(`//${this.props.link}`);
         }
     }
@@ -202,14 +202,12 @@ class NoLinkDisplay extends React.Component {
         $.post(url, data, "json")
             .done((data) => {
                 if (data.status === "success") {
-                    // this.setState(prev => ({subscribed: !prev.subscribed}));
-                    let msg = this.props.subscribed ? "Subscribed to " : "Unsubscribed from ";
-                    this.showAlert(msg + this.props.name + "!", true);
                     // setTimeout(() => {
                     this.setState({loading: false});
-                    this.props.onRefresh();
+                    this.props.onRefresh(true);
                     // }, 200);
                 } else {
+                    this.showAlert(`Failed to ${this.props.subscribed ? "subscribe to" : "unsubscribe from"} ${this.props.name}`, false);
                     console.error(data);
                 }
             })
@@ -286,7 +284,7 @@ class NoLinkDisplay extends React.Component {
                     <AlertToast alertMessage={this.state.alertMessage}
                                 showAlert={this.state.showAlert}
                                 onClose={() => this.setState({showAlert: false})}
-                                severity={this.props.subscribeSuccess ? "success" : "error"}/>
+                                severity={this.state.subscribeSuccess ? "success" : "error"}/>
                 </Grid>
             </Grid>
         );
@@ -542,8 +540,10 @@ export default class GroupChatBar extends React.Component {
         // Color of SVG icons
         iconColor: PropTypes.string,
 
+        /* Controls the appearance of Skeleton when loading resources */
         loading: PropTypes.bool,
 
+        /* Refresh the popup upon request */
         onRefresh: PropTypes.func.isRequired,
     }
 

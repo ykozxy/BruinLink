@@ -1,6 +1,7 @@
 import requests
 
-courses = [
+
+"""
     {
         "coursename": "Mathematics 31A",
         "profname": "Mutlu Akaturk, H.",
@@ -54,6 +55,38 @@ courses = [
         "profname": "Eggert, P.R.",
         "department": "Computer Science",
         "division": "upper",
+    },
+    {
+        "coursename": "Physics 1A",
+        "profname": "Corbin, B.",
+        "department": "Physics",
+        "division": "lower",
+    },
+    {
+        "coursename": "Physics 1A",
+        "profname": "Zocchi, G.",
+        "department": "Physics",
+        "division": "lower",
+    },
+    {
+        "coursename": "Physics 1B",
+        "profname": "Wang, S.",
+        "department": "Physics",
+        "division": "lower",
+    },
+    {
+        "coursename": "Physics 131",
+        "profname": "Solon, M.P.",
+        "department": "Physics",
+        "division": "upper",
+    },
+"""
+courses = [
+    {
+        "coursename": "Life Sciences 7B",
+        "profname": "Pires, D.B., Kremer, C.T.",
+        "department": "Life Sciences",
+        "division": "lower",
     }
 ]
 

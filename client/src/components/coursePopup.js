@@ -8,6 +8,7 @@ import GroupChatBar from "./groupChatBar";
 import {default as Groupme} from "../icons/groupme.svg";
 import * as config from "../config"
 import Cookies from "js-cookie";
+import AlertToast from "./alertToast";
 
 
 export default class CoursePopup extends React.Component {
@@ -29,6 +30,10 @@ export default class CoursePopup extends React.Component {
             wechatCodeBuffer: null,
             wechatCodeType: null,
             subscribed: false,
+
+            alertOpen: false,
+            alertMsg: "",
+            alertSuccess: false,
         };
 
         this.refresh = this.refresh.bind(this);
@@ -40,8 +45,9 @@ export default class CoursePopup extends React.Component {
             this.refresh();
     }
 
-    refresh() {
-        this.setState({fetchFinished: false});
+    refresh(showAnimation = true) {
+        if (showAnimation)
+            this.setState({fetchFinished: false});
 
         /* Fetch group chat links */
         let url = config.baseUrl + config.api.course.getDetail;
@@ -50,7 +56,6 @@ export default class CoursePopup extends React.Component {
         $.post(url, data, "json")
             .done((data) => {
                 if (data.status === "success") {
-                    console.log("Fetched groupchat links!")
                     this.setState({
                         discordLink: data.detail.discordLink,
                         groupmeLink: data.detail.groupmeLink,
@@ -60,13 +65,16 @@ export default class CoursePopup extends React.Component {
                 }
             })
             .fail((err) => {
+                this.showAlert("Failed to connect to the server.", false);
                 console.error(err);
             })
             .always(() => {
-                /* Fetch course list */
+                /* Fetch course list and check subscription */
                 let c = Cookies.get("accountID");
                 if (!c) {
-                    console.error("User not login!")
+                    this.showAlert("You've not login yet.", false);
+                    if (showAnimation)
+                        this.setState({fetchFinished: true});
                     return;
                 }
 
@@ -84,18 +92,30 @@ export default class CoursePopup extends React.Component {
                                 }
                             });
                             this.setState({subscribed: flag});
-                            console.log(`Subscription: ` + flag);
+                            // console.log(`Subscription: ` + flag);
                         } else {
+                            this.showAlert("Failed to fetch subscription list.", false);
                             console.error(data);
                         }
                     })
                     .fail((err) => {
+                        this.showAlert("Failed to connect to the server.", false);
                         console.error(err);
                     })
-                    .always(() => this.setState({fetchFinished: true}))
+                    .always(() => {
+                        if (showAnimation)
+                            this.setState({fetchFinished: true});
+                    })
             });
     }
 
+    showAlert(msg, success) {
+        this.setState({
+            alertOpen: true,
+            alertMsg: msg,
+            alertSuccess: success,
+        })
+    }
 
     render() {
         return (
@@ -168,6 +188,10 @@ export default class CoursePopup extends React.Component {
                                       onRefresh={this.refresh}
                                       subscribed={this.state.subscribed}/>
                     </Box>
+                    <AlertToast alertMessage={this.state.alertMsg}
+                                showAlert={this.state.alertOpen}
+                                onClose={() => this.setState({alertOpen: false})}
+                                severity={this.state.alertSuccess ? "success" : "error"}/>
                 </Box>
             </Modal>
         );
