@@ -1,5 +1,10 @@
 const courseModel  = require('./courseModel');
 const accountModel = require("./accountModel");
+const sgMail = require('@sendgrid/mail');
+const config = require('../config');
+
+const API_KEY = config.API_KEY;
+sgMail.setApiKey(API_KEY);
 
 var uploadBasics = {};
 uploadBasics.uploadLinkResponse = uploadLinkResponse;
