@@ -28,7 +28,7 @@ async function findbyname(course, department, division) {
     let courses = await courseModel.find({
         coursename: {$regex: course_key},
         department: {$regex: department_key},
-        divison: {$regex: division_key}
+        division: {$regex: division_key}
     });
     for (i = 0; i < courses.length; i++) {
         get_course = courses[i];
