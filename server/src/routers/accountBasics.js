@@ -342,16 +342,18 @@ async function getEmailResponse(account_arg) {
 
 async function subscribecourse(account_arg){
     try{
-        let token = account_arg.token
-        let courseid = account_arg.course
+        let token = account_arg.token;
+        let courseid = account_arg.course;
         let course = await courseModel.findOne({ courseid: courseid });
         let account = await accountModel.findOne({ token: token });
         if (account.expire_date.getTime() < Date.now.getTime()) {
             console.log("token expired");
             return "failed to subscribe, time out";
         }
-        account.courses_subscribed.push(course._id)
-        course.users_subscribed.push(account._id)
+        account.courses_subscribed.push(course._id);
+        course.users_subscribed.push(account._id);
+        account.save();
+        course.save();
         return "success";
     }catch (err) {
         console.log(err);
