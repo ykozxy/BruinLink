@@ -33,9 +33,6 @@ module.exports = {
             unsubscribe: "/subscription/unsubscribe",
             getSubscriptions: "/subscription/getSubscriptions",
         },
-        report: {
-            reportLink: "/report/link"
-        }
     },
 
     // The cool down time (seconds) between sending verification codes
