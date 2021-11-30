@@ -1,9 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
+const config = require('./config');
 
 const app = express();
+const db_username = config.DB_USERNAME;
+const db_userpassword = config.DB_USERPASSWORD;
+const db_name = config.DB_NAME;
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({
@@ -27,7 +30,7 @@ app.use("/subscription",subscriptionRouter);
 
 async function main() {
     console.log("Connecting to database...")
-    await mongoose.connect("mongodb+srv://user:user0001@bruinlink.b9irv.mongodb.net/BruinLink?retryWrites=true&w=majority")
+    await mongoose.connect("mongodb+srv://" + db_username + ":" + db_userpassword + "@bruinlink.b9irv.mongodb.net/" + db_name + "?retryWrites=true&w=majority")
         .then(() => {
             console.log("Database connected.");
         }).catch((e) => {
