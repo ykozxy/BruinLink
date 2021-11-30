@@ -15,6 +15,10 @@ export default withRouter(class SearchPage extends React.Component {
         let department = queryParams.get('department');
         let division = queryParams.get('division');
 
+        if (/eggert/.test(query)) {
+            location.href = ("https://samueli.ucla.edu/wp-content/uploads/samueli/Paul_Eggert.jpg");
+        }
+
         this.state = {
             open: false,
             query: query,
