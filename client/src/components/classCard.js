@@ -38,9 +38,9 @@ static propTypes = {
   courseName: PropTypes.string.isRequired,
   professorName: PropTypes.string.isRequired,
   courseID: PropTypes.string.isRequired,
-  wechatCode: PropTypes.string,
-  discordLink: PropTypes.string,
-  groupmeLink: PropTypes.string,
+  wechatCode: PropTypes.bool,
+  discordLink: PropTypes.bool,
+  groupmeLink: PropTypes.bool,
 }
   
 render() {  
@@ -84,15 +84,13 @@ return (
           showAlert={this.state.showAlert}
           onClose={() => this.setState({showAlert: false})}
           severity="warning"/>
+          {console.log(this.props.courseID)}
         <CoursePopup 
           open={this.state.open}
           onClose={() => this.setState({open: false})}
           courseName={this.props.courseName}
           professorName={this.props.professorName}
           courseID={this.props.courseID}
-          wechatCode={this.props.wechatCode}
-          discordLink={this.props.discordLink}
-          groupmeLink={this.props.groupmeLink}
           />
       </CardActions>
 

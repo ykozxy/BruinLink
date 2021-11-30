@@ -63,7 +63,7 @@ export default class ClassCardGroupChatBar extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
         id: PropTypes.string.isRequired,
-        link: PropTypes.string,
+        link: PropTypes.bool.isRequired,
         iconSvgPath: PropTypes.string,
         iconImg: PropTypes.string,
         iconColor: PropTypes.string,

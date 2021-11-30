@@ -21,7 +21,10 @@ export default withRouter(class SearchPage extends React.Component {
             department: department,
             division : division,
         };
+
+        //this.createClassArray=this.createClassArray.bind(this)
     }
+
 
     render(){
         {
@@ -47,6 +50,7 @@ export default withRouter(class SearchPage extends React.Component {
                   }
             //console.log("??query??"+this.state.query)
         }
+
         return (
             <div>
                 <Navbar isLogin={true} query={this.state.query}/>
