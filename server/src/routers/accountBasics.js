@@ -5,7 +5,7 @@ const accountModel = require('./accountModel');
 const courseModel = require("./courseModel");
 const verificationModel = require('./verificationModel');
 
-const API_KEY = config.API_KEY_1 + config.API_KEY_2 + config.API_KEY_3;
+const API_KEY = config.API_KEY_1 + config.API_KEY_2 + config.API_KEY_3 + config.API_KEY_4;
 sgMail.setApiKey(API_KEY);
 
 var accountBasics = {};

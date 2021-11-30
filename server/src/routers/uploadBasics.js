@@ -3,7 +3,7 @@ const accountModel = require("./accountModel");
 const sgMail = require('@sendgrid/mail');
 const config = require('../config');
 
-const API_KEY = config.API_KEY_1 + config.API_KEY_2 + config.API_KEY_3;
+const API_KEY = config.API_KEY_1 + config.API_KEY_2 + config.API_KEY_3 + config.API_KEY_4;
 sgMail.setApiKey(API_KEY);
 
 var uploadBasics = {};
