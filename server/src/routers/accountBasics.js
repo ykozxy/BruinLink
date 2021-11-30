@@ -352,6 +352,19 @@ async function subscribecourse(account_arg){
             console.log("token expired");
             return "failed to subscribe, time out";
         }
+        var a = true;
+        for (i=0; i<account.courses_subscribed; i++)
+        {
+            courseID = account.courses_subscribed[i];
+            if (course._id == courseID)
+            {
+                a = false;
+            }
+        }
+        if (a == false)
+        {
+            return "already subscribed"
+        }
         account.courses_subscribed.push(course._id);
         course.users_subscribed.push(account._id);
         account.save();
