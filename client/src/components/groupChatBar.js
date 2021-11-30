@@ -1,9 +1,7 @@
 import $ from "jquery"
 import React from "react";
 import PropTypes from "prop-types";
-import {Alert, Box, Button, Grid, Popover, Skeleton, Stack, SvgIcon, TextField, Typography} from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import {Box, Button, Grid, Popover, Skeleton, Stack, SvgIcon, TextField, Typography} from "@mui/material";
 import CopyAllIcon from '@mui/icons-material/CopyAll';
 import LaunchIcon from '@mui/icons-material/Launch';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -17,59 +15,7 @@ import AlertToast from "./alertToast";
 import * as config from "../config"
 import {checkUrlFormat} from "../utils";
 import Cookies from 'js-cookie'
-
-class IconTooltip extends React.Component {
-    static propTypes = {
-        msg: PropTypes.string.isRequired,
-        success: PropTypes.bool,
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {open: false, anchorEL: null};
-    }
-
-    handleShowTooltip(event) {
-        this.setState({open: true, anchorEL: event.currentTarget});
-    }
-
-    handleHideTooltip() {
-        this.setState({open: false, anchorEL: null});
-    }
-
-    render() {
-        return (
-            <Box sx={{display: "flex", alignItems: "center"}}>
-                <Box sx={{display: "flex", alignItems: "center"}}
-                     onMouseEnter={(e) => this.handleShowTooltip(e)}
-                     onMouseLeave={() => this.handleHideTooltip()}>
-                    {this.props.success ? <CheckCircleIcon color="success"/>
-                        : <CancelIcon color="error"/>
-                    }
-                </Box>
-                <Popover open={this.state.open}
-                         anchorEl={this.state.anchorEL}
-                         onClose={() => this.handleHideTooltip()}
-                         style={{pointerEvents: 'none'}}
-                         anchorOrigin={{
-                             vertical: 'top',
-                             horizontal: 'center',
-                         }}
-                         transformOrigin={{
-                             vertical: 'bottom',
-                             horizontal: 'center',
-                         }}>
-                    <Box borderRadius={1}>
-                        <Alert severity={this.props.success ? "success" : "error"}
-                               sx={{pl: 1.5, pr: 1.5, pu: 0.5, pb: 0.5}}>
-                            {this.props.msg}
-                        </Alert>
-                    </Box>
-                </Popover>
-            </Box>
-        )
-    }
-}
+import IconTooltip from "./iconTooltip";
 
 class LinkDisplay extends React.Component {
     static propTypes = {
@@ -103,7 +49,7 @@ class LinkDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip success msg={"Group chat link available!"}/>
+                        <IconTooltip success showTooltipIcon msg={"Group chat link available!"}/>
                     </Stack>
                 </Grid>
 
@@ -161,7 +107,7 @@ class CodeDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip success msg={"Group chat QR code available!"}/>
+                        <IconTooltip success showTooltipIcon msg={"Group chat QR code available!"}/>
                     </Stack>
                 </Grid>
 
@@ -225,6 +171,35 @@ class NoLinkDisplay extends React.Component {
         }
     }
 
+    componentDidMount() {
+        let c = Cookies.get("accountID");
+        if (!c) {
+            this.showAlert("User not login!", false);
+            return;
+        }
+
+        this.setState({loading: true});
+
+        let url = config.baseUrl + config.api.subscription.getSubscriptions;
+        let data = {token: c};
+
+        $.post(url, data, "json")
+            .done((data) => {
+                if (data.status === "success") {
+                    data.courselist.forEach(element => {
+                        if (element.courseid === this.props.id) {
+                            // We already subscribed
+                            this.setState({subscribed: true});
+                        }
+                    })
+                }
+            })
+            .fail((err) => {
+                console.error(err);
+            })
+            .always(() => this.setState({loading: false}));
+    }
+
     handleContribute(e) {
         let c = Cookies.get("accountID");
         if (!c) {
@@ -285,8 +260,8 @@ class NoLinkDisplay extends React.Component {
             <Grid container alignItems="center" spacing={2} columns={20}>
                 <Grid item xs={3}>
                     <Stack direction="row" spacing={1}>
-                        <IconTooltip
-                            msg={"No group chat " + (this.props.type === "img" ? "QR code" : "link") + " yet!"}/>
+                        <IconTooltip showTooltipIcon
+                                     msg={"No group chat " + (this.props.type === "img" ? "QR code" : "link") + " yet!"}/>
                     </Stack>
                 </Grid>
 
@@ -328,7 +303,7 @@ class NoLinkDisplay extends React.Component {
                 <Grid item>
                     <LoadingButton size="small"
                                    variant="contained"
-                                   color="warning"
+                                   color={this.state.subscribed ? "success" : "warning"}
                                    endIcon={this.state.subscribed ? <MarkEmailReadIcon/> : <EmailIcon/>}
                                    loadingPosition="end"
                                    loading={this.state.loading}
