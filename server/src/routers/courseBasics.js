@@ -34,7 +34,7 @@ async function findbyname(course, department, division) {
             let wechat = false;
             let groupme = false;
             let discord = false;
-            if (get_course.wechatQRCode != null) {
+            if (get_course.wechatQRCode.image != null) {
                 wechat = true;
             }
             if (get_course.groupmeLink != null) {
