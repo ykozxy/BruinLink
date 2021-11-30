@@ -105,10 +105,12 @@ async function uploadLinkResponse(upload_arg){
         let link = upload_arg.link;
         if(platform == "groupme"){
             setGMLink(courseid, link);
+            subscriptionEmailSend(courseid, platform);
             return "link successfully uploaded";
         }
         if (platform == "discord"){
             setDSLink(courseid, link);
+            subscriptionEmailSend(courseid, platform);
             return "link successfully uploaded";
         }
         return "invalid platform";
@@ -116,6 +118,10 @@ async function uploadLinkResponse(upload_arg){
         console.error(err);
         return err;
     }
+}
+
+async function subscriptionEmailSend(courseid, platform) {
+
 }
 
 async function uploadQrCodeResponse(upload_arg, file){
@@ -130,6 +136,8 @@ async function uploadQrCodeResponse(upload_arg, file){
         let image = file;
         let content_type = file.mimetype;
         await setQRCode(courseid, image, content_type);
+        subscriptionEmailSend(courseid, "wechat");
+        return "QR Code successfully uploaded";
     } catch (err) {
         console.error(err);
         return err;
