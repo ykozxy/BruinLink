@@ -89,10 +89,14 @@ class RegisterForm extends React.Component {
             })
             .done((data) => {
                 console.log(data);
-                this.showAlert("Register success!", true);
-                setTimeout(() => {
-                    location.href = "/login";
-                }, 1000);
+                if (data.status === "success") {
+                    this.showAlert("Register success!", true);
+                    setTimeout(() => {
+                        location.href = "/login";
+                    }, 1000);
+                } else {
+                    this.showAlert("Register failed: " + data.message, false);
+                }
             });
     }
 
