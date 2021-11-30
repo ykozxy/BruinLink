@@ -346,7 +346,7 @@ async function subscribecourse(account_arg){
         let courseid = account_arg.course;
         let course = await courseModel.findOne({ courseid: courseid });
         let account = await accountModel.findOne({ token: token });
-        if (account.expire_date.getTime() < Date.now.getTime()) {
+        if (account.expire_date.getTime() < Date.now()) {
             console.log("token expired");
             return "failed to subscribe, time out";
         }
