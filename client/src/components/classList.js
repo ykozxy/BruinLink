@@ -7,7 +7,7 @@ import ClassCard from "./classCard";
 import PropTypes from "prop-types";
 import $ from "jquery"
 import * as config from "../config"
-import { Typography } from '@mui/material';
+import AlertToast from "./alertToast";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -21,28 +21,42 @@ const Item = styled(Paper)(({ theme }) => ({
     constructor(props) {
       super(props);
 
-      this.state={
-        // _class:<ClassCard                  courseName="CS 180" 
-        // professorName="C" 
-        // courseID="10000000" />,
-        classArray:[],
-      }
-  }
+        this.state = {
+            // _class:<ClassCard                  courseName="CS 180"
+            // professorName="C"
+            // courseID="10000000" />,
+            classArray: [],
+            alertOpen: false,
+            alertSuccess: false,
+            alertMsg: false,
+        }
+    }
 
-  componentDidMount() {
-    let url = config.baseUrl + config.api.course.search;
-    let data = {coursename:this.props.courseName,
-                department: this.props.department,
-                division: this.props.division};
-      //console.log("Search Data from User:");
-      //console.log(data);
-  // let data = {coursename:"",
-  //             department: "",
+      showAlert(msg, success) {
+          this.setState({
+              alertOpen: true,
+              alertSuccess: success,
+              alertMsg: msg,
+          });
+      }
+
+      componentDidMount() {
+          let url = config.baseUrl + config.api.course.search;
+          let data = {
+              coursename: this.props.courseName,
+              department: this.props.department,
+              division: this.props.division
+          };
+          //console.log("Search Data from User:");
+          //console.log(data);
+          // let data = {coursename:"",
+          //             department: "",
   //             division: ""}
 let _classArray=[]
       $.post(url, data, "json")
           .fail(() => {
               console.log("Failed to connect to the server.");
+              this.showAlert("Failed to connect to the server.", false);
           })
 
           .done((data) => {
@@ -67,7 +81,7 @@ let _classArray=[]
           }
             else{
               location.href='/'
-              return
+
             }
           });
   //console.log(classArray_temp)
@@ -127,7 +141,7 @@ let _classArray=[]
   // }
   
     render(){
-      {console.log((this.state.classArray))}
+        // {console.log((this.state.classArray))}
     return (
       <Box 
             sx={{
@@ -149,17 +163,21 @@ let _classArray=[]
                 },
             }}>
                     <ClassCard key={_class.courseid}
-                  courseName={_class.coursename}
-                  professorName={_class.profname}
-                  courseID={_class.courseid}
-                  discordLink={_class.discord}
-                  groupmeLink={_class.groupme}
-                  wechatCode={_class.wechat}/>
-                  </Grid>)
+                               courseName={_class.coursename}
+                               professorName={_class.profname}
+                               courseID={_class.courseid}
+                               discordLink={_class.discord}
+                               groupmeLink={_class.groupme}
+                               wechatCode={_class.wechat}/>
+                    </Grid>)
                 })
               }
         </Grid>
-        </Box>
+          <AlertToast alertMessage={this.state.alertMsg}
+                      showAlert={this.state.alertOpen}
+                      onClose={() => this.setState({alertOpen: false})}
+                      severity={this.state.success ? "success" : "error"}/>
+      </Box>
     )}
 }
   //     {/* <Grid container rowSpacing={8} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
