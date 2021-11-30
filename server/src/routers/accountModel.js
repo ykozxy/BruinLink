@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const accountSchema = new Schema({
     email: {type: String, required: true, unique: true},
     password: { type: String, required: true },
-    token: { type: String, required: true, unique: true },
+    token: { type: String, unique: true },
     expire_date: { type: Date, default: null},
     courses_subscribed: [{ type: String, unique: true}]
     //clubList: [clubSchema]
