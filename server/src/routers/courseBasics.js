@@ -40,7 +40,7 @@ async function findbyname(course, department, division) {
             if (get_course.groupmeLink != null) {
                 groupme = true;
             }
-            if (get_course.discord != null) {
+            if (get_course.discordLink != null) {
                 discord = true;
             }
             courselist.push({
