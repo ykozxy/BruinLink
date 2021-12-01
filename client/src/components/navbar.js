@@ -79,7 +79,7 @@ class Navbar extends React.Component {
         return (
             <nav className="navbar">
                 {/*<div className="navbar-container">*/}
-                <Grid container columns={50} alignItems="center">
+                <Grid container columns={50} alignItems="center" height={1}>
                     <Grid item xs={1}/>
                     <Grid item xs={13}>
                         <Link to="/" className="navbar-logo">
@@ -93,44 +93,48 @@ class Navbar extends React.Component {
                     <Grid item xs={17}>
                         {this.props.showSearchBar ? <SearchBar initialQuery={this.props.query}/> : <></>}
                     </Grid>
-                    <Grid item xs={18}>
+                    <Grid item xs={18} height={1}>
                         {
                             this.state.login ?
                                 (
-                                    <Grid container columns={10} alignItems="center">
-                                        <Grid item xs={3}/>
-                                        <Grid item xs={3}>
+                                    <Box height={1}
+                                         sx={{
+                                             display: "flex",
+                                             flexDirection: "row-reverse",
+                                             alignItems: "center",
+                                         }}>
+                                        <Box sx={{ml: 2, mr: 4}} height={1}>
+                                            <Link to="/profile" className="navbar-links">
+                                                <LetterAvatars/>
+                                            </Link>
+                                        </Box>
+                                        <Box sx={{mx: 2}} height={1}>
                                             <Link to="/search"
                                                   className="navbar-links"
                                                   onClick={() => this.smartPageRefresh("/search")}
                                             >
                                                 Course
                                             </Link>
-                                        </Grid>
-                                        <Grid item xs={1}/>
-                                        <Grid item xs={3}>
-                                            <Link to="/profile" className="navbar-links">
-                                                <LetterAvatars/>
-                                            </Link>
-                                        </Grid>
-                                    </Grid>
+                                        </Box>
+                                    </Box>
                                 ) :
-                                (<Box sx={{
-                                    display: "flex",
-                                    flexDirection: "row-reverse",
-                                    alignItems: "center",
-                                }}>
-                                    <Box sx={{mx: 2}}>
+                                (<Box height={1}
+                                      sx={{
+                                          display: "flex",
+                                          flexDirection: "row-reverse",
+                                          alignItems: "center",
+                                      }}>
+                                    <Box sx={{ml: 2, mr: 4}} height={1}>
                                         <Link to="/register" className="navbar-links">
                                             Sign Up
                                         </Link>
                                     </Box>
-                                    <Box sx={{mx: 2}}>
+                                    <Box sx={{mx: 2}} height={1}>
                                         <Link to="/login" className="navbar-links">
                                             Log In
                                         </Link>
                                     </Box>
-                                    <Box sx={{mx: 2}}>
+                                    <Box sx={{mx: 2}} height={1}>
                                         <Link to="/search"
                                               className="navbar-links"
                                               onClick={() => this.smartPageRefresh("/search")}
