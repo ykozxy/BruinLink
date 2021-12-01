@@ -116,6 +116,7 @@ The result of adding courses will be shown in the console after running the scri
 
 Grateful thanks to the following projects that inspired us during development:
 - [create-react-app](https://github.com/facebook/create-react-app)
+- [Express](https://expressjs.com/)
 - [material-ui](https://mui.com/)
 - [Material Design Icons](https://materialdesignicons.com/)
 - [SendGrid](https://sendgrid.com/)
