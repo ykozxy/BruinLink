@@ -62,7 +62,7 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 - [Motivation](#motivation)
 - [Table of contents](#table-of-contents)
 - [Installation](#installation)
-- [Usage](#usage)
+- [GetStarted](#GetStarted)
 - [Development](#development)
 - [Contribute](#contribute)
     - [Sponsor](#sponsor)
@@ -101,7 +101,7 @@ For future needs for adding courses into the database, also use the following co
 pip install requests
 ```
 
-# Usage
+# GetStarted
 [(Back to top)](#table-of-contents)
 
 Under the BruinLink directory of a terminal, use the following command to launch backend application.
