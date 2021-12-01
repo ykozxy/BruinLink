@@ -123,6 +123,7 @@ Grateful thanks to the following projects that inspired us during development:
 - [multer](https://github.com/expressjs/multer)
 - [SendGrid](https://sendgrid.com/)
 - [uuid](https://github.com/uuidjs)
+- [awesome-readme](https://github.com/navendu-pottekkat/awesome-readme)
 
 Credit to the images and icons we used:
 - [client/src/images/groupme.svg](client/src/images/groupme.svg): [Icon Finder](https://www.iconfinder.com/icons/670440/groupme_chat_group_social_icon)
