@@ -1,7 +1,14 @@
 import requests
 
+API_URL = "http://localhost:3031/course/addCourse"
 
-"""
+courses = [
+    {
+        "coursename": "Life Sciences 7B",
+        "profname": "Pires, D.B., Kremer, C.T.",
+        "department": "Life Sciences",
+        "division": "lower",
+    },
     {
         "coursename": "Mathematics 31A",
         "profname": "Mutlu Akaturk, H.",
@@ -80,18 +87,9 @@ import requests
         "department": "Physics",
         "division": "upper",
     },
-"""
-courses = [
-    {
-        "coursename": "Life Sciences 7B",
-        "profname": "Pires, D.B., Kremer, C.T.",
-        "department": "Life Sciences",
-        "division": "lower",
-    }
 ]
 
 for i in courses:
-    print(requests.post(
-        "http://localhost:3031/course/addCourse",
-        data=i
-    ))
+    print(f"Adding course {i['coursename']} to database: ", end="")
+    req = requests.post(API_URL, data=i)
+    print(req.text)
