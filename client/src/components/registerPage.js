@@ -4,7 +4,7 @@ import {Box, Container, Divider, TextField, Typography} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {Link} from "react-router-dom";
 import * as config from "../config"
-import {checkEmailFormat} from "../utils";
+import {checkEmailFormat, checkUclaEmail} from "../utils";
 import AlertToast from "./alertToast";
 import VerificationCodeInput from "./verificationCodeInput";
 import Navbar from "./navbar";
@@ -34,6 +34,7 @@ class RegisterForm extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
+        this.checkUclaEmail = this.checkUclaEmail.bind(this);
         this.showAlert = this.showAlert.bind(this);
     }
 
@@ -58,6 +59,12 @@ class RegisterForm extends React.Component {
         // Check email address
         if (!this.checkEmail(data.email)) {
             this.showAlert("Invalid email format.")
+            return;
+        }
+
+        // Check UCLA email
+        if (!this.checkUclaEmail(data.email)) {
+            this.showAlert("Only 'ucla.edu' emails are accepted.");
             return;
         }
 
@@ -113,6 +120,12 @@ class RegisterForm extends React.Component {
     * */
     checkEmail(email) {
         let res = checkEmailFormat(email);
+        this.setState({emailError: !res});
+        return res;
+    }
+
+    checkUclaEmail(email) {
+        let res = checkUclaEmail(email);
         this.setState({emailError: !res});
         return res;
     }
@@ -181,6 +194,7 @@ class RegisterForm extends React.Component {
                 <VerificationCodeInput onChange={this.handleChange}
                                        email={this.state.email}
                                        checkEmailCallback={this.checkEmail}
+                                       checkUclaEmailCallback={this.checkUclaEmail}
                                        showAlert={this.showAlert}
                                        onUniqueChange={(d) => this.setState({sessionID: d})}/>
 

@@ -5,7 +5,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import * as config from "../config"
 import {Link} from "react-router-dom";
 import AlertToast from "./alertToast"
-import {checkEmailFormat} from "../utils";
+import {checkEmailFormat, checkUclaEmail} from "../utils";
 import Cookies from "js-cookie";
 import Navbar from "./navbar";
 
@@ -57,6 +57,14 @@ class LoginForm extends React.Component {
             this.showAlert("Invalid Email format");
             return;
         }
+
+        testFail = !checkUclaEmail(data.email);
+        this.setState({emailError: testFail});
+        if (testFail) {
+            this.showAlert("Only 'ucla.edu' emails are accepted.");
+            return;
+        }
+
 
         // Check password length
         testFail = data.password.length < 8;

@@ -14,7 +14,13 @@ function checkUrlFormat(url) {
     return re.test(url);
 }
 
+function checkUclaEmail(email) {
+    let re = /.*@(g.ucla.edu)|(ucla.edu)$/;
+    return re.test(email);
+}
+
 module.exports = {
     checkEmailFormat: checkEmailFormat,
+    checkUclaEmail: checkUclaEmail,
     checkUrlFormat: checkUrlFormat,
 };

@@ -200,7 +200,7 @@ async function register(password, email, unique, code) {
  * @param {String} email
  */
 
-async function verificationCode(email) {
+function verificationCode(email) {
     try {
         let format = /.*@(g.ucla.edu)|(ucla.edu)$/;
         return format.test(email);

@@ -9,6 +9,7 @@ export default class VerificationCodeInput extends React.Component {
     static propTypes = {
         email: PropTypes.string.isRequired,
         checkEmailCallback: PropTypes.func.isRequired,
+        checkUclaEmailCallback: PropTypes.func.isRequired,
         showAlert: PropTypes.func.isRequired,
         onChange: PropTypes.func.isRequired,
         onUniqueChange: PropTypes.func.isRequired,
@@ -39,13 +40,21 @@ export default class VerificationCodeInput extends React.Component {
             return;
         }
 
+        if (!this.props.checkUclaEmailCallback(this.props.email.toString())) {
+            this.setState({
+                showAlert: true,
+                alertMessage: "Only 'ucla.edu' emails are accepted.",
+            });
+            return;
+        }
+
         let url = config.baseUrl + config.api.account.emailVerify;
 
         $.post(url, {email: this.props.email}, "json")
             .done((data) => {
                 console.log(data);
                 if (data.status === "failed") {
-                    this.props.showAlert("Server error! Cannot send code.");
+                    this.props.showAlert("Cannot send code to email.");
                     return;
                 }
 
