@@ -4,7 +4,7 @@ import Navbar from "./navbar";
 import Cookies from 'js-cookie';
 import SearchBar from "./searchBar";
 import {Box, Typography,Paper} from "@mui/material";
-// import BruinLinkLogo from "../images/BLlogo2.png"
+import BruinLinkLogo from "../images/BLlogo2.png"
 
 class HomePage extends React.Component {
     render() {
@@ -31,7 +31,7 @@ class HomePage extends React.Component {
                             alignItems: "center"
                         }}>
                             <Typography variant="h3" sx={{mt: 5}} color="#556cd6">
-                                Welcome to BruinLink!
+                                Welcome to <img src={BruinLinkLogo} style={{position:"relative",top:12}}/>
                             </Typography>
                             <Typography variant="body1" sx={{mb: 5}}>
                                  A platform to find group chats for every class you have.
