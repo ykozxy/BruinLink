@@ -73,8 +73,29 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 # Installation
 [(Back to top)](#table-of-contents)
 
-You will find the detalls in the [client](https://github.com/ykozxy/BruinLink/blob/master/client/README.md) and [server](https://github.com/ykozxy/BruinLink/blob/master/server/README.md) folders.
-
+Under your desired drectory, please clone BruinLink to your device.
+```sh
+git clone https://github.com/ykozxy/BruinLink.git
+```
+Use the following command to direct to the project folder within terminal
+```sh
+cd {yourPath}/BruinLink
+```
+Use the following command to direct to the backend
+```sh
+cd server
+```
+Using the terminal, use the following commands to install proper backend dependencies.
+```sh
+npm install
+```
+This will set you up with all tools including mongoose, express, multer and other backend dependencies we used in this project.
+To install proper front-end dependencies, use the following commands
+```sh
+cd ..
+cd client
+npm install
+```
 
 # Usage
 [(Back to top)](#table-of-contents)
