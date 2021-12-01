@@ -121,14 +121,6 @@ If you wish to add more courses to the database, you can modify the initialize.p
 cd server/utils
 python initialize.py
 ```
-To see whether you successfully add the course to the database, you can change the last part of the initialize.py file to the following code
-```sh
-for i in courses:
-    print(requests.post(
-        "http://localhost:3031/course/addCourse",
-        data=i
-    ).text)
-```
 Your submission status will be shown in the console after running the file
 
 # Development
