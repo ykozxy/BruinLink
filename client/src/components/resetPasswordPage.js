@@ -3,7 +3,7 @@ import React from "react";
 import {Box, Container, TextField, Typography} from "@mui/material";
 import VerificationCodeInput from "./verificationCodeInput";
 import * as config from "../config"
-import {checkEmailFormat} from "../utils";
+import {checkEmailFormat, checkUclaEmail} from "../utils";
 import LoadingButton from "@mui/lab/LoadingButton";
 import AlertToast from "./alertToast";
 import Navbar from "./navbar"
@@ -48,6 +48,7 @@ class ResetPasswordForm extends React.Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
+        this.checkUclaEmail = this.checkUclaEmail.bind(this);
         this.showAlert = this.showAlert.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -78,6 +79,13 @@ class ResetPasswordForm extends React.Component {
             this.showAlert("Invalid email format.");
             return;
         }
+
+        // Check UCLA email
+        if (!this.checkUclaEmail(data.email)) {
+            this.showAlert("Only 'ucla.edu' emails are accepted.");
+            return;
+        }
+
 
         // Check password length
         let testFail = data.new_password.length < 8;
@@ -130,6 +138,12 @@ class ResetPasswordForm extends React.Component {
         return res;
     }
 
+    checkUclaEmail(email) {
+        let res = checkUclaEmail(email);
+        this.setState({emailError: !res});
+        return res;
+    }
+
     render() {
         return (
             <Box component="form"
@@ -160,6 +174,7 @@ class ResetPasswordForm extends React.Component {
                     onChange={this.handleChange}
                     email={this.state.email}
                     checkEmailCallback={this.checkEmail}
+                    checkUclaEmailCallback={this.checkUclaEmail}
                     onUniqueChange={(d) => this.setState({sessionID: d})}
                     showAlert={this.showAlert}/>
 
