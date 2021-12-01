@@ -9,6 +9,8 @@ import $ from "jquery"
 import * as config from "../config"
 import AlertToast from "./alertToast";
 import Typography from '@mui/material/Typography';
+import CardContent from "@mui/material/CardContent";
+import {Card, Skeleton} from "@mui/material";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -30,6 +32,7 @@ const Item = styled(Paper)(({ theme }) => ({
             alertOpen: false,
             alertSuccess: false,
             alertMsg: "",
+            loading: true,
         }
     }
 
@@ -42,6 +45,7 @@ const Item = styled(Paper)(({ theme }) => ({
       }
 
       componentDidMount() {
+          this.setState({loading: true});
           let url = config.baseUrl + config.api.course.search;
           let data = {
               coursename: this.props.courseName,
@@ -85,7 +89,9 @@ let _classArray=[]
               location.href='/'
 
             }
-          });
+          })
+
+          .always(() => this.setState({loading: false}));
   //console.log(classArray_temp)
   //console.log(this.state.classArray)
 
@@ -143,6 +149,28 @@ let _classArray=[]
   // }
   
     render(){
+        if (this.state.loading) {
+            return (
+                <Box sx={{width: '70%'}}>
+                    <Card sx={{
+                        width: 230,
+                        border: 1,
+                        borderColor: 'grey.500',
+                    }}>
+                        <CardContent>
+                            <Skeleton variant="rectangular" height={60} sx={{mb: .5}}/>
+                            <Skeleton variant="text" sx={{mb: 2}}/>
+                            <div/>
+                            <Skeleton variant="rectangular" height={30} sx={{mb: 1.5}}/>
+                            <Skeleton variant="rectangular" height={30} sx={{mb: 1.5}}/>
+                            <Skeleton variant="rectangular" height={30} sx={{mb: 1.5}}/>
+                            <Skeleton variant="circular" height={30} width={30}/>
+                        </CardContent>
+                    </Card>
+                </Box>
+            )
+        }
+
       // {console.log(this.state.classArray)}
         if(this.state.classArray.length==0){
           return <Typography variant="h5"> Your search did not match any courses.</Typography>
