@@ -5,11 +5,12 @@ import PropTypes from "prop-types";
 import Typography from '@mui/material/Typography';
 import SearchBar from "./searchBar"
 import LetterAvatars from './letterAvatar';
-import {Box, Grid} from "@mui/material";
+import {Box, Grid, imageListClasses} from "@mui/material";
 import Cookies from "js-cookie";
 import * as config from "../config";
 import $ from "jquery";
 import AlertToast from "./alertToast";
+import BruinLinkLogo from "../images/BLlogo.png"
 
 
 class Navbar extends React.Component {
@@ -82,9 +83,10 @@ class Navbar extends React.Component {
                     <Grid item xs={1}/>
                     <Grid item xs={13}>
                         <Link to="/" className="navbar-logo">
-                            <Typography variant="h4" className='BL-logo'>
+                            {/* <Typography variant="h4" className='BL-logo'>
                                 BruinLink
-                            </Typography>
+                            </Typography> */}
+                            <img src={BruinLinkLogo} className="BL-logo"/>
                         </Link>
                     </Grid>
                     <Grid item xs={1}/>

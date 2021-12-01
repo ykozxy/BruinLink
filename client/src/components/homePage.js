@@ -3,7 +3,8 @@ import "./homePage.css";
 import Navbar from "./navbar";
 import Cookies from 'js-cookie';
 import SearchBar from "./searchBar";
-import {Box, Typography} from "@mui/material";
+import {Box, Typography,Paper} from "@mui/material";
+// import BruinLinkLogo from "../images/BLlogo2.png"
 
 class HomePage extends React.Component {
     render() {
