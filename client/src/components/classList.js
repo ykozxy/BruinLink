@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import $ from "jquery"
 import * as config from "../config"
 import AlertToast from "./alertToast";
+import Typography from '@mui/material/Typography';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -142,7 +143,10 @@ let _classArray=[]
   // }
   
     render(){
-        // {console.log((this.state.classArray))}
+      // {console.log(this.state.classArray)}
+        if(this.state.classArray.length==0){
+          return <Typography variant="h5"> Your search did not match any courses.</Typography>
+        }
     return (
       <Box 
             sx={{
