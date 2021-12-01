@@ -20,6 +20,7 @@ We are committed to offer all the Bruins a platform to find your group  for what
   - [Run the Webapp](#Run-the-Webapp)
   - [Optional Step](#Optional-Step)
 - [Group Members](#Group-Members)
+- [References](#References)
 - [Footer](#footer)
 
 ## Get Started
@@ -106,6 +107,32 @@ The result of adding courses will be shown in the console after running the scri
 - [Laiyin Dai](https://github.com/ng666) (dailaiyin@g.ucla.edu)
 - [Mike Shi](https://github.com/Spiderpc) (mikespc@g.ucla.edu)
 - [Shiyan Fu](https://github.com/Fshiyan) (fushiyan@g.ucla.edu)
+
+
+
+## References
+
+[(Back to top)](#table-of-contents)
+
+Grateful thanks to the following projects that inspired us during development:
+
+- [create-react-app](https://github.com/facebook/create-react-app)
+
+- [material-ui]((https://mui.com/))
+
+- [Material Design Icons](https://materialdesignicons.com/)
+
+- [SendGrid](https://sendgrid.com/)
+
+- [mongoose](https://mongoosejs.com/)
+
+  
+
+Credit to the images and icons we used:
+
+- [client/src/images/groupme.svg](client/src/images/groupme.svg): [Icon Finder](https://www.iconfinder.com/icons/670440/groupme_chat_group_social_icon)
+
+
 
 ## Footer
 
