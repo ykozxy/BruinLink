@@ -118,7 +118,7 @@ Grateful thanks to the following projects that inspired us during development:
 
 - [create-react-app](https://github.com/facebook/create-react-app)
 
-- [material-ui]((https://mui.com/))
+- [material-ui](https://mui.com/)
 
 - [Material Design Icons](https://materialdesignicons.com/)
 
