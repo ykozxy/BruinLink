@@ -57,6 +57,9 @@ async function findbyname(course, department, division) {
             });
         }
     }
+    courselist.sort((course_A, course_B) => {
+        return course_A.coursename != course_B.coursename ? (course_A.coursename < course_B.coursename ? -1 : 1) : 0;
+    })
     return courselist;
 }
 
