@@ -10,7 +10,7 @@ https://img.shields.io/github/contributors/github.com/ykozxy/BruinLink/graphs/.s
 -->
 
 # BruinLink
-BruinLink is a website which designs for students in UCLA. Our project website is a platform gathering the social media links or QR codes of UCLA class group chats and clubs. When you want to join clubs or find classmates, it’s inconvenient to search many possible keywords on Google to look for a club you are interested in or ask others many times whether there is a GroupMe link for a certain course.
+BruinLink is a website which designs for students in UCLA. Our project website is a platform gathering the social media links or QR codes of UCLA class group chats on different platforms. When you want to find classmates and discuss over your classes, it’s inconvenient to search many possible keywords on Google to look for or even ask others over and over whether there is a GroupMe link or so for a certain course.
 <!-- Add buttons here -->
 
 <!-- Describe your project in brief -->
@@ -50,7 +50,7 @@ I use [**Shields IO**](https://shields.io/) for making badges. It is a simple an
 
 # Motivation
 
-We are committed to offer all the Bruins a platform to find your group whatever classes or clubs. You don't need to worry where your groups are, just search here. And if there is no class or club you need, you can either create it by your own or subscribe it until others does.
+We are committed to offer all the Bruins a platform to find your group  for whatever classes. You don't need to worry where your groups are, just search here. And if there is no yet the links you need, you can always subscribe it and get notified when others uploaded it.
 
 # Table of contents
 
