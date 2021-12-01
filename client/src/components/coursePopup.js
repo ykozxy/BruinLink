@@ -5,7 +5,7 @@ import {Box, Button, Modal, Typography} from "@mui/material";
 import {Close} from "@mui/icons-material";
 import {mdiDiscord, mdiWechat} from "@mdi/js"
 import GroupChatBar from "./groupChatBar";
-import {default as Groupme} from "../icons/groupme.svg";
+import {default as Groupme} from "../images/groupme.svg";
 import * as config from "../config"
 import Cookies from "js-cookie";
 import AlertToast from "./alertToast";

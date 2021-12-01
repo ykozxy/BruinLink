@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import PropTypes from "prop-types";
 import {mdiDiscord, mdiWechat} from "@mdi/js";
 import ClassCardGroupChatBar from "./classCardGroupChatBar";
-import {default as Groupme} from "../icons/groupme.svg";
+import {default as Groupme} from "../images/groupme.svg";
 import CoursePopup from "../components/coursePopup";
 import Cookies from 'js-cookie';
 import AlertToast from "./alertToast";
