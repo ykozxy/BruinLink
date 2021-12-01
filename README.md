@@ -1,197 +1,115 @@
-<!-- Add banner here -->
 [![Contributors](https://img.shields.io/badge/Contributors-5-brightgreen.svg?style=flat-square)
 ](https://github.com/ykozxy/BruinLink/graphs/contributors)
-<!--
-https://img.shields.io/github/contributors/github.com/ykozxy/BruinLink/graphs/.svg?style=for-the-badge
-
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
--->
 
 # BruinLink
+
 BruinLink is a website which designs for students in UCLA. Our project website is a platform gathering the social media links or QR codes of UCLA class group chats on different platforms. When you want to find classmates and discuss over your classes, it’s inconvenient to search many possible keywords on Google to look for or even ask others over and over whether there is a GroupMe link or so for a certain course.
-<!-- Add buttons here -->
 
-<!-- Describe your project in brief -->
 
-<!-- The project title should be self explanotory and try not to make it a mouthful. (Although exceptions exist- **awesome-readme-writing-guide-for-open-source-projects** - would have been a cool name)
 
-Add a cover/banner image for your README. **Why?** Because it easily **grabs people's attention** and it **looks cool**(*duh!obviously!*).
-
-The best dimensions for the banner is **1280x650px**. You could also use this for social preview of your repo.
-
-I personally use [**Canva**](https://www.canva.com/) for creating the banner images. All the basic stuff is **free**(*you won't need the pro version in most cases*).
-
-There are endless badges that you could use in your projects. And they do depend on the project. Some of the ones that I commonly use in every projects are given below. 
-
-I use [**Shields IO**](https://shields.io/) for making badges. It is a simple and easy to use tool that you can use for almost all your badge cravings. -->
-
-<!-- Some badges that you could use -->
-
-<!-- ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/navendu-pottekkat/awesome-readme?include_prereleases)
-: This badge shows the version of the current release.
-
-![GitHub last commit](https://img.shields.io/github/last-commit/navendu-pottekkat/awesome-readme)
-: I think it is self-explanatory. This gives people an idea about how the project is being maintained.
-
-![GitHub issues](https://img.shields.io/github/issues-raw/navendu-pottekkat/awesome-readme)
-: This is a dynamic badge from [**Shields IO**](https://shields.io/) that tracks issues in your project and gets updated automatically. It gives the user an idea about the issues and they can just click the badge to view the issues.
-
-![GitHub pull requests](https://img.shields.io/github/issues-pr/navendu-pottekkat/awesome-readme)
-: This is also a dynamic badge that tracks pull requests. This notifies the maintainers of the project when a new pull request comes.
-
-![GitHub All Releases](https://img.shields.io/github/downloads/navendu-pottekkat/awesome-readme/total): If you are not like me and your project gets a lot of downloads(*I envy you*) then you should have a badge that shows the number of downloads! This lets others know how **Awesome** your project is and is worth contributing to.
-
-![GitHub](https://img.shields.io/github/license/navendu-pottekkat/awesome-readme)
-: This shows what kind of open-source license your project uses. This is good idea as it lets people know how they can use your project for themselves.
-
-![Tweet](https://img.shields.io/twitter/url?style=flat-square&logo=twitter&url=https%3A%2F%2Fnavendu.me%2Fnsfw-filter%2Findex.html): This is not essential but it is a cool way to let others know about your project! Clicking this button automatically opens twitter and writes a tweet about your project and link to it. All the user has to do is to click tweet. Isn't that neat? -->
-
-# Motivation
+## Motivation
 
 We are committed to offer all the Bruins a platform to find your group  for whatever classes. You don't need to worry where your groups are, just search here. And if there is no yet the links you need, you can always subscribe it and get notified when others uploaded it.
 
-# Table of contents
+## Table of contents
 
-<!-- After you have introduced your project, it is a good idea to add a **Table of contents** or **TOC** as **cool** people say it. This would make it easier for people to navigate through your README and find exactly what they are looking for.
-
-Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README. -->
-
-- [Project Title](#project-title)
 - [Motivation](#motivation)
 - [Table of contents](#table-of-contents)
-- [Installation](#installation)
-- [GetStarted](#GetStarted)
-- [Development](#development)
-- [Contribute](#contribute)
-    - [Sponsor](#sponsor)
-    - [Adding new features or fixing bugs](#adding-new-features-or-fixing-bugs)
-- [License](#license)
+- [Get Started](#Get-Started)
+  - [Setup the Environment](#Setup-the-Environment)
+  - [Run the Webapp](#Run-the-Webapp)
+  - [Optional Step](#Optional-Step)
+- [Group Members](#Group-Members)
 - [Footer](#footer)
 
-# Installation
+## Get Started
+
 [(Back to top)](#table-of-contents)
 
-Under your desired drectory, please clone BruinLink to your device in git command window.
+### Setup the Environment
+
+Under your desired drectory, please clone BruinLink to your device and enter the project folder.
+
 ```sh
 git clone https://github.com/ykozxy/BruinLink.git
+cd BruinLink
 ```
-Use the following command to direct to the project folder within the terminal of your compiler
-```sh
-cd {yourPath}/BruinLink
-```
-Use the following command to direct to the backend
+
+Then, enter the backend directory and install dependencies.
+
 ```sh
 cd server
-```
-Using the terminal, use the following commands to install proper backend dependencies.
-```sh
 npm install
 ```
-This will set you up with all tools including mongoose, express, multer and other backend dependencies we used in this project.
-To install proper front-end dependencies, use the following commands
+
+This will set you up with all tools including `mongoose`, `express`, `multer` and other backend dependencies we used in
+this project.
+
+To install proper front-end dependencies, use the following commands:
+
 ```sh
 cd ..
 cd client
 npm install
 ```
-The first step above is supposed to go back to the root directory of the project. Then, go to the client directory and install dependencies relating to frontend.
 
-For future needs for adding courses into the database, also use the following command to install python requests before using our python script of adding courses (make sure you have set up python environment on your device).
+The first step above is supposed to go back to the root directory of the project. Then, go to the client directory and
+install dependencies relating to frontend.
+
+If you want to use the [initilize.py](server/utils/initialize.py) to add courses into the database, use the following
+command to install python package `requests` before using our python script (make sure you have set up python
+environment on your device).
+
 ```sh
-pip install requests
+pip3 install requests
 ```
 
-# GetStarted
-[(Back to top)](#table-of-contents)
+### Run the Webapp
 
-Under the BruinLink directory of a terminal, use the following command to launch backend application.
+Under the BruinLink’s root directory, use the following command to launch the backend application.
+
 ```sh
 cd server
 npm start
 ```
-Then, using a seperate terminal, direct yourself to BruinLink and use the following command to launch frontend application and open browser at: localhost:3000.
+
+Then, using a seperate terminal, direct yourself to BruinLink’s root directory and use the following command to launch
+the frontend application.
+
 ```sh
 cd client
 npm start
 ```
-If you wish to add more courses to the database, you can modify the initialize.py file under directory BruinLink/server/utils. After saving it, use the following command to add course to database under a seperate terminal (make sure backend applications are running).
+
+After the frontend finishes compile, the page [localhost:3000](localhost:3000) will be opened in your default browser
+automatically. If not, please click the link above to open it manually.
+
+### Optional Step
+
+If you wish to add more courses to the database, you can modify the initialize.py file under
+directory [BruinLink/server/utils](server/utils). After saving it, use the following command to add course to database
+under a seperate terminal (make sure backend applications are running).
+
 ```sh
 cd server/utils
-python initialize.py
+python3 initialize.py
 ```
-Your submission status will be shown in the console after running the file
 
-# Development
+The result of adding courses will be shown in the console after running the script.
+
+## Group Members
+
 [(Back to top)](#table-of-contents)
 
-<!-- This is the place where you give instructions to developers on how to modify the code.
+- [Xuyang Zhou](https://github.com/ykozxy) (nickzhouxy@g.ucla.edu)
+- [Sam Xu](https://github.com/samxu01) (xcjsam@g.ucla.edu)
+- [Laiyin Dai](https://github.com/ng666) (dailaiyin@g.ucla.edu)
+- [Mike Shi](https://github.com/Spiderpc) (mikespc@g.ucla.edu)
+- [Shiyan Fu](https://github.com/Fshiyan) (fushiyan@g.ucla.edu)
 
-You could give **instructions in depth** of **how the code works** and how everything is put together.
+## Footer
 
-You could also give specific instructions to how they can setup their development environment.
-
-Ideally, you should keep the README simple. If you need to add more complex explanations, use a wiki. Check out [this wiki](https://github.com/navendu-pottekkat/nsfw-filter/wiki) for inspiration. -->
-
-# Contribute
-[(Back to top)](#table-of-contents)
-### Contributors
-<a href="https://github.com/ykozxy/BruinLink/graphs/contributors">
-
-[Xuyang Zhou](https://github.com/ykozxy)
-[Sam Xu](https://github.com/samxu01)
-[Laiyin Dai](https://github.com/ng666)
-[Mike Shi](https://github.com/Spiderpc)
-[Shiyan Fu](https://github.com/Fshiyan)
-
-<!-- This is where you can let people know how they can **contribute** to your project. Some of the ways are given below.
-
-Also this shows how you can add subsections within a section. -->
-
-### Sponsor
 [(Back to top)](#table-of-contents)
 
-<!-- Your project is gaining traction and it is being used by thousands of people(***with this README there will be even more***). Now it would be a good time to look for people or organisations to sponsor your project. This could be because you are not generating any revenue from your project and you require money for keeping the project alive.
-
-You could add how people can sponsor your project in this section. Add your patreon or GitHub sponsor link here for easy access.
-
-A good idea is to also display the sponsors with their organisation logos or badges to show them your love!(*Someday I will get a sponsor and I can show my love*) -->
-
-### Adding new features or fixing bugs
-[(Back to top)](#table-of-contents)
-
-<!-- This is to give people an idea how they can raise issues or feature requests in your projects. 
-
-You could also give guidelines for submitting and issue or a pull request to your project.
-
-Personally and by standard, you should use a [issue template](https://github.com/navendu-pottekkat/nsfw-filter/blob/master/ISSUE_TEMPLATE.md) and a [pull request template](https://github.com/navendu-pottekkat/nsfw-filter/blob/master/PULL_REQ_TEMPLATE.md)(click for examples) so that when a user opens a new issue they could easily format it as per your project guidelines.
-
-You could also add contact details for people to get in touch with you regarding your project. -->
-
-We will update here after we finishing 1.0 ver.
-
-# License
-[(Back to top)](#table-of-contents)
-
-<!-- Adding the license to README is a good practice so that people can easily refer to it.
-
-Make sure you have added a LICENSE file in your project folder. **Shortcut:** Click add new file in your root of your repo in GitHub > Set file name to LICENSE > GitHub shows LICENSE templates > Choose the one that best suits your project!
-
-I personally add the name of the license and provide a link to it like below. -->
-
-[GNU General Public License version 3](https://opensource.org/licenses/GPL-3.0)
-
-# Footer
-[(Back to top)](#table-of-contents)
-
-<!-- Let's also add a footer because I love footers and also you **can** use this to convey important info.
-
-Let's make it an image because by now you have realised that multimedia in images == cool(*please notice the subtle programming joke). -->
-
-Leave a star in GitHub, give a clap in Medium and share this guide if you found this helpful.
-
-<!-- Add the footer here -->
-
-<!-- ![Footer](https://github.com/navendu-pottekkat/awesome-readme/blob/master/fooooooter.png) -->
+If you consider this project to be useful, please leave a star in GitHub~
 
