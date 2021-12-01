@@ -9,8 +9,7 @@ import $ from "jquery"
 import * as config from "../config"
 import AlertToast from "./alertToast";
 import Typography from '@mui/material/Typography';
-import CardContent from "@mui/material/CardContent";
-import {Card, Skeleton} from "@mui/material";
+import {Skeleton} from "@mui/material";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -150,23 +149,21 @@ let _classArray=[]
   
     render(){
         if (this.state.loading) {
+            // if (true) {
             return (
                 <Box sx={{width: '70%'}}>
-                    <Card sx={{
-                        width: 230,
-                        border: 1,
-                        borderColor: 'grey.500',
-                    }}>
-                        <CardContent>
-                            <Skeleton variant="rectangular" height={60} sx={{mb: .5}}/>
-                            <Skeleton variant="text" sx={{mb: 2}}/>
-                            <div/>
-                            <Skeleton variant="rectangular" height={30} sx={{mb: 1.5}}/>
-                            <Skeleton variant="rectangular" height={30} sx={{mb: 1.5}}/>
-                            <Skeleton variant="rectangular" height={30} sx={{mb: 1.5}}/>
-                            <Skeleton variant="circular" height={30} width={30}/>
-                        </CardContent>
-                    </Card>
+                    <Grid container rowSpacing={8} columnSpacing={{xs: 1, sm: 2, md: 3}}>
+                        {
+                            [...Array(6).keys()].map(e => (
+                                <Grid key={e} item xs={12} sm={12} md={6} lg={4}>
+                                    <Skeleton variant="rectangular" animation="wave">
+                                        <ClassCard courseName="" professorName="" courseID=""
+                                                   wechatCode discordLink groupmeLink/>
+                                    </Skeleton>
+                                </Grid>
+                            ))
+                        }
+                    </Grid>
                 </Box>
             )
         }

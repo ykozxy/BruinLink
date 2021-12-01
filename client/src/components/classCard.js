@@ -11,6 +11,7 @@ import {default as Groupme} from "../icons/groupme.svg";
 import CoursePopup from "../components/coursePopup";
 import Cookies from 'js-cookie';
 import AlertToast from "./alertToast";
+import {Box} from "@mui/material";
 
 export default class classCard extends React.Component{
 
@@ -51,12 +52,14 @@ return (
         borderColor: 'grey.500',
         }}>
       <CardContent>
-        <Typography variant="h5" component="div" sx={{height:60}}>
-          {this.props.courseName}
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          {this.props.professorName}
-        </Typography>
+          <Box height = {95}>
+              <Typography variant="h5" component="div">
+                  {this.props.courseName}
+              </Typography>
+              <Typography sx={{mb: 1.5}} color="text.secondary">
+                  {this.props.professorName}
+              </Typography>
+          </Box>
         <div/>
         <ClassCardGroupChatBar 
           name="Discord"
@@ -76,7 +79,7 @@ return (
       </CardContent>
 
       <CardActions>
-        <Button size="small"
+        <Button size="small" sx={{mt: -1}}
           onClick={this.handleClick}>
           Learn More
         </Button>

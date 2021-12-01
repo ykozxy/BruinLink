@@ -87,7 +87,7 @@ export default class ClassCardGroupChatBar extends Component {
         }
 
         return (
-            <Grid container columnSpacing={1} columns={50} sx={{ml: 1, mb: 2}} alignItems="center">
+            <Grid container columnSpacing={1} columns={50} sx={{ml: 1, mb: 1}} alignItems="center">
                 <Grid item xs={10}>
                     <Box sx={{display: "flex", flexDirection: "row", alignItems: "center"}}>
                         <Box sx={{mr: 1, mt: 1}}>
