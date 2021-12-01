@@ -110,7 +110,11 @@ Then, using a seperate terminal, direct yourself to BruinLink and use the follow
 cd client
 npm start
 ```
-
+If you wish to add more courses to the database, you can modify the initialize.py file under directory BruinLink/server/utils. After saving it, use the following command to add course to database under a seperate terminal (make sure backend applications are running).
+```sh
+cd server/utils
+python initialize.py
+```
 # Development
 [(Back to top)](#table-of-contents)
 
