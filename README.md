@@ -115,21 +115,13 @@ The result of adding courses will be shown in the console after running the scri
 [(Back to top)](#table-of-contents)
 
 Grateful thanks to the following projects that inspired us during development:
-
 - [create-react-app](https://github.com/facebook/create-react-app)
-
 - [material-ui](https://mui.com/)
-
 - [Material Design Icons](https://materialdesignicons.com/)
-
 - [SendGrid](https://sendgrid.com/)
-
 - [mongoose](https://mongoosejs.com/)
 
-  
-
 Credit to the images and icons we used:
-
 - [client/src/images/groupme.svg](client/src/images/groupme.svg): [Icon Finder](https://www.iconfinder.com/icons/670440/groupme_chat_group_social_icon)
 
 
