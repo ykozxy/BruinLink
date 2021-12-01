@@ -14,9 +14,10 @@ module.exports = courseBasics;
 /**
  * finds course in mongodb by keyword
  *
- * @param {String} keyword
- * @return {list} a course instance of courseModel
- *      when err or user not found, course = null
+ * @param {String} course
+ * @param {String} department
+ * @param {String} division
+ * @return {list} a list of courses found
  */
 async function findbyname(course, department, division) {
     var courselist = [];
@@ -59,15 +60,6 @@ async function findbyname(course, department, division) {
     return courselist;
 }
 
-/**
- *  register user with 3 inputs
- *
- * @param {String} coursename
- * @param {String} profname
- * @param {String} department
- *
- * @return {boolean} whether register is successful or not
- */
 async function register(course_arg) {
     try {
         const newCourse = new courseModel({
@@ -95,7 +87,7 @@ async function register(course_arg) {
 /**
  *  getCourse with 1 input
  *
- *  @param {String} courseId
+ *  @param {String} courseid
  *
  *  @return {object}
  */

@@ -21,8 +21,10 @@ accountBasics.unsubscribecourse = unsubscribecourse;
 accountBasics.getsubscription = getsubscription;
 module.exports = accountBasics;
 
-/** @param {String} email
- @param {String} password
+/** 
+ * @param {String} email
+ * @param {String} old_password
+ * @param {String} new_password
  */
 
 async function setPassword(email, old_password, new_password) {
@@ -48,9 +50,12 @@ async function setPassword(email, old_password, new_password) {
     }
 }
 
-/** @param {String} uid
- @param {String} password
- @param {String} newemail
+/**
+ * @param {String} old_emai
+ * @param {String} password
+ * @param {String} new_email
+ * @param {String} unique
+ * @param {String} code
  */
 
 async function setEmail(old_email, password, new_email, unique, code) {
@@ -82,7 +87,8 @@ async function setEmail(old_email, password, new_email, unique, code) {
 }
 
 
-/** @param {String} token
+/** 
+ * @param {String} token
  */
 
 async function getEmail(token) {
@@ -105,6 +111,10 @@ async function getEmail(token) {
     }
 }
 
+/** 
+ * @param {String} email
+ */
+
 async function findEmail(email) {
     try {
         let account = await accountModel.findOne({ email: email });
@@ -120,8 +130,9 @@ async function findEmail(email) {
     }
 }
 
-/** @param {String} email
- @param {String} password
+/** 
+ * @param {String} email
+ * @param {String} password
  */
 
 async function login(email, password) {
@@ -154,11 +165,11 @@ async function login(email, password) {
     }
 }
 
-/** @param {String} uid
- @param {String} password
- @param {String} email
- @param {String} unique
- @param {String} code
+/**
+ * @param {String} password
+ * @param {String} email
+ * @param {String} unique
+ * @param {String} code
  */
 
 async function register(password, email, unique, code) {
@@ -185,7 +196,8 @@ async function register(password, email, unique, code) {
     }
 }
 
-/** @param {String} email
+/** 
+ * @param {String} email
  */
 
 async function verificationCode(email) {
