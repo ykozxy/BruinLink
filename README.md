@@ -73,11 +73,11 @@ Here is a sample TOC(*wow! such cool!*) that is actually the TOC for this README
 # Installation
 [(Back to top)](#table-of-contents)
 
-Under your desired drectory, please clone BruinLink to your device.
+Under your desired drectory, please clone BruinLink to your device in git command window.
 ```sh
 git clone https://github.com/ykozxy/BruinLink.git
 ```
-Use the following command to direct to the project folder within terminal
+Use the following command to direct to the project folder within the terminal of your compiler
 ```sh
 cd {yourPath}/BruinLink
 ```
@@ -96,7 +96,9 @@ cd ..
 cd client
 npm install
 ```
-For future needs for adding courses into the database, also use the following command to install python requests
+The first step above is supposed to go back to the root directory of the project. Then, go to the client directory and install dependencies relating to frontend.
+
+For future needs for adding courses into the database, also use the following command to install python requests before using our python script of adding courses (make sure you have set up python environment on your device).
 ```sh
 pip install requests
 ```
@@ -119,6 +121,16 @@ If you wish to add more courses to the database, you can modify the initialize.p
 cd server/utils
 python initialize.py
 ```
+To see whether you successfully add the course to the database, you can change the last part of the initialize.py file to the following code
+```sh
+for i in courses:
+    print(requests.post(
+        "http://localhost:3031/course/addCourse",
+        data=i
+    ).text)
+```
+Your submission status will be shown in the console after running the file
+
 # Development
 [(Back to top)](#table-of-contents)
 
