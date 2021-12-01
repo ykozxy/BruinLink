@@ -19,7 +19,7 @@ export default class SearchBar extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {query: "", changed: false};
+        this.state = {query: props.initialQuery, changed: false};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
