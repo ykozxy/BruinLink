@@ -96,6 +96,10 @@ cd ..
 cd client
 npm install
 ```
+For future needs for adding courses into the database, also use the following command to install python requests
+```sh
+pip install requests
+```
 
 # Usage
 [(Back to top)](#table-of-contents)
