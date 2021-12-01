@@ -100,8 +100,16 @@ npm install
 # Usage
 [(Back to top)](#table-of-contents)
 
-<!-- This is optional and it is used to give the user info on how to use the project after installation. This could be added in the Installation section also. -->
-See the details README.dm in client folder please. 
+Under the BruinLink directory of a terminal, use the following command to launch backend application.
+```sh
+cd server
+npm start
+```
+Then, using a seperate terminal, direct yourself to BruinLink and use the following command to launch frontend application and open browser at: localhost:3000.
+```sh
+cd client
+npm start
+```
 
 # Development
 [(Back to top)](#table-of-contents)
